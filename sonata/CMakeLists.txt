@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.31.6)
 add_subdirectory(deps)
 
 add_library(sonata STATIC
-        src/test.cpp
         src/application.cpp
+        src/window.cpp
 )
 
 target_include_directories(sonata
@@ -25,7 +25,7 @@ target_compile_definitions(sonata PRIVATE
 if (MSVC)
     target_compile_options(sonata PRIVATE /W4 /WX /EHsc /std:c++20)
 else ()
-    target_compile_options(sonata PRIVATE -Wall -Wextra -Werror $<IF:$<CONFIG:Debug>,-Og,-O3>)
+    target_compile_options(sonata PRIVATE -Wall -Wextra -Wpedantic $<IF:$<CONFIG:Debug>,-Og,-O3>)
 endif ()
 
 target_link_libraries(sonata

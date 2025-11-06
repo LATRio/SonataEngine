@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.31.6)
 
 add_executable(sandbox
-        src/main.cpp
+        src/sandbox.cpp
 )
 
 target_include_directories(sandbox
@@ -18,7 +18,7 @@ set_target_properties(sandbox PROPERTIES
 if (MSVC)
     target_compile_options(sandbox PRIVATE /W4 /WX /EHsc /std:c++20)
 else ()
-    target_compile_options(sandbox PRIVATE -Wall -Wextra -Werror $<IF:$<CONFIG:Debug>,-Og,-O3>)
+    target_compile_options(sandbox PRIVATE -Wall -Wextra -Wpedantic $<IF:$<CONFIG:Debug>,-Og,-O3>)
 endif ()
 
 target_link_libraries(sandbox
