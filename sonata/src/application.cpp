@@ -1,7 +1,9 @@
 #include "application.h"
-#include <iostream>
+
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
+
+#include "log.h"
 
 namespace Sonata {
 
@@ -23,6 +25,7 @@ Application::Application()
     if (!window)
     {
         glfwTerminate();
+        SN_ENGINE_FATAL("Failed to create GLFW window");
         throw std::runtime_error("Failed to create GLFW window!");
     }
     glfwMakeContextCurrent(window);
@@ -30,6 +33,7 @@ Application::Application()
     if (!gladLoadGL(glfwGetProcAddress))
     {
         glfwTerminate();
+        SN_ENGINE_FATAL("Failed to initialize GLAD");
         throw std::runtime_error("Failed to initialize GLAD");
     }
 

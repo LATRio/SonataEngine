@@ -1,9 +1,12 @@
 #pragma once
-#include "sonata.h"
+#include <sonata.h>
 
-class Sandbox : public Sonata::Application {
+class Sandbox : public Sonata::Application
+{
 public:
-    Sandbox() {}
+    Sandbox()
+    {
+        SN_APP_ERR("Initialized Sandbox!");
+    }
     ~Sandbox() override {}
-
 };

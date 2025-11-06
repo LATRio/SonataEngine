@@ -5,6 +5,7 @@ add_subdirectory(deps)
 add_library(sonata STATIC
         src/application.cpp
         src/window.cpp
+        src/log.cpp
 )
 
 target_include_directories(sonata
@@ -32,4 +33,5 @@ target_link_libraries(sonata
         PRIVATE
         glad
         glfw
+        spdlog::spdlog
 )
