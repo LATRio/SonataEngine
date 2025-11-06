@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.31.6)
-project(EngineProject)
+project(SonataEngine)
 
-add_subdirectory(engine)
+add_subdirectory(sonata)
 add_subdirectory(sandbox)
