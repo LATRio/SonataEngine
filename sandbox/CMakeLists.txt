@@ -1,17 +1,27 @@
 cmake_minimum_required(VERSION 3.31.6)
 
-add_executable(Sandbox
+add_executable(sandbox
         src/main.cpp
 )
 
-target_include_directories(Sandbox
+target_include_directories(sandbox
         PRIVATE
         src/
 )
 
-target_compile_features(Sandbox PRIVATE cxx_std_20)
+target_compile_features(sandbox PRIVATE cxx_std_20)
+set_target_properties(sandbox PROPERTIES
+        CXX_STANDARD_REQUIRED ON
+        CXX_EXTENSIONS OFF
+)
 
-target_link_libraries(Sandbox
+if (MSVC)
+    target_compile_options(sandbox PRIVATE /W4 /WX /EHsc /std:c++20)
+else ()
+    target_compile_options(sandbox PRIVATE -Wall -Wextra -Werror $<IF:$<CONFIG:Debug>,-Og,-O3>)
+endif ()
+
+target_link_libraries(sandbox
         PRIVATE
         sonata
 )

@@ -1,7 +1,8 @@
-#include <test.h>
+#include <application.h>
 
-int main(int argc, const char * argv[])
+int main()
 {
-    Sonata::Test test;
-    test.Print();
+    Sonata::Application app;
+    app.Loop();
+    return 0;
 }
