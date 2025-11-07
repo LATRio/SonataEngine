@@ -15,6 +15,8 @@ void Log::Init()
 
     s_AppLogger = spdlog::stdout_color_mt("APP");
     s_AppLogger->set_level(spdlog::level::trace);
+
+    SN_ENGINE_INFO("Logger Initialized! (powered by spdlog-{}.{}.{})", SPDLOG_VER_MAJOR, SPDLOG_VER_MINOR, SPDLOG_VER_PATCH);
 }
 
 } // namespace Sonata
