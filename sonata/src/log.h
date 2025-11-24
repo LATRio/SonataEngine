@@ -16,6 +16,8 @@ class Log
     static void Init();
 
     template <typename... Args>
+    static void Debug(LoggerType p_Type, spdlog::format_string_t<Args...> fmt, Args &&...args);
+    template <typename... Args>
     static void Warn(LoggerType p_Type, spdlog::format_string_t<Args...> fmt, Args &&...args);
     template <typename... Args>
     static void Info(LoggerType p_Type, spdlog::format_string_t<Args...> fmt, Args &&...args);
@@ -32,7 +34,23 @@ class Log
 };
 
 template <typename... Args>
-void Log::Warn(LoggerType p_Type, spdlog::format_string_t<Args...> fmt, Args &&...args)
+void Log::Debug(const LoggerType p_Type, spdlog::format_string_t<Args...> fmt, Args &&...args)
+{
+    switch (p_Type)
+    {
+    case LoggerType::Engine:
+        s_EngineLogger->debug(fmt, std::forward<Args>(args)...);
+        break;
+    case LoggerType::App:
+        s_AppLogger->debug(fmt, std::forward<Args>(args)...);
+        break;
+    default:
+        break;
+    }
+}
+
+template <typename... Args>
+void Log::Warn(const LoggerType p_Type, spdlog::format_string_t<Args...> fmt, Args &&...args)
 {
     switch (p_Type)
     {
@@ -48,7 +66,7 @@ void Log::Warn(LoggerType p_Type, spdlog::format_string_t<Args...> fmt, Args &&.
 }
 
 template <typename... Args>
-void Log::Info(LoggerType p_Type, spdlog::format_string_t<Args...> fmt, Args &&...args)
+void Log::Info(const LoggerType p_Type, spdlog::format_string_t<Args...> fmt, Args &&...args)
 {
     switch (p_Type)
     {
@@ -64,7 +82,7 @@ void Log::Info(LoggerType p_Type, spdlog::format_string_t<Args...> fmt, Args &&.
 }
 
 template <typename... Args>
-void Log::Error(LoggerType p_Type, spdlog::format_string_t<Args...> fmt, Args &&...args)
+void Log::Error(const LoggerType p_Type, spdlog::format_string_t<Args...> fmt, Args &&...args)
 {
     switch (p_Type)
     {
@@ -80,7 +98,7 @@ void Log::Error(LoggerType p_Type, spdlog::format_string_t<Args...> fmt, Args &&
 }
 
 template <typename... Args>
-void Log::Trace(LoggerType p_Type, spdlog::format_string_t<Args...> fmt, Args &&...args)
+void Log::Trace(const LoggerType p_Type, spdlog::format_string_t<Args...> fmt, Args &&...args)
 {
     switch (p_Type)
     {
@@ -96,7 +114,7 @@ void Log::Trace(LoggerType p_Type, spdlog::format_string_t<Args...> fmt, Args &&
 }
 
 template <typename... Args>
-void Log::Fatal(LoggerType p_Type, spdlog::format_string_t<Args...> fmt, Args &&...args)
+void Log::Fatal(const LoggerType p_Type, spdlog::format_string_t<Args...> fmt, Args &&...args)
 {
     switch (p_Type)
     {
@@ -123,4 +141,13 @@ void Log::Fatal(LoggerType p_Type, spdlog::format_string_t<Args...> fmt, Args &&
 #define SN_APP_ERR(...) Sonata::Log::Error(Sonata::LoggerType::App, __VA_ARGS__)
 #define SN_APP_TRACE(...) Sonata::Log::Trace(Sonata::LoggerType::App, __VA_ARGS__)
 #define SN_APP_FATAL(...) Sonata::Log::Fatal(Sonata::LoggerType::App, __VA_ARGS__)
+
+#ifdef SONATA_DEBUG
+#define SN_ENGINE_DEBUG(...) Sonata::Log::Debug(Sonata::LoggerType::Engine, __VA_ARGS__)
+#define SN_APP_DEBUG(...) Sonata::Log::Debug(Sonata::LoggerType::App, __VA_ARGS__)
+#else
+#define SN_ENGINE_DEBUG(...)
+#define SN_APP_DEBUG(...)
+#endif
+
 

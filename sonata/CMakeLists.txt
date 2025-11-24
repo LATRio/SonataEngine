@@ -6,6 +6,7 @@ add_library(sonata STATIC
         src/application.cpp
         src/window.cpp
         src/log.cpp
+        src/events/event.h
 )
 
 target_include_directories(sonata

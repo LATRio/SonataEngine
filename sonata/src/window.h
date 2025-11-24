@@ -17,6 +17,8 @@ public:
     void Update();
 
     [[nodiscard]] bool IsKeyPressed(int key) const;
+
+    void Print();
 private:
     GLFWwindow* m_Window;
 };
