@@ -1,6 +1,8 @@
 #pragma once
 #include <functional>
 
+// TODO: Place some safe guards and test properly
+
 template<typename FuncSig>
 struct Callable
 {
