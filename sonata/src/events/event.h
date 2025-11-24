@@ -15,17 +15,17 @@ template <typename FuncSig>
 class Event
 {
 public:
-    void AddBind(std::function<FuncSig> callback, void* object)
+    [[maybe_unused]] void AddBind(std::function<FuncSig> callback, void* object)
     {
-        callbacks.emplace_back(object, callback);
+        callbacks.push_back({object, callback});
     }
 
-    void AddBind(std::function<FuncSig> callback)
+    [[maybe_unused]] void AddBind(std::function<FuncSig> callback)
     {
-        callbacks.emplace_back(callback, nullptr, true);
+        callbacks.push_back({callback, nullptr, true});
     }
 
-    void Execute()
+    [[maybe_unused]] void Execute()
     {
         for (auto& callback : callbacks)
         {

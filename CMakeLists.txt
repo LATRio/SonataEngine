@@ -4,5 +4,11 @@ project(SonataEngine
         LANGUAGES C CXX
 )
 
+include(cmake/Cache.cmake)
+include(cmake/Sanitizers.cmake)
+include(cmake/StaticAnalyzers.cmake)
+include(cmake/CompilerWarnings.cmake)
+include(cmake/DefaultProjectSettings.cmake)
+
 add_subdirectory(sonata)
 add_subdirectory(sandbox)
