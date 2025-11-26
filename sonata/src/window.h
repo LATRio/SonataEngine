@@ -1,7 +1,4 @@
 #pragma once
-#include <string_view>
-
-struct GLFWwindow;
 
 namespace Sonata
 {

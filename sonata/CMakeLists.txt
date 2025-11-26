@@ -6,7 +6,6 @@ add_library(sonata STATIC
         src/application.cpp
         src/window.cpp
         src/log.cpp
-        src/events/event.h
 )
 
 target_compile_features(sonata PRIVATE cxx_std_20)
@@ -17,6 +16,14 @@ set_project_warnings(sonata)
 target_include_directories(sonata
         INTERFACE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
+target_precompile_headers(sonata PRIVATE
+        <functional>
+        <memory>
+        <string_view>
+        <glad/gl.h>
+        <GLFW/glfw3.h>
 )
 
 target_link_libraries(sonata

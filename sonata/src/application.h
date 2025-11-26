@@ -16,7 +16,6 @@ public:
     // TODO: Pass struct with window settings instead
     [[maybe_unused]] void InitWindow(int p_Width, int p_Height, std::string_view title);
     [[maybe_unused]] void Loop();
-    void Print();
 
 private:
     std::unique_ptr<Window> m_Window;

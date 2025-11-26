@@ -1,16 +1,12 @@
 #include "application.h"
+#include <GLFW/glfw3.h>
 
 #include "window.h"
-
-#include <glad/gl.h>
-#include <GLFW/glfw3.h>
-#include <iostream>
 
 namespace Sonata {
 
 Application::Application()
 {
-    m_Event.AddBind(std::bind(&Application::Print, this), this);
 }
 
 Application::~Application()
@@ -20,7 +16,6 @@ Application::~Application()
 void Application::InitWindow(int p_Width, int p_Height, std::string_view title)
 {
     m_Window = std::make_unique<Window>(p_Width, p_Height, title);
-    m_Event.AddBind(std::bind(&Window::Print, m_Window.get()), m_Window.get());
 }
 
 void Application::Loop()
@@ -41,11 +36,6 @@ void Application::Loop()
 
         m_Window->Update();
     }
-}
-
-void Application::Print()
-{
-    std::cout << "event worked" << std::endl;
 }
 
 } // Sonata
