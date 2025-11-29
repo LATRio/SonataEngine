@@ -1,4 +1,6 @@
 #include "window.hpp"
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 
 #include "events/app_event.hpp"
 #include "events/key_event.hpp"
@@ -66,20 +68,24 @@ void framebuffer_size_callback([[maybe_unused]] GLFWwindow *p_Window, const int 
     glViewport(0, 0, p_Width, p_Height);
 }
 
+void GLFWErrorCallback(int error_code, const char* description)
+{
+    SN_ENGINE_FATAL("GLFW Error ({}): {}", error_code, description);
+}
+
 Window::Window(const WindowProps &p_Props)
 {
     if (!glfwInitialized)
     {
         int success = glfwInit();
         SN_ASSERT_MSG(success, "Failed to initialize GLFW3");
+        glfwSetErrorCallback(GLFWErrorCallback);
         glfwInitialized = true;
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#ifdef SONATA_DEBUG
         glfwWindowHint(GLFW_CONTEXT_DEBUG, GL_TRUE);
-#endif
 
         int major_version;
         int minor_version;
@@ -106,8 +112,29 @@ Window::Window(const WindowProps &p_Props)
         throw std::runtime_error("Failed to create GLFW window!");
     }
     glfwMakeContextCurrent(m_Window);
+
+    int success = gladLoadGL(glfwGetProcAddress);
+    SN_ASSERT_MSG(success, "Failed to initialize GLAD");
+
     glfwSetWindowUserPointer(m_Window, &m_WindowData);
     SetVSync(m_WindowData.m_VSync);
+
+    glViewport(0, 0, m_WindowData.m_Width, m_WindowData.m_Height);
+    glfwSetFramebufferSizeCallback(m_Window, framebuffer_size_callback);
+
+    SN_ENGINE_INFO("OpenGL Version: {}", reinterpret_cast<const char *>(glGetString(GL_VERSION)));
+    {
+        int flags;
+        glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+        if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
+        {
+            glEnable(GL_DEBUG_OUTPUT);
+            glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+            glDebugMessageCallback(glDebugOutput, nullptr);
+            glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+        }
+    }
+    glEnable(GL_DEPTH_TEST);
 
     glfwSetWindowSizeCallback(m_Window, [](GLFWwindow *window, int width, int height) {
         WindowData& m_Data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
@@ -185,45 +212,12 @@ Window::Window(const WindowProps &p_Props)
         EventMouseMoved event(xPos, yPos);
         m_Data.m_Callback(event);
     });
-
-    if (!gladLoadGL(glfwGetProcAddress))
-    {
-        glfwTerminate();
-        SN_ENGINE_FATAL("Failed to initialize GLAD");
-        throw std::runtime_error("Failed to initialize GLAD");
-    }
-    SN_ENGINE_INFO("OpenGL Version: {}", reinterpret_cast<const char *>(glGetString(GL_VERSION)));
-    {
-        int flags;
-        glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
-        if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
-        {
-            glEnable(GL_DEBUG_OUTPUT);
-            glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-            glDebugMessageCallback(glDebugOutput, nullptr);
-            glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
-        }
-    }
-
-    glViewport(0, 0, m_WindowData.m_Width, m_WindowData.m_Height);
-    glfwSetFramebufferSizeCallback(m_Window, framebuffer_size_callback);
-    glEnable(GL_DEPTH_TEST);
 }
 
 Window::~Window()
 {
     glfwDestroyWindow(m_Window);
     glfwTerminate();
-}
-
-bool Window::GetWindowShouldClose() const
-{
-    return glfwWindowShouldClose(m_Window);
-}
-
-void Window::SetWindowShouldClose(const int p_Value) const
-{
-    glfwSetWindowShouldClose(m_Window, p_Value);
 }
 
 void Window::SetEventCallback(const EventCallbackFn &p_Callback)

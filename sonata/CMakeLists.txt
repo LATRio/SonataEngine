@@ -16,6 +16,12 @@ add_library(sonata STATIC
         src/events/app_event.hpp
         src/events/key_event.hpp
         src/events/mouse_event.hpp
+        src/layers/layer.cpp
+        src/layers/layer.hpp
+        src/layers/layer_stack.cpp
+        src/layers/layer_stack.hpp
+        src/layers/imgui_layer.cpp
+        src/layers/imgui_layer.hpp
 )
 
 target_compile_features(sonata PRIVATE cxx_std_20)
@@ -36,11 +42,12 @@ target_precompile_headers(sonata PRIVATE
         <format>
         <glad/gl.h>
         <GLFW/glfw3.h>
+        <imgui.h>
 )
 
 target_link_libraries(sonata
         PRIVATE
         glad
-        glfw
+        imgui
         spdlog::spdlog
 )

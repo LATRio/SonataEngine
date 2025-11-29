@@ -16,7 +16,7 @@ public:
 
     [[nodiscard]] std::string ToString() const override
     {
-        return std::format("EventMouseMoved: {}, {}", m_MouseX, m_MouseY);
+        return std::format("EventMouseMoved: {:2}, {:2}", m_MouseX, m_MouseY);
     }
 
     EVENT_CLASS_TYPE(MouseMoved)
@@ -38,7 +38,7 @@ public:
 
     [[nodiscard]] std::string ToString() const override
     {
-        return std::format("EventMouseScrolled: {}, {}", m_OffsetX, m_OffsetY);
+        return std::format("EventMouseScrolled: {:2}, {:2}", m_OffsetX, m_OffsetY);
     }
 
     EVENT_CLASS_TYPE(MouseScrolled)

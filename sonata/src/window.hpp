@@ -23,12 +23,19 @@ public:
 
     void Update();
 
-    [[nodiscard]] bool GetWindowShouldClose() const;
-    void SetWindowShouldClose(int p_Value) const;
-
     void SetEventCallback(const EventCallbackFn &p_Callback);
     void SetVSync(bool p_Enable);
     [[nodiscard]] bool IsVSync() const;
+
+    [[nodiscard]] int GetWidth() const { return m_WindowData.m_Width; }
+    [[nodiscard]] int GetHeight() const { return m_WindowData.m_Height; }
+
+    template<typename T>
+    T GetWidth() const { return static_cast<T>(m_WindowData.m_Width); }
+    template<typename T>
+    T GetHeight() const { return static_cast<T>(m_WindowData.m_Height); }
+
+    [[nodiscard]] GLFWwindow* GetNativeWindow() { return m_Window; };
 
 private:
     GLFWwindow* m_Window{};
