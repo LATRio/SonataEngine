@@ -1,8 +1,8 @@
 #pragma once
+#include "window.hpp"
+
 #include <memory>
 #include <string_view>
-
-#include "events/event.h"
 
 namespace Sonata {
 class Window;
@@ -13,14 +13,14 @@ public:
     virtual ~Application();
 
     // TODO: Add support for Unicode
-    // TODO: Pass struct with window settings instead
-    [[maybe_unused]] void InitWindow(int p_Width, int p_Height, std::string_view title);
-    [[maybe_unused]] void Loop();
+    [[maybe_unused]] void InitWindow(int p_Width, int p_Height, std::string_view p_Title);
+    [[maybe_unused]] void Loop() const;
+
+    void OnEvent(const Event & p_Event);
 
 private:
     std::unique_ptr<Window> m_Window;
-
-    Event<void()> m_Event;
+    bool m_IsRunning{true};
 };
 
 } // Sonata

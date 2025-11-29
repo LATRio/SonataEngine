@@ -1,9 +1,11 @@
-#include "application.h"
-#include <GLFW/glfw3.h>
+#include "application.hpp"
 
-#include "window.h"
+#include "log.hpp"
+#include "window.hpp"
 
 namespace Sonata {
+
+#define BIND_EVENT_FUNC(func) std::bind(&Application::func, this, std::placeholders::_1)
 
 Application::Application()
 {
@@ -13,28 +15,30 @@ Application::~Application()
 {
 }
 
-void Application::InitWindow(int p_Width, int p_Height, std::string_view title)
+void Application::InitWindow(const int p_Width, const int p_Height, const std::string_view p_Title)
 {
-    m_Window = std::make_unique<Window>(p_Width, p_Height, title);
+    m_Window = std::make_unique<Window>(WindowProps(p_Width, p_Height, p_Title));
+    m_Window->SetEventCallback(BIND_EVENT_FUNC(OnEvent));
 }
 
-void Application::Loop()
+void Application::Loop() const
 {
-    while (!m_Window->GetWindowShouldClose())
+    // ReSharper disable once CppDFAConstantConditions
+    while (m_IsRunning)
     {
-        if (m_Window->IsKeyPressed(GLFW_KEY_ESCAPE))
-        {
-            m_Window->SetWindowShouldClose(GLFW_TRUE);
-        }
-        if (m_Window->IsKeyPressed(GLFW_KEY_SPACE))
-        {
-            m_Event.Execute();
-        }
-
         glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         m_Window->Update();
+    }
+}
+void Application::OnEvent(const Event &p_Event)
+{
+    SN_ENGINE_INFO("{}", p_Event.GetName());
+    if (p_Event.GetEventType() == EventType::WindowClose)
+    {
+        m_IsRunning = false;
+        m_Window->SetWindowShouldClose(true);
     }
 }
 

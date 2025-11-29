@@ -1,5 +1,5 @@
 #pragma once
-#include "log.h"
+#include "log.hpp"
 
 extern Sonata::Application* CreateApplication();
 

@@ -1,4 +1,4 @@
-#include "sandbox.h"
+#include "sandbox.hpp"
 
 Sonata::Application* CreateApplication()
 {

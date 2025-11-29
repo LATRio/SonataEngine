@@ -1,0 +1,115 @@
+#pragma once
+#include "core.hpp"
+
+enum class EventType
+{
+    None = 0,
+    WindowClose,
+    WindowResize,
+    WindowFocusLost,
+    WindowFocusGained,
+    WindowMoved,
+    KeyPressed,
+    KeyReleased,
+    MouseButtonPressed,
+    MouseButtonReleased,
+    MouseMoved,
+    MouseScrolled,
+};
+
+enum EventCategory
+{
+    None = 0,
+    Application     = BIT(0),
+    Input           = BIT(1),
+    Keyboard        = BIT(2),
+    Mouse           = BIT(3),
+    MouseButton     = BIT(4),
+};
+
+#define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; } \
+                                virtual EventType GetEventType() const override { return GetStaticType(); } \
+                                virtual const char* GetName() const override { return #type; }
+
+#define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override { return category; }
+
+// TODO: Test with std::variant
+class Event
+{
+    friend class EventDispatcher;
+public:
+    virtual ~Event() = default;
+
+    [[nodiscard]] virtual EventType GetEventType() const = 0;
+    [[nodiscard]] virtual const char *GetName() const = 0;
+    [[nodiscard]] virtual int GetCategoryFlags() const = 0;
+    [[nodiscard]] virtual std::string ToString() const { return GetName(); }
+
+    [[nodiscard]] bool IsInCategory(const EventCategory p_Category) const
+    {
+        return GetCategoryFlags() & static_cast<int>(p_Category);
+    }
+
+protected:
+    bool m_Handled{};
+};
+
+class EventDispatcher
+{
+    template<typename T>
+    using EventFn = std::function<bool(T&)>;
+
+public:
+    explicit EventDispatcher(Event& p_Event)
+        : m_Event(p_Event) {}
+
+    template<typename T>
+    bool Dispatch(EventFn<T> p_Func)
+    {
+        if (m_Event.GetEventType() == T::GetStaticType())
+        {
+            m_Event.m_Handled = p_Func(*static_cast<T *>(&m_Event));
+            return true;
+        }
+        return false;
+    }
+
+private:
+    Event& m_Event;
+};
+
+// template<typename FuncSig>
+// struct Callable
+// {
+//     void* obj{};
+//     std::function<FuncSig> func;
+//     bool standalone{};
+// };
+
+// template <typename FuncSig>
+// class Event
+// {
+// public:
+//     [[maybe_unused]] void AddBind(std::function<FuncSig> callback, void* object)
+//     {
+//         callbacks.push_back({object, callback});
+//     }
+//
+//     [[maybe_unused]] void AddBind(std::function<FuncSig> callback)
+//     {
+//         callbacks.push_back({callback, nullptr, true});
+//     }
+//
+//     [[maybe_unused]] void Execute()
+//     {
+//         for (auto& callback : callbacks)
+//         {
+//             if (callback.obj || callback.standalone)
+//             {
+//                 callback.func();
+//             }
+//         }
+//     }
+// private:
+//     std::vector<Callable<FuncSig>> callbacks{};
+// };
