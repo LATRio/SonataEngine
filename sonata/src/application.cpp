@@ -31,6 +31,8 @@ void Application::Loop()
     // ReSharper disable once CppDFAConstantConditions
     while (m_IsRunning)
     {
+        m_Window->PollEvents();
+
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -39,7 +41,7 @@ void Application::Loop()
             p_Layer->OnUpdate();
         }
 
-        m_Window->Update();
+        m_Window->SwapBuffers();
     }
 }
 

@@ -217,7 +217,20 @@ Window::Window(const WindowProps &p_Props)
 Window::~Window()
 {
     glfwDestroyWindow(m_Window);
+#if GLFW_VERSION_MAJOR <= 3 && GLFW_VERSION_MINOR < 5
+    glfwPollEvents();
+#endif
     glfwTerminate();
+}
+
+void Window::PollEvents()
+{
+    glfwPollEvents();
+}
+
+void Window::SwapBuffers()
+{
+    glfwSwapBuffers(m_Window);
 }
 
 void Window::SetEventCallback(const EventCallbackFn &p_Callback)
@@ -241,12 +254,6 @@ void Window::SetVSync(const bool p_Enable)
 bool Window::IsVSync() const
 {
     return m_WindowData.m_VSync;
-}
-
-void Window::Update()
-{
-    glfwSwapBuffers(m_Window);
-    glfwPollEvents();
 }
 
 } // namespace

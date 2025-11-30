@@ -11,6 +11,7 @@ LayerStack::~LayerStack()
 {
     for (auto* layer : m_Layers)
     {
+        layer->OnDetach();
         delete layer;
     }
 }
@@ -18,13 +19,13 @@ LayerStack::~LayerStack()
 void LayerStack::PushLayer(Layer* p_Layer)
 {
     m_LayerIterator = m_Layers.emplace(m_LayerIterator, p_Layer);
-    p_Layer->OnAttach();
 }
 
 void LayerStack::PopLayer(Layer* p_Layer)
 {
     if (const auto it = std::ranges::find(m_Layers, p_Layer); it != m_Layers.end())
     {
+        p_Layer->OnDetach();
         m_Layers.erase(it);
         --m_LayerIterator;
     }
@@ -40,6 +41,7 @@ void LayerStack::PopOverlay(Layer* p_Overlay)
 {
     if (const auto it = std::ranges::find(m_Layers, p_Overlay); it != m_Layers.end())
     {
+        p_Overlay->OnDetach();
         m_Layers.erase(it);
     }
 }

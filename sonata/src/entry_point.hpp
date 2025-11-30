@@ -14,5 +14,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[])
     app->Loop();
     // TODO: Do some shutdown routine if needed
     delete app;
+
+    SN_ENGINE_INFO("Exiting main");
+    return EXIT_SUCCESS;
 }
 

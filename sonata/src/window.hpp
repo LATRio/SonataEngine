@@ -21,7 +21,8 @@ public:
     explicit Window(const WindowProps& p_Props);
     ~Window();
 
-    void Update();
+    void PollEvents();
+    void SwapBuffers();
 
     void SetEventCallback(const EventCallbackFn &p_Callback);
     void SetVSync(bool p_Enable);

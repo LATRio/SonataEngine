@@ -28,6 +28,7 @@ public:
     Window* GetWindow() { return m_Window.get(); }
 
     static Application* GetInstance() { return s_Instance; }
+
 private:
     static Application* s_Instance;
 

@@ -13,8 +13,7 @@ ImGuiLayer::ImGuiLayer()
 
 ImGuiLayer::~ImGuiLayer()
 {
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
+    SN_ENGINE_INFO("Freeing ImGui Layer");
 }
 
 void ImGuiLayer::OnAttach()
@@ -28,25 +27,28 @@ void ImGuiLayer::OnAttach()
 
 void ImGuiLayer::OnDetach()
 {
-
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 }
 
 void ImGuiLayer::OnUpdate()
 {
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
 
     ImGuiIO& io = ImGui::GetIO();
-    Window* window = Application::GetInstance()->GetWindow();
+    const Window* window = Application::GetInstance()->GetWindow();
     io.DisplaySize = ImVec2(window->GetWidth<float>(), window->GetHeight<float>());
 
     const float time = static_cast<float>(glfwGetTime());
     io.DeltaTime = m_Time > 0.0f ? (time - m_Time) : (1.0f / 60.0f);
     m_Time = time;
 
-    static bool draw{true};
-    ImGui::ShowDemoWindow(&draw);
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
+    static bool show{true};
+    ImGui::ShowDemoWindow(&show);
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

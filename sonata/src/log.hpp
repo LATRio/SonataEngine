@@ -32,12 +32,14 @@ class Log
 #define SN_APP_TRACE(...) Sonata::Log::GetAppLogger()->trace(__VA_ARGS__)
 #define SN_APP_FATAL(...) Sonata::Log::GetAppLogger()->critical(__VA_ARGS__)
 
-#ifdef SONATA_DEBUG
 #define SN_ENGINE_DEBUG(...) Sonata::Log::GetEngineLogger()->debug(__VA_ARGS__)
 #define SN_APP_DEBUG(...) Sonata::Log::GetAppLogger()->debug(__VA_ARGS__)
-#else
-#define SN_ENGINE_DEBUG(...)
-#define SN_APP_DEBUG(...)
-#endif
+// #ifdef SONATA_DEBUG
+// #define SN_ENGINE_DEBUG(...) Sonata::Log::GetEngineLogger()->debug(__VA_ARGS__)
+// #define SN_APP_DEBUG(...) Sonata::Log::GetAppLogger()->debug(__VA_ARGS__)
+// #else
+// #define SN_ENGINE_DEBUG(...)
+// #define SN_APP_DEBUG(...)
+// #endif
 
 
