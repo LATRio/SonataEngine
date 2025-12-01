@@ -22,9 +22,14 @@ add_library(sonata STATIC
         src/layers/layer_stack.hpp
         src/layers/imgui_layer.cpp
         src/layers/imgui_layer.hpp
+        src/input.cpp
+        src/input.hpp
+        src/input_codes.hpp
 )
 
 target_compile_features(sonata PRIVATE cxx_std_20)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 enable_sanitizers(sonata)
 set_project_warnings(sonata)
@@ -33,6 +38,12 @@ target_include_directories(sonata
         PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
+
+message(STATUS "Flags CXX:                  ${CMAKE_CXX_FLAGS}")
+message(STATUS "Flags CXX Debug:            ${CMAKE_CXX_FLAGS_DEBUG}")
+message(STATUS "Flags CXX RelWithDebInfo:   ${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
+message(STATUS "Flags CXX Release:          ${CMAKE_CXX_FLAGS_RELEASE}")
+message(STATUS "Flags CXX MinSizeRel:       ${CMAKE_CXX_FLAGS_MINSIZEREL}")
 
 target_precompile_headers(sonata PRIVATE
         <functional>

@@ -36,7 +36,7 @@ public:
     template<typename T>
     T GetHeight() const { return static_cast<T>(m_WindowData.m_Height); }
 
-    [[nodiscard]] GLFWwindow* GetNativeWindow() { return m_Window; };
+    [[nodiscard]] GLFWwindow* GetNativeWindow() const { return m_Window; };
 
 private:
     GLFWwindow* m_Window{};

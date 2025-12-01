@@ -3,7 +3,6 @@
 namespace Sonata {
 
 LayerStack::LayerStack()
-    : m_LayerIterator(m_Layers.begin())
 {
 }
 
@@ -18,7 +17,8 @@ LayerStack::~LayerStack()
 
 void LayerStack::PushLayer(Layer* p_Layer)
 {
-    m_LayerIterator = m_Layers.emplace(m_LayerIterator, p_Layer);
+    m_Layers.emplace(m_Layers.begin() + m_LayerInsertIndex, p_Layer);
+    ++m_LayerInsertIndex;
 }
 
 void LayerStack::PopLayer(Layer* p_Layer)
@@ -27,7 +27,7 @@ void LayerStack::PopLayer(Layer* p_Layer)
     {
         p_Layer->OnDetach();
         m_Layers.erase(it);
-        --m_LayerIterator;
+        --m_LayerInsertIndex;
     }
 }
 
@@ -43,6 +43,22 @@ void LayerStack::PopOverlay(Layer* p_Overlay)
     {
         p_Overlay->OnDetach();
         m_Layers.erase(it);
+    }
+}
+void LayerStack::OnUpdate() const
+{
+    for (auto* layer : m_Layers)
+    {
+        layer->OnUpdate();
+    }
+}
+
+void LayerStack::OnEvent(Event& e)
+{
+    for (auto it = m_Layers.rbegin(); it != m_Layers.rend(); ++it)
+    {
+        if (e.Handled) break;
+        (*it)->OnEvent(e);
     }
 }
 

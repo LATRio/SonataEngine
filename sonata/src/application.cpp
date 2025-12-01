@@ -36,10 +36,7 @@ void Application::Loop()
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        for (Layer* p_Layer : m_LayerStack)
-        {
-            p_Layer->OnUpdate();
-        }
+        m_LayerStack.OnUpdate();
 
         m_Window->SwapBuffers();
     }
@@ -51,7 +48,7 @@ void Application::OnEvent(Event& p_Event)
     EventDispatcher dispatcher(p_Event);
     dispatcher.Dispatch<EventWindowClose>(BIND_EVENT_FUNC(OnWindowClosed));
 
-
+    m_LayerStack.OnEvent(p_Event);
 }
 
 bool Application::OnWindowClosed(const EventWindowClose& p_Event)
@@ -68,6 +65,11 @@ void Application::PushLayer(Layer* p_Layer)
 void Application::PushOverlay(Layer* p_Layer)
 {
     m_LayerStack.PushOverlay(p_Layer);
+}
+
+void Application::Shutdown()
+{
+    m_IsRunning = false;
 }
 
 } // Sonata

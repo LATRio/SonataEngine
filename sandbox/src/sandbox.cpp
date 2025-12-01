@@ -1,5 +1,38 @@
 #include "sandbox.hpp"
 
+#include "events/key_event.hpp"
+#include "input.hpp"
+#include "input_codes.hpp"
+
+class ExampleLayer final : public Sonata::Layer
+{
+public:
+    ExampleLayer()
+        : Layer("ExampleLayer") {}
+    ~ExampleLayer() override = default;
+
+    void OnUpdate() override
+    {
+        if (Sonata::Input::IsKeyPressed(SN_KEY_SPACE))
+        {
+            SN_APP_TRACE("Space is pressed");
+        }
+    }
+
+    void OnEvent(Event& p_Event) override
+    {
+        SN_APP_INFO("{}", p_Event.ToString());
+        if (p_Event.GetEventType() == EventType::KeyPressed)
+        {
+            const auto& ev = static_cast<Sonata::EventKeyPressed&>(p_Event);
+            if (ev.GetKeyCode() == SN_KEY_ESCAPE)
+            {
+                Sonata::Application::GetInstance()->Shutdown();
+            }
+        }
+    }
+};
+
 Sonata::Application* CreateApplication()
 {
     return new Sandbox();
@@ -9,5 +42,6 @@ void Sandbox::Init(int p_Width, int p_Height, std::string_view p_Title)
 {
     Application::Init(p_Width, p_Height, p_Title);
 
+    PushLayer(new ExampleLayer());
     PushOverlay(new Sonata::ImGuiLayer());
 }

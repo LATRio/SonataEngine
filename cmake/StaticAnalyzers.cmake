@@ -7,6 +7,7 @@ if(ENABLE_CPPCHECK)
         set(CMAKE_CXX_CPPCHECK ${CPPCHECK} --suppress=missingIncludeSystem --suppress=syntaxError
                 --suppress=unmatchedSuppression --enable=all --inline-suppr --inconclusive
                 --suppress=*:*_deps/* --suppress=*:*deps/*)
+        message(STATUS "Cppcheck: ${CMAKE_CXX_CPPCHECK}")
     else()
         message(SEND_ERROR "cppcheck is not found")
     endif()

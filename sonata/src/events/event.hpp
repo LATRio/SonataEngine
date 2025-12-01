@@ -40,6 +40,8 @@ class Event
 public:
     virtual ~Event() = default;
 
+    bool Handled{};
+
     [[nodiscard]] virtual EventType GetEventType() const = 0;
     [[nodiscard]] virtual const char *GetName() const = 0;
     [[nodiscard]] virtual int GetCategoryFlags() const = 0;
@@ -49,9 +51,6 @@ public:
     {
         return GetCategoryFlags() & static_cast<int>(p_Category);
     }
-
-protected:
-    bool m_Handled{};
 };
 
 class EventDispatcher
@@ -68,7 +67,7 @@ public:
     {
         if (m_Event.GetEventType() == T::GetStaticType())
         {
-            m_Event.m_Handled = p_Func(*static_cast<T *>(&m_Event));
+            m_Event.Handled |= p_Func(*static_cast<T*>(&m_Event));
             return true;
         }
         return false;

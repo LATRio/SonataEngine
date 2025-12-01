@@ -25,7 +25,9 @@ public:
     void PushLayer(Layer* p_Layer);
     void PushOverlay(Layer* p_Layer);
 
-    Window* GetWindow() { return m_Window.get(); }
+    void Shutdown();
+
+    Window* GetWindow() const { return m_Window.get(); }
 
     static Application* GetInstance() { return s_Instance; }
 
