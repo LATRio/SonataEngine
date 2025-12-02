@@ -34,12 +34,11 @@ void ImGuiLayer::OnDetach()
 
 void ImGuiLayer::OnUpdate()
 {
-
     ImGuiIO& io = ImGui::GetIO();
     const Window* window = Application::GetInstance()->GetWindow();
     io.DisplaySize = ImVec2(window->GetWidth<float>(), window->GetHeight<float>());
 
-    const float time = static_cast<float>(glfwGetTime());
+    const auto time = static_cast<float>(glfwGetTime());
     io.DeltaTime = m_Time > 0.0f ? (time - m_Time) : (1.0f / 60.0f);
     m_Time = time;
 

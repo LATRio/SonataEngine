@@ -7,8 +7,8 @@ add_library(sonata STATIC
         src/application.hpp
         src/window.cpp
         src/window.hpp
-        src/log.cpp
-        src/log.hpp
+        src/logger/log.cpp
+        src/logger/log.hpp
         src/core.hpp
         src/sonata.hpp
         src/entry_point.hpp
@@ -61,4 +61,5 @@ target_link_libraries(sonata
         glad
         imgui
         spdlog::spdlog
+        glm::glm
 )

@@ -1,7 +1,7 @@
 #include "application.hpp"
 
 #include "events/app_event.hpp"
-#include "log.hpp"
+#include "logger/log.hpp"
 #include "window.hpp"
 
 namespace Sonata {

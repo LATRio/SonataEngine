@@ -39,5 +39,3 @@ class Log
 #define SN_ENGINE_DEBUG(...) Sonata::Log::GetEngineLogger()->debug(__VA_ARGS__)
 #define SN_APP_DEBUG(...) Sonata::Log::GetAppLogger()->debug(__VA_ARGS__)
 #endif
-
-

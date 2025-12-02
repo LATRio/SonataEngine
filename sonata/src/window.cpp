@@ -5,7 +5,7 @@
 #include "events/app_event.hpp"
 #include "events/key_event.hpp"
 #include "events/mouse_event.hpp"
-#include "log.hpp"
+#include "logger/log.hpp"
 
 namespace Sonata
 {
@@ -77,7 +77,7 @@ Window::Window(const WindowProps &p_Props)
 {
     if (!glfwInitialized)
     {
-        int success = glfwInit();
+        const int success = glfwInit();
         SN_ASSERT_MSG(success, "Failed to initialize GLFW3");
         glfwSetErrorCallback(GLFWErrorCallback);
         glfwInitialized = true;
@@ -113,7 +113,7 @@ Window::Window(const WindowProps &p_Props)
     }
     glfwMakeContextCurrent(m_Window);
 
-    int success = gladLoadGL(glfwGetProcAddress);
+    const int success = gladLoadGL(glfwGetProcAddress);
     SN_ASSERT_MSG(success, "Failed to initialize GLAD");
 
     glfwSetWindowUserPointer(m_Window, &m_WindowData);
@@ -146,7 +146,7 @@ Window::Window(const WindowProps &p_Props)
     });
 
     glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *window) {
-        WindowData& m_Data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
+        const WindowData& m_Data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
         EventWindowClose event;
         m_Data.m_Callback(event);

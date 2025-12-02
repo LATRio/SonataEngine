@@ -1,5 +1,5 @@
 #pragma once
-#include "log.hpp"
+#include "logger/log.hpp"
 
 #define TEXT(x) #x
 #define SN_ASSERT(cond) if(!(cond)) { SN_ENGINE_FATAL("{} is not true", TEXT(cond)); exit(EXIT_FAILURE); }
