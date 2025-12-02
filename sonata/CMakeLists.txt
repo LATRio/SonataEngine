@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.31.6)
-
 add_subdirectory(deps)
 
 add_library(sonata STATIC
@@ -39,12 +37,6 @@ target_include_directories(sonata
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-message(STATUS "Flags CXX:                  ${CMAKE_CXX_FLAGS}")
-message(STATUS "Flags CXX Debug:            ${CMAKE_CXX_FLAGS_DEBUG}")
-message(STATUS "Flags CXX RelWithDebInfo:   ${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
-message(STATUS "Flags CXX Release:          ${CMAKE_CXX_FLAGS_RELEASE}")
-message(STATUS "Flags CXX MinSizeRel:       ${CMAKE_CXX_FLAGS_MINSIZEREL}")
-
 target_precompile_headers(sonata PRIVATE
         <functional>
         <memory>
@@ -57,9 +49,13 @@ target_precompile_headers(sonata PRIVATE
 )
 
 target_link_libraries(sonata
+        PUBLIC
+        imgui
+        glm::glm
+)
+
+target_link_libraries(sonata
         PRIVATE
         glad
-        imgui
         spdlog::spdlog
-        glm::glm
 )

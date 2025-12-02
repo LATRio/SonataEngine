@@ -13,6 +13,7 @@ public:
     void PushOverlay(Layer* p_Overlay);
     void PopOverlay(Layer* p_Overlay);
 
+    void OnImGuiRender() const;
     void OnUpdate() const;
     void OnEvent(Event& e);
 

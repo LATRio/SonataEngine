@@ -2,6 +2,7 @@
 #include <memory>
 #include <string_view>
 
+#include "layers/imgui_layer.hpp"
 #include "layers/layer_stack.hpp"
 #include "window.hpp"
 
@@ -37,6 +38,8 @@ private:
     std::unique_ptr<Window> m_Window;
     LayerStack m_LayerStack;
     bool m_IsRunning{true};
+
+    ImGuiLayer* m_ImGuiLayer{};
 };
 
 } // namespace Sonata

@@ -1,7 +1,7 @@
 #GLAD | 4.6 | Core
 #GLFW | 3.4
 #spdlog | 1.16.0
-#imgui | 1.92.5
+#imgui | 1.92.5 | docking
 #glm | 1.0.2
 
 add_subdirectory(glad)

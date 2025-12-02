@@ -45,6 +45,13 @@ void LayerStack::PopOverlay(Layer* p_Overlay)
         m_Layers.erase(it);
     }
 }
+void LayerStack::OnImGuiRender() const
+{
+    for (auto* layer : m_Layers)
+    {
+        layer->OnImGuiRender();
+    }
+}
 void LayerStack::OnUpdate() const
 {
     for (auto* layer : m_Layers)

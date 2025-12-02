@@ -21,6 +21,10 @@ void ImGuiLayer::OnAttach()
     ImGui::CreateContext();
     ImGui::StyleColorsDark();
 
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+
     ImGui_ImplGlfw_InitForOpenGL(Application::GetInstance()->GetWindow()->GetNativeWindow(), true);
     ImGui_ImplOpenGL3_Init("#version 460");
 }
@@ -32,29 +36,38 @@ void ImGuiLayer::OnDetach()
     ImGui::DestroyContext();
 }
 
-void ImGuiLayer::OnUpdate()
+void ImGuiLayer::OnImGuiRender()
+{
+    static bool show{true};
+    ImGui::ShowDemoWindow(&show);
+}
+
+void ImGuiLayer::OnEvent(Event& event)
+{
+}
+
+void ImGuiLayer::Begin()
+{
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+}
+
+void ImGuiLayer::End()
 {
     ImGuiIO& io = ImGui::GetIO();
     const Window* window = Application::GetInstance()->GetWindow();
     io.DisplaySize = ImVec2(window->GetWidth<float>(), window->GetHeight<float>());
 
-    const auto time = static_cast<float>(glfwGetTime());
-    io.DeltaTime = m_Time > 0.0f ? (time - m_Time) : (1.0f / 60.0f);
-    m_Time = time;
-
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-
-    static bool show{true};
-    ImGui::ShowDemoWindow(&show);
-
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-}
 
-void ImGuiLayer::OnEvent(Event& event)
-{
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        GLFWwindow* prev_context{glfwGetCurrentContext()};
+        ImGui::UpdatePlatformWindows();
+        glfwMakeContextCurrent(prev_context);
+    }
 }
 
 } // Sonata

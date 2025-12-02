@@ -4,19 +4,22 @@
 #include "input.hpp"
 #include "input_codes.hpp"
 
+#define GLM_ENABLE_EXPERIMENTAL
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wduplicated-branches"
+#pragma GCC diagnostic ignored "-Wsign-conversion"
+
 #include <glm/vec3.hpp> // glm::vec3
 #include <glm/vec4.hpp> // glm::vec4
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/ext/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale
 #include <glm/ext/matrix_clip_space.hpp> // glm::perspective
 #include <glm/ext/scalar_constants.hpp> // glm::pi
-
-#define GLM_ENABLE_EXPERIMENTAL
-#pragma GCC diagnostic push
-//#pragma GCC diagnostic ignored "-W"
-#pragma GCC diagnostic ignored "-Wsign-conversion"
 #include <glm/gtx/string_cast.hpp>
+
 #pragma GCC diagnostic pop
+
+#include <imgui.h>
 
 glm::mat4 camera(float Translate, glm::vec2 const& Rotate)
 {
@@ -34,6 +37,15 @@ public:
     ExampleLayer()
         : Layer("ExampleLayer") {}
     ~ExampleLayer() override = default;
+
+    void OnImGuiRender() override
+    {
+        using namespace ImGui;
+
+        Begin("Example");
+        Text("Hello World!");
+        End();
+    }
 
     void OnUpdate() override
     {
@@ -72,5 +84,4 @@ void Sandbox::Init(int p_Width, int p_Height, std::string_view p_Title)
     Application::Init(p_Width, p_Height, p_Title);
 
     PushLayer(new ExampleLayer());
-    PushOverlay(new Sonata::ImGuiLayer());
 }

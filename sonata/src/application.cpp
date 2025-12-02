@@ -24,6 +24,9 @@ void Application::Init(const int p_Width, const int p_Height, const std::string_
 {
     m_Window = std::make_unique<Window>(WindowProps(p_Width, p_Height, p_Title));
     m_Window->SetEventCallback(BIND_EVENT_FUNC(OnEvent));
+
+    m_ImGuiLayer = new ImGuiLayer();
+    PushOverlay(m_ImGuiLayer);
 }
 
 void Application::Loop()
@@ -37,6 +40,10 @@ void Application::Loop()
         glClear(GL_COLOR_BUFFER_BIT);
 
         m_LayerStack.OnUpdate();
+
+        m_ImGuiLayer->Begin();
+        m_LayerStack.OnImGuiRender();
+        m_ImGuiLayer->End();
 
         m_Window->SwapBuffers();
     }

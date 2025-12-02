@@ -12,3 +12,9 @@ include(cmake/DefaultProjectSettings.cmake)
 
 add_subdirectory(sonata)
 add_subdirectory(sandbox)
+
+message(STATUS "Flags CXX:                  ${CMAKE_CXX_FLAGS}")
+message(STATUS "Flags CXX Debug:            ${CMAKE_CXX_FLAGS_DEBUG}")
+message(STATUS "Flags CXX RelWithDebInfo:   ${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
+message(STATUS "Flags CXX Release:          ${CMAKE_CXX_FLAGS_RELEASE}")
+message(STATUS "Flags CXX MinSizeRel:       ${CMAKE_CXX_FLAGS_MINSIZEREL}")
