@@ -1,6 +1,14 @@
+option(SONATA_BUILD_SHARED "Build as shared library" FALSE)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 add_subdirectory(deps)
 
-add_library(sonata STATIC
+if(SONATA_BUILD_SHARED)
+    set(LIB_BUILD_TYPE "SHARED")
+else()
+    set(LIB_BUILD_TYPE "STATIC")
+endif()
+
+add_library(sonata ${LIB_BUILD_TYPE}
         src/application.cpp
         src/application.hpp
         src/window.cpp
