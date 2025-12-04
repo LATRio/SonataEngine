@@ -1,4 +1,5 @@
 option(SONATA_BUILD_SHARED "Build as shared library" FALSE)
+
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 add_subdirectory(deps)
 
@@ -13,11 +14,14 @@ add_library(sonata ${LIB_BUILD_TYPE}
         src/application.hpp
         src/window.cpp
         src/window.hpp
-        src/logger/log.cpp
-        src/logger/log.hpp
         src/core.hpp
         src/sonata.hpp
         src/entry_point.hpp
+        src/input.cpp
+        src/input.hpp
+        src/input_codes.hpp
+        src/logger/log.cpp
+        src/logger/log.hpp
         src/events/event.hpp
         src/events/app_event.hpp
         src/events/key_event.hpp
@@ -28,9 +32,12 @@ add_library(sonata ${LIB_BUILD_TYPE}
         src/layers/layer_stack.hpp
         src/layers/imgui_layer.cpp
         src/layers/imgui_layer.hpp
-        src/input.cpp
-        src/input.hpp
-        src/input_codes.hpp
+        src/rendering/render_context.cpp
+        src/rendering/render_context.hpp
+        src/rendering/opengl/opengl_context.cpp
+        src/rendering/opengl/opengl_context.hpp
+        src/rendering/opengl/opengl_shader.cpp
+        src/rendering/opengl/opengl_shader.hpp
 )
 
 target_compile_features(sonata PRIVATE cxx_std_20)
@@ -58,12 +65,12 @@ target_precompile_headers(sonata PRIVATE
 
 target_link_libraries(sonata
         PUBLIC
+        glad
         imgui
         glm::glm
 )
 
 target_link_libraries(sonata
         PRIVATE
-        glad
         spdlog::spdlog
 )

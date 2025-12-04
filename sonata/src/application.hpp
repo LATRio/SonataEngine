@@ -10,6 +10,7 @@ namespace Sonata {
 
 class Window;
 class EventWindowClose;
+class OpenGLShader;
 
 class Application {
 public:
@@ -28,7 +29,7 @@ public:
 
     void Shutdown();
 
-    Window* GetWindow() const { return m_Window.get(); }
+    [[nodiscard]] Window* GetWindow() const { return m_Window.get(); }
 
     static Application* GetInstance() { return s_Instance; }
 
@@ -37,9 +38,12 @@ private:
 
     std::unique_ptr<Window> m_Window;
     LayerStack m_LayerStack;
+    std::unique_ptr<OpenGLShader> m_Shader;
     bool m_IsRunning{true};
 
     ImGuiLayer* m_ImGuiLayer{};
+
+    unsigned int m_VertexArray{}, m_VertexBuffer{}, m_IndexBuffer{};
 };
 
 } // namespace Sonata

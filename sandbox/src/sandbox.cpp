@@ -57,7 +57,6 @@ public:
 
     void OnEvent(Event& p_Event) override
     {
-        SN_APP_INFO("{}", p_Event.ToString());
         if (p_Event.GetEventType() == EventType::KeyPressed)
         {
             const auto& ev = static_cast<Sonata::EventKeyPressed&>(p_Event);

@@ -5,6 +5,7 @@ class GLFWwindow;
 
 namespace Sonata
 {
+class RenderContext;
 
 struct WindowProps
 {
@@ -40,6 +41,7 @@ public:
 
 private:
     GLFWwindow* m_Window{};
+    std::unique_ptr<RenderContext> m_RenderContext;
 
     struct WindowData
     {
