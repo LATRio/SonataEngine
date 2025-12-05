@@ -2,6 +2,17 @@
 
 namespace Sonata {
 
-RenderAPI Renderer::s_RenderAPI = RenderAPI::OpenGL;
+void Renderer::BeginScene()
+{
+}
+
+void Renderer::EndScene()
+{
+}
+
+void Renderer::Submit(const std::shared_ptr<VertexArray>& p_VertexArray)
+{
+    RenderCommand::DrawIndexed(p_VertexArray);
+}
 
 }

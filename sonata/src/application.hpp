@@ -22,7 +22,7 @@ public:
 
     // TODO: Add support for Unicode
     [[maybe_unused]] virtual void Init(int p_Width, int p_Height, std::string_view p_Title);
-    [[maybe_unused]] void Loop();
+    [[maybe_unused]] void Loop() const;
 
     void OnEvent(Event& p_Event);
     bool OnWindowClosed(const EventWindowClose& p_Event);
@@ -46,10 +46,10 @@ private:
     ImGuiLayer* m_ImGuiLayer{};
 
     std::unique_ptr<Shader> m_Shader;
-    std::unique_ptr<VertexArray> m_VertexArray;
+    std::shared_ptr<VertexArray> m_VertexArray;
 
     std::unique_ptr<Shader> m_SquareShader;
-    std::unique_ptr<VertexArray> m_SquareVA;
+    std::shared_ptr<VertexArray> m_SquareVA;
 };
 
 } // namespace Sonata

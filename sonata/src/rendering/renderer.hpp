@@ -1,20 +1,18 @@
 #pragma once
+#include "render_command.hpp"
 
 namespace Sonata {
 
-enum class RenderAPI
-{
-    None = 0,
-    OpenGL = 1,
-};
+class VertexArray;
 
 class Renderer {
 public:
-    static RenderAPI GetAPI() { return s_RenderAPI; }
+    static void BeginScene();
+    static void EndScene();
 
-private:
-    static RenderAPI s_RenderAPI;
+    static void Submit(const std::shared_ptr<VertexArray>& p_VertexArray);
 
+    static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 };
 
 }

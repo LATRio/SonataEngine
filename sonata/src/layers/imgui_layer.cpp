@@ -1,6 +1,9 @@
 #include "imgui_layer.hpp"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wold-style-cast"
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+#pragma GCC diagnostic pop
 
 #include "application.hpp"
 
@@ -70,4 +73,4 @@ void ImGuiLayer::End()
     }
 }
 
-} // Sonata
+}

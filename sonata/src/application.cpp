@@ -5,6 +5,7 @@
 #include "events/app_event.hpp"
 #include "rendering/vertex_array.hpp"
 #include "rendering/buffer.hpp"
+#include "rendering/renderer.hpp"
 #include "rendering/opengl/opengl_shader.hpp"
 
 namespace Sonata {
@@ -128,27 +129,27 @@ void Application::Init(const int p_Width, const int p_Height, const std::string_
     m_SquareShader.reset(Shader::Create(vertSrc2.data(), fragSrc2.data()));
 }
 
-void Application::Loop()
+void Application::Loop() const
 {
     // ReSharper disable once CppDFAConstantConditions
     while (m_IsRunning)
     {
         m_Window->PollEvents();
 
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
+        RenderCommand::Clear();
+
+        Renderer::BeginScene();
 
         m_SquareShader->Bind();
-        m_SquareVA->Bind();
-        glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
-        m_SquareVA->Unbind();
+        Renderer::Submit(m_SquareVA);
         m_SquareShader->Unbind();
 
         m_Shader->Bind();
-        m_VertexArray->Bind();
-        glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
-        m_VertexArray->Unbind();
+        Renderer::Submit(m_VertexArray);
         m_Shader->Unbind();
+
+        Renderer::EndScene();
 
         m_LayerStack.OnUpdate();
 

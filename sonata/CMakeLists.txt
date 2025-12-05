@@ -32,24 +32,30 @@ add_library(sonata ${LIB_BUILD_TYPE}
         src/layers/layer_stack.hpp
         src/layers/imgui_layer.cpp
         src/layers/imgui_layer.hpp
+        src/rendering/renderer_api.cpp
+        src/rendering/renderer_api.hpp
         src/rendering/render_context.cpp
         src/rendering/render_context.hpp
+        src/rendering/shader.cpp
+        src/rendering/shader.hpp
         src/rendering/buffer.cpp
         src/rendering/buffer.hpp
-        src/rendering/renderer.cpp
-        src/rendering/renderer.hpp
+        src/rendering/vertex_array.cpp
+        src/rendering/vertex_array.hpp
         src/rendering/opengl/opengl_context.cpp
         src/rendering/opengl/opengl_context.hpp
         src/rendering/opengl/opengl_shader.cpp
         src/rendering/opengl/opengl_shader.hpp
         src/rendering/opengl/opengl_buffer.cpp
         src/rendering/opengl/opengl_buffer.hpp
-        src/rendering/vertex_array.cpp
-        src/rendering/vertex_array.hpp
         src/rendering/opengl/opengl_vertexarray.cpp
         src/rendering/opengl/opengl_vertexarray.hpp
-        src/rendering/shader.cpp
-        src/rendering/shader.hpp
+        src/rendering/renderer.cpp
+        src/rendering/renderer.hpp
+        src/rendering/render_command.cpp
+        src/rendering/render_command.hpp
+        src/rendering/opengl/opengl_renderer_api.cpp
+        src/rendering/opengl/opengl_renderer_api.hpp
 )
 
 target_compile_features(sonata PRIVATE cxx_std_20)

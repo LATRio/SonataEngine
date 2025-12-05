@@ -1,8 +1,8 @@
 #include "shader.hpp"
 
 #include "core.hpp"
-#include "opengl/opengl_shader.hpp"
 #include "renderer.hpp"
+#include "opengl/opengl_shader.hpp"
 
 namespace Sonata {
 
@@ -10,9 +10,9 @@ Shader* Shader::Create(const char* vertexPath, const char* fragmentPath)
 {
     switch (Renderer::GetAPI())
     {
-        case RenderAPI::OpenGL:
+        case RendererAPI::API::OpenGL:
             return new OpenGLShader(vertexPath, fragmentPath);
-        case RenderAPI::None:
+        case RendererAPI::API::None:
             SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
             return nullptr;
         default:
