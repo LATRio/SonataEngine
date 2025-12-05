@@ -10,7 +10,7 @@ namespace Sonata {
 
 class Window;
 class EventWindowClose;
-class OpenGLShader;
+class Shader;
 class VertexArray;
 class VertexBuffer;
 class IndexBuffer;
@@ -41,14 +41,15 @@ private:
 
     std::unique_ptr<Window> m_Window;
     LayerStack m_LayerStack;
-    std::unique_ptr<OpenGLShader> m_Shader;
     bool m_IsRunning{true};
 
     ImGuiLayer* m_ImGuiLayer{};
 
+    std::unique_ptr<Shader> m_Shader;
     std::unique_ptr<VertexArray> m_VertexArray;
-    std::shared_ptr<VertexBuffer> m_VertexBuffer;
-    std::shared_ptr<IndexBuffer> m_IndexBuffer;
+
+    std::unique_ptr<Shader> m_SquareShader;
+    std::unique_ptr<VertexArray> m_SquareVA;
 };
 
 } // namespace Sonata

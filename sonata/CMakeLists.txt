@@ -48,6 +48,8 @@ add_library(sonata ${LIB_BUILD_TYPE}
         src/rendering/vertex_array.hpp
         src/rendering/opengl/opengl_vertexarray.cpp
         src/rendering/opengl/opengl_vertexarray.hpp
+        src/rendering/shader.cpp
+        src/rendering/shader.hpp
 )
 
 target_compile_features(sonata PRIVATE cxx_std_20)

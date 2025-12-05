@@ -40,5 +40,9 @@ void OpenGLVertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& p_Ind
     Unbind();
     m_IndexBuffer = p_IndexBuffer;
 }
-
+const std::shared_ptr<IndexBuffer>& OpenGLVertexArray::GetIndexBuffer() const
+{
+    return m_IndexBuffer;
 }
+
+} // namespace Sonata

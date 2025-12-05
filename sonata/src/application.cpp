@@ -38,6 +38,7 @@ void Application::Init(const int p_Width, const int p_Height, const std::string_
          0.5f, -0.5f, 0.0f,     0.0f, 0.0f, 1.0f, 1.0f,
          0.0f,  0.5f, 0.0f,     1.0f, 1.0f, 0.0f, 1.0f,
     };
+    std::shared_ptr<VertexBuffer> m_VertexBuffer;
     m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
     m_VertexBuffer->SetLayout({
         {ShaderDataType::Float3, "a_Position"},
@@ -46,10 +47,30 @@ void Application::Init(const int p_Width, const int p_Height, const std::string_
     m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 
     constexpr unsigned int indices[] = { 0, 1, 2 };
+    std::shared_ptr<IndexBuffer> m_IndexBuffer;
     m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(unsigned int)));
     m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 
-    std::string_view vertSrc = R"(
+    m_SquareVA.reset(VertexArray::Create());
+    constexpr float squareVertices[] = {
+        -0.5f, -0.5f, 0.1f,
+         0.5f, -0.5f, 0.1f,
+         0.5f,  0.5f, 0.1f,
+        -0.5f,  0.5f, 0.1f,
+    };
+    std::shared_ptr<VertexBuffer> m_SquareVB;
+    m_SquareVB.reset(VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+    m_SquareVB->SetLayout({
+        {ShaderDataType::Float3, "a_Position"},
+    });
+    m_SquareVA->AddVertexBuffer(m_SquareVB);
+
+    constexpr unsigned int squareIndices[] = { 0, 1, 2, 2, 3, 0 };
+    std::shared_ptr<IndexBuffer> m_SquareIB;
+    m_SquareIB.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(unsigned int)));
+    m_SquareVA->SetIndexBuffer(m_SquareIB);
+
+    constexpr std::string_view vertSrc = R"(
         #version 460
 
         layout(location = 0) in vec3 a_Position;
@@ -64,7 +85,7 @@ void Application::Init(const int p_Width, const int p_Height, const std::string_
             gl_Position = vec4(a_Position, 1.0);
         }
     )";
-    std::string_view fragSrc = R"(
+    constexpr std::string_view fragSrc = R"(
         #version 460
 
         out vec4 color;
@@ -78,7 +99,33 @@ void Application::Init(const int p_Width, const int p_Height, const std::string_
         }
     )";
 
-    m_Shader = std::make_unique<OpenGLShader>(vertSrc, fragSrc);
+    m_Shader.reset(Shader::Create(vertSrc.data(), fragSrc.data()));
+
+    constexpr std::string_view vertSrc2 = R"(
+        #version 460
+
+        layout(location = 0) in vec3 a_Position;
+        out vec3 v_Position;
+
+        void main()
+        {
+            v_Position = a_Position;
+            gl_Position = vec4(a_Position, 1.0);
+        }
+    )";
+    constexpr std::string_view fragSrc2 = R"(
+        #version 460
+
+        out vec4 color;
+
+        in vec3 v_Position;
+
+        void main()
+        {
+            color = vec4(0.2, 0.3, 0.8, 1.0);
+        }
+    )";
+    m_SquareShader.reset(Shader::Create(vertSrc2.data(), fragSrc2.data()));
 }
 
 void Application::Loop()
@@ -91,9 +138,15 @@ void Application::Loop()
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        m_SquareShader->Bind();
+        m_SquareVA->Bind();
+        glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+        m_SquareVA->Unbind();
+        m_SquareShader->Unbind();
+
         m_Shader->Bind();
         m_VertexArray->Bind();
-        glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+        glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
         m_VertexArray->Unbind();
         m_Shader->Unbind();
 
