@@ -1,8 +1,10 @@
 #include "application.hpp"
 
-#include "events/app_event.hpp"
-#include "logger/log.hpp"
 #include "window.hpp"
+#include "logger/log.hpp"
+#include "events/app_event.hpp"
+#include "rendering/vertex_array.hpp"
+#include "rendering/buffer.hpp"
 #include "rendering/opengl/opengl_shader.hpp"
 
 namespace Sonata {
@@ -29,38 +31,36 @@ void Application::Init(const int p_Width, const int p_Height, const std::string_
     m_ImGuiLayer = new ImGuiLayer();
     PushOverlay(m_ImGuiLayer);
 
-    glGenVertexArrays(1, &m_VertexArray);
-    glBindVertexArray(m_VertexArray);
-
-    glGenBuffers(1, &m_VertexBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
+    m_VertexArray.reset(VertexArray::Create());
 
     constexpr float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f,
+        -0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 1.0f, 1.0f,
+         0.5f, -0.5f, 0.0f,     0.0f, 0.0f, 1.0f, 1.0f,
+         0.0f,  0.5f, 0.0f,     1.0f, 1.0f, 0.0f, 1.0f,
     };
-
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
-
-    glGenBuffers(1, &m_IndexBuffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
+    m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+    m_VertexBuffer->SetLayout({
+        {ShaderDataType::Float3, "a_Position"},
+        {ShaderDataType::Float4, "a_Color"},
+    });
+    m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 
     constexpr unsigned int indices[] = { 0, 1, 2 };
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(unsigned int)));
+    m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 
     std::string_view vertSrc = R"(
         #version 460
 
         layout(location = 0) in vec3 a_Position;
+        layout(location = 1) in vec4 a_Color;
         out vec3 v_Position;
+        out vec4 v_Color;
 
         void main()
         {
             v_Position = a_Position;
+            v_Color = a_Color;
             gl_Position = vec4(a_Position, 1.0);
         }
     )";
@@ -70,10 +70,11 @@ void Application::Init(const int p_Width, const int p_Height, const std::string_
         out vec4 color;
 
         in vec3 v_Position;
+        in vec4 v_Color;
 
         void main()
         {
-            color = vec4(v_Position, 1.0);
+            color = v_Color;
         }
     )";
 
@@ -91,8 +92,9 @@ void Application::Loop()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         m_Shader->Bind();
-        glBindVertexArray(m_VertexArray);
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+        m_VertexArray->Bind();
+        glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+        m_VertexArray->Unbind();
         m_Shader->Unbind();
 
         m_LayerStack.OnUpdate();

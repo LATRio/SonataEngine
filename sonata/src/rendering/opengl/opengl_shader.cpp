@@ -8,7 +8,7 @@ OpenGLShader::OpenGLShader(const std::string_view& p_vertSrc, const std::string_
 {
     const GLuint vertexShader = CompileShader(GL_VERTEX_SHADER, p_vertSrc);
     const GLuint fragmentShader = CompileShader(GL_FRAGMENT_SHADER, p_fragSrc);
-    
+
     m_ProgramID = glCreateProgram();
     glAttachShader(m_ProgramID, vertexShader);
     glAttachShader(m_ProgramID, fragmentShader);
@@ -46,7 +46,7 @@ void OpenGLShader::Bind() const
     glUseProgram(m_ProgramID);
 }
 
-void OpenGLShader::Unbind()
+void OpenGLShader::Unbind() const
 {
     glUseProgram(0);
 }

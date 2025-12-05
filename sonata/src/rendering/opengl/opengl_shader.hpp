@@ -9,7 +9,7 @@ public:
     ~OpenGLShader();
 
     void Bind() const;
-    static void Unbind();
+    void Unbind() const;
 
 private:
     GLuint m_ProgramID{};

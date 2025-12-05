@@ -11,6 +11,9 @@ namespace Sonata {
 class Window;
 class EventWindowClose;
 class OpenGLShader;
+class VertexArray;
+class VertexBuffer;
+class IndexBuffer;
 
 class Application {
 public:
@@ -43,7 +46,9 @@ private:
 
     ImGuiLayer* m_ImGuiLayer{};
 
-    unsigned int m_VertexArray{}, m_VertexBuffer{}, m_IndexBuffer{};
+    std::unique_ptr<VertexArray> m_VertexArray;
+    std::shared_ptr<VertexBuffer> m_VertexBuffer;
+    std::shared_ptr<IndexBuffer> m_IndexBuffer;
 };
 
 } // namespace Sonata

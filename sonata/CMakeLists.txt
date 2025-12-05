@@ -34,10 +34,20 @@ add_library(sonata ${LIB_BUILD_TYPE}
         src/layers/imgui_layer.hpp
         src/rendering/render_context.cpp
         src/rendering/render_context.hpp
+        src/rendering/buffer.cpp
+        src/rendering/buffer.hpp
+        src/rendering/renderer.cpp
+        src/rendering/renderer.hpp
         src/rendering/opengl/opengl_context.cpp
         src/rendering/opengl/opengl_context.hpp
         src/rendering/opengl/opengl_shader.cpp
         src/rendering/opengl/opengl_shader.hpp
+        src/rendering/opengl/opengl_buffer.cpp
+        src/rendering/opengl/opengl_buffer.hpp
+        src/rendering/vertex_array.cpp
+        src/rendering/vertex_array.hpp
+        src/rendering/opengl/opengl_vertexarray.cpp
+        src/rendering/opengl/opengl_vertexarray.hpp
 )
 
 target_compile_features(sonata PRIVATE cxx_std_20)
