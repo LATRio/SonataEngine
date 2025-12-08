@@ -1,6 +1,5 @@
 #pragma once
 #include <memory>
-#include <string_view>
 
 #include "layers/imgui_layer.hpp"
 #include "layers/layer_stack.hpp"
@@ -10,19 +9,15 @@ namespace Sonata {
 
 class Window;
 class EventWindowClose;
-class Shader;
-class VertexArray;
-class VertexBuffer;
-class IndexBuffer;
 
 class Application {
 public:
     Application();
-    virtual ~Application();
+    virtual ~Application() = default;
 
     // TODO: Add support for Unicode
-    [[maybe_unused]] virtual void Init(int p_Width, int p_Height, std::string_view p_Title);
-    [[maybe_unused]] void Loop() const;
+    [[maybe_unused]] virtual void Init(const WindowProps& p_Props);
+    [[maybe_unused]] void Loop();
 
     void OnEvent(Event& p_Event);
     bool OnWindowClosed(const EventWindowClose& p_Event);
@@ -45,11 +40,7 @@ private:
 
     ImGuiLayer* m_ImGuiLayer{};
 
-    std::unique_ptr<Shader> m_Shader;
-    std::shared_ptr<VertexArray> m_VertexArray;
-
-    std::unique_ptr<Shader> m_SquareShader;
-    std::shared_ptr<VertexArray> m_SquareVA;
+    float m_LastFrameTime;
 };
 
 } // namespace Sonata

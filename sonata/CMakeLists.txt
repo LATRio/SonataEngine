@@ -20,6 +20,8 @@ add_library(sonata ${LIB_BUILD_TYPE}
         src/input.cpp
         src/input.hpp
         src/input_codes.hpp
+        src/glm_wrapper.hpp
+        src/imgui_wrapper.hpp
         src/logger/log.cpp
         src/logger/log.hpp
         src/events/event.hpp
@@ -56,6 +58,10 @@ add_library(sonata ${LIB_BUILD_TYPE}
         src/rendering/render_command.hpp
         src/rendering/opengl/opengl_renderer_api.cpp
         src/rendering/opengl/opengl_renderer_api.hpp
+        src/rendering/orthographic_camera.cpp
+        src/rendering/orthographic_camera.hpp
+        src/core/timestep.cpp
+        src/core/timestep.hpp
 )
 
 target_compile_features(sonata PRIVATE cxx_std_20)
@@ -86,9 +92,5 @@ target_link_libraries(sonata
         glad
         imgui
         glm::glm
-)
-
-target_link_libraries(sonata
-        PRIVATE
         spdlog::spdlog
 )

@@ -20,7 +20,7 @@ public:
     }
 
     EVENT_CLASS_TYPE(MouseMoved)
-    EVENT_CLASS_CATEGORY(EventCategory::Input | EventCategory::Mouse)
+    EVENT_CLASS_CATEGORY(EventCategory::eInput | EventCategory::eMouse)
 
 private:
     double m_MouseX;
@@ -42,7 +42,7 @@ public:
     }
 
     EVENT_CLASS_TYPE(MouseScrolled)
-    EVENT_CLASS_CATEGORY(EventCategory::Input | EventCategory::Mouse)
+    EVENT_CLASS_CATEGORY(EventCategory::eInput | EventCategory::eMouse)
 
 private:
     double m_OffsetX;
@@ -54,7 +54,7 @@ class EventMouseButton : public Event
 public:
     [[nodiscard]] int GetMouseButton() const { return m_Button; }
 
-    EVENT_CLASS_CATEGORY(EventCategory::Input | EventCategory::MouseButton)
+    EVENT_CLASS_CATEGORY(EventCategory::eInput | EventCategory::eMouseButton)
 
 protected:
     explicit EventMouseButton(const int p_Button)

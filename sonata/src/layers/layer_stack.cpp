@@ -52,11 +52,11 @@ void LayerStack::OnImGuiRender() const
         layer->OnImGuiRender();
     }
 }
-void LayerStack::OnUpdate() const
+void LayerStack::OnUpdate(const float p_DeltaTime) const
 {
     for (auto* layer : m_Layers)
     {
-        layer->OnUpdate();
+        layer->OnUpdate(p_DeltaTime);
     }
 }
 

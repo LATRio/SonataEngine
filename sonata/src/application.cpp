@@ -1,16 +1,11 @@
 #include "application.hpp"
 
-#include "window.hpp"
-#include "logger/log.hpp"
+#include "core/timestep.hpp"
 #include "events/app_event.hpp"
-#include "rendering/vertex_array.hpp"
-#include "rendering/buffer.hpp"
-#include "rendering/renderer.hpp"
-#include "rendering/opengl/opengl_shader.hpp"
+#include "logger/log.hpp"
+#include "window.hpp"
 
 namespace Sonata {
-
-#define BIND_EVENT_FUNC(func) std::bind(&Application::func, this, std::placeholders::_1)
 
 Application* Application::s_Instance = nullptr;
 
@@ -20,138 +15,27 @@ Application::Application()
     s_Instance = this;
 }
 
-Application::~Application()
+void Application::Init(const WindowProps& p_Props)
 {
-}
-
-void Application::Init(const int p_Width, const int p_Height, const std::string_view p_Title)
-{
-    m_Window = std::make_unique<Window>(WindowProps(p_Width, p_Height, p_Title));
-    m_Window->SetEventCallback(BIND_EVENT_FUNC(OnEvent));
+    m_Window = std::make_unique<Window>(p_Props);
+    m_Window->SetEventCallback(SN_BIND_EVENT_FUNC(Application::OnEvent));
 
     m_ImGuiLayer = new ImGuiLayer();
     PushOverlay(m_ImGuiLayer);
-
-    m_VertexArray.reset(VertexArray::Create());
-
-    constexpr float vertices[] = {
-        -0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 1.0f, 1.0f,
-         0.5f, -0.5f, 0.0f,     0.0f, 0.0f, 1.0f, 1.0f,
-         0.0f,  0.5f, 0.0f,     1.0f, 1.0f, 0.0f, 1.0f,
-    };
-    std::shared_ptr<VertexBuffer> m_VertexBuffer;
-    m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
-    m_VertexBuffer->SetLayout({
-        {ShaderDataType::Float3, "a_Position"},
-        {ShaderDataType::Float4, "a_Color"},
-    });
-    m_VertexArray->AddVertexBuffer(m_VertexBuffer);
-
-    constexpr unsigned int indices[] = { 0, 1, 2 };
-    std::shared_ptr<IndexBuffer> m_IndexBuffer;
-    m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(unsigned int)));
-    m_VertexArray->SetIndexBuffer(m_IndexBuffer);
-
-    m_SquareVA.reset(VertexArray::Create());
-    constexpr float squareVertices[] = {
-        -0.5f, -0.5f, 0.1f,
-         0.5f, -0.5f, 0.1f,
-         0.5f,  0.5f, 0.1f,
-        -0.5f,  0.5f, 0.1f,
-    };
-    std::shared_ptr<VertexBuffer> m_SquareVB;
-    m_SquareVB.reset(VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
-    m_SquareVB->SetLayout({
-        {ShaderDataType::Float3, "a_Position"},
-    });
-    m_SquareVA->AddVertexBuffer(m_SquareVB);
-
-    constexpr unsigned int squareIndices[] = { 0, 1, 2, 2, 3, 0 };
-    std::shared_ptr<IndexBuffer> m_SquareIB;
-    m_SquareIB.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(unsigned int)));
-    m_SquareVA->SetIndexBuffer(m_SquareIB);
-
-    constexpr std::string_view vertSrc = R"(
-        #version 460
-
-        layout(location = 0) in vec3 a_Position;
-        layout(location = 1) in vec4 a_Color;
-        out vec3 v_Position;
-        out vec4 v_Color;
-
-        void main()
-        {
-            v_Position = a_Position;
-            v_Color = a_Color;
-            gl_Position = vec4(a_Position, 1.0);
-        }
-    )";
-    constexpr std::string_view fragSrc = R"(
-        #version 460
-
-        out vec4 color;
-
-        in vec3 v_Position;
-        in vec4 v_Color;
-
-        void main()
-        {
-            color = v_Color;
-        }
-    )";
-
-    m_Shader.reset(Shader::Create(vertSrc.data(), fragSrc.data()));
-
-    constexpr std::string_view vertSrc2 = R"(
-        #version 460
-
-        layout(location = 0) in vec3 a_Position;
-        out vec3 v_Position;
-
-        void main()
-        {
-            v_Position = a_Position;
-            gl_Position = vec4(a_Position, 1.0);
-        }
-    )";
-    constexpr std::string_view fragSrc2 = R"(
-        #version 460
-
-        out vec4 color;
-
-        in vec3 v_Position;
-
-        void main()
-        {
-            color = vec4(0.2, 0.3, 0.8, 1.0);
-        }
-    )";
-    m_SquareShader.reset(Shader::Create(vertSrc2.data(), fragSrc2.data()));
 }
 
-void Application::Loop() const
+void Application::Loop()
 {
     // ReSharper disable once CppDFAConstantConditions
     while (m_IsRunning)
     {
+        const float time = static_cast<float>(glfwGetTime());
+        const float deltaTime{time - m_LastFrameTime};
+        m_LastFrameTime = time;
+
         m_Window->PollEvents();
 
-        RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
-        RenderCommand::Clear();
-
-        Renderer::BeginScene();
-
-        m_SquareShader->Bind();
-        Renderer::Submit(m_SquareVA);
-        m_SquareShader->Unbind();
-
-        m_Shader->Bind();
-        Renderer::Submit(m_VertexArray);
-        m_Shader->Unbind();
-
-        Renderer::EndScene();
-
-        m_LayerStack.OnUpdate();
+        m_LayerStack.OnUpdate(deltaTime);
 
         m_ImGuiLayer->Begin();
         m_LayerStack.OnImGuiRender();
@@ -164,7 +48,7 @@ void Application::Loop() const
 void Application::OnEvent(Event& p_Event)
 {
     EventDispatcher dispatcher(p_Event);
-    dispatcher.Dispatch<EventWindowClose>(BIND_EVENT_FUNC(OnWindowClosed));
+    dispatcher.Dispatch<EventWindowClose>(SN_BIND_EVENT_FUNC(Application::OnWindowClosed));
 
     m_LayerStack.OnEvent(p_Event);
 }

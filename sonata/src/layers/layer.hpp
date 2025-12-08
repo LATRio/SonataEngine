@@ -10,7 +10,7 @@ public:
 
     virtual void OnAttach() {};
     virtual void OnDetach() {};
-    virtual void OnUpdate() {};
+    virtual void OnUpdate(float p_DeltaTime) {};
     virtual void OnImGuiRender() {};
     virtual void OnEvent(Event& p_Event) {}
 

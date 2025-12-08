@@ -5,12 +5,13 @@
 
 namespace Sonata
 {
+
 class EventKey : public Event
 {
 public:
     [[nodiscard]] int GetKeyCode() const { return m_KeyCode; }
 
-    EVENT_CLASS_CATEGORY(EventCategory::Input | EventCategory::Keyboard)
+    EVENT_CLASS_CATEGORY(EventCategory::eInput | EventCategory::eKeyboard)
 
 protected:
     explicit EventKey(const int p_Key)
@@ -51,4 +52,5 @@ public:
 
     EVENT_CLASS_TYPE(KeyReleased)
 };
+
 }

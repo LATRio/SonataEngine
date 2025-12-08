@@ -1,6 +1,7 @@
 #include "opengl_shader.hpp"
 
 #include "core.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 namespace Sonata {
 
@@ -49,6 +50,10 @@ void OpenGLShader::Bind() const
 void OpenGLShader::Unbind() const
 {
     glUseProgram(0);
+}
+void OpenGLShader::SetMat4(const std::string& p_Name, const glm::mat4& p_Matrix)
+{
+    glUniformMatrix4fv(glGetUniformLocation(m_ProgramID, p_Name.c_str()), 1, GL_FALSE, glm::value_ptr(p_Matrix));
 }
 
 GLuint OpenGLShader::CompileShader(const GLenum type, const std::string_view source)

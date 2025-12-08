@@ -14,7 +14,7 @@ public:
     void PopOverlay(Layer* p_Overlay);
 
     void OnImGuiRender() const;
-    void OnUpdate() const;
+    void OnUpdate(float p_DeltaTime) const;
     void OnEvent(Event& e);
 
     // [[nodiscard]] std::vector<Layer*>::iterator begin() { return m_Layers.begin(); }

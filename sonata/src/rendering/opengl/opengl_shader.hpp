@@ -13,6 +13,8 @@ public:
     void Bind() const override;
     void Unbind() const override;
 
+    void SetMat4(const std::string& p_Name, const glm::mat4& p_Matrix) override;
+
 private:
     GLuint m_ProgramID{};
 

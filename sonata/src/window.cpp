@@ -65,7 +65,7 @@ Window::Window(const WindowProps &p_Props)
 
     glViewport(0, 0, m_WindowData.m_Width, m_WindowData.m_Height);
     glfwSetFramebufferSizeCallback(m_Window, framebuffer_size_callback);
-    glEnable(GL_DEPTH_TEST);
+    //glEnable(GL_DEPTH_TEST);
 
     glfwSetWindowSizeCallback(m_Window, [](GLFWwindow *window, int width, int height) {
         WindowData& m_Data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));

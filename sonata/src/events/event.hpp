@@ -1,35 +1,37 @@
 #pragma once
 #include "core.hpp"
 
+namespace Sonata {
+
 enum class EventType
 {
-    None = 0,
-    WindowClose,
-    WindowResize,
-    WindowFocusLost,
-    WindowFocusGained,
-    WindowMoved,
-    KeyPressed,
-    KeyReleased,
-    MouseButtonPressed,
-    MouseButtonReleased,
-    MouseMoved,
-    MouseScrolled,
+    eNone = 0,
+    eWindowClose,
+    eWindowResize,
+    eWindowFocusLost,
+    eWindowFocusGained,
+    eWindowMoved,
+    eKeyPressed,
+    eKeyReleased,
+    eMouseButtonPressed,
+    eMouseButtonReleased,
+    eMouseMoved,
+    eMouseScrolled,
 };
 
 enum EventCategory
 {
-    None = 0,
-    Application     = BIT(0),
-    Input           = BIT(1),
-    Keyboard        = BIT(2),
-    Mouse           = BIT(3),
-    MouseButton     = BIT(4),
+    eNone = 0,
+    eApplication     = BIT(0),
+    eInput           = BIT(1),
+    eKeyboard        = BIT(2),
+    eMouse           = BIT(3),
+    eMouseButton     = BIT(4),
 };
 
-#define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; } \
-                                virtual EventType GetEventType() const override { return GetStaticType(); } \
-                                virtual const char* GetName() const override { return #type; }
+#define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::e##type; } \
+virtual EventType GetEventType() const override { return GetStaticType(); } \
+virtual const char* GetName() const override { return #type; }
 
 #define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override { return category; }
 
@@ -76,6 +78,8 @@ public:
 private:
     Event& m_Event;
 };
+
+}
 
 // template<typename FuncSig>
 // struct Callable

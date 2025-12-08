@@ -14,11 +14,6 @@ ImGuiLayer::ImGuiLayer()
 {
 }
 
-ImGuiLayer::~ImGuiLayer()
-{
-    SN_ENGINE_INFO("Freeing ImGui Layer");
-}
-
 void ImGuiLayer::OnAttach()
 {
     ImGui::CreateContext();

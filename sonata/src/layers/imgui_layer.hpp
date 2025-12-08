@@ -5,10 +5,10 @@ namespace Sonata {
 
 class Window;
 
-class ImGuiLayer : public Layer {
+class ImGuiLayer final : public Layer {
 public:
     ImGuiLayer();
-    ~ImGuiLayer() override;
+    ~ImGuiLayer() override = default;
 
     void OnAttach() override;
     void OnDetach() override;
