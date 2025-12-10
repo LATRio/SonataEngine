@@ -10,6 +10,8 @@ class VertexArray;
 
 class Renderer {
 public:
+    static void Init();
+
     static void BeginScene(const OrthographicCamera& p_Camera);
     static void EndScene();
 

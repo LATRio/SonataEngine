@@ -5,6 +5,12 @@
 
 namespace Sonata {
 
+void OpenGLRendererAPI::Init()
+{
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
 void OpenGLRendererAPI::SetClearColor(const glm::vec4& p_Color) const
 {
     glClearColor(p_Color.r, p_Color.g, p_Color.b, p_Color.a);

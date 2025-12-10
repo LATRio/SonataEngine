@@ -7,6 +7,11 @@ class VertexArray;
 
 class RenderCommand {
 public:
+    static void Init()
+    {
+        s_RendererAPI->Init();
+    }
+
     static void SetClearColor(const glm::vec4& p_Color)
     {
         s_RendererAPI->SetClearColor(p_Color);

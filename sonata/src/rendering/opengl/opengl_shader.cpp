@@ -64,11 +64,25 @@ void OpenGLShader::Unbind() const
     glUseProgram(0);
 }
 
+void OpenGLShader::SetInt(const std::string& p_Name, const int p_Value)
+{
+    const GLint location = glGetUniformLocation(m_ProgramID, p_Name.c_str());
+    SN_ASSERT_MSG(location != -1, std::format("Uniform location wasn't found! Program: {} ({})", m_ProgramID, p_Name));
+    glUniform1i(location, p_Value);
+}
+
+void OpenGLShader::SetVec3(const std::string& p_Name, const glm::vec3& p_Value)
+{
+    const GLint location = glGetUniformLocation(m_ProgramID, p_Name.c_str());
+    SN_ASSERT_MSG(location != -1, std::format("Uniform location wasn't found! Program: {} ({})", m_ProgramID, p_Name));
+    glUniform3f(location, p_Value.x, p_Value.y, p_Value.z);
+}
+
 void OpenGLShader::SetVec4(const std::string& p_Name, const glm::vec4& p_Value)
 {
     const GLint location = glGetUniformLocation(m_ProgramID, p_Name.c_str());
     SN_ASSERT_MSG(location != -1, std::format("Uniform location wasn't found! Program: {} ({})", m_ProgramID, p_Name));
-    glUniform4fv(location, 1, glm::value_ptr(p_Value));
+    glUniform4f(location, p_Value.x, p_Value.y, p_Value.z, p_Value.w);
 }
 
 void OpenGLShader::SetMat4(const std::string& p_Name, const glm::mat4& p_Value)

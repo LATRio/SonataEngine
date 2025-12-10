@@ -1,6 +1,7 @@
 #include "application.hpp"
 
 #include "events/app_event.hpp"
+#include "rendering/renderer.hpp"
 #include "window.hpp"
 
 namespace Sonata {
@@ -17,6 +18,8 @@ void Application::Init(const WindowProps& p_Props)
 {
     m_Window = std::make_unique<Window>(p_Props);
     m_Window->SetEventCallback(SN_BIND_EVENT_FUNC(Application::OnEvent));
+
+    Renderer::Init();
 
     m_ImGuiLayer = new ImGuiLayer();
     PushOverlay(m_ImGuiLayer);

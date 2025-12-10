@@ -3,6 +3,7 @@
 #spdlog | 1.16.0
 #imgui | 1.92.5 | docking
 #glm | 1.0.2
+#stb_image | 2.3
 
 if(SONATA_BUILD_SHARED)
     set(GLAD_BUILD_PIC ON)
@@ -26,3 +27,5 @@ add_subdirectory(imgui)
 
 set(GLM_ENABLE_CXX_20 ON)
 add_subdirectory(glm)
+
+add_subdirectory(stb)

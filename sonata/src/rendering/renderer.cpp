@@ -7,6 +7,11 @@ namespace Sonata {
 
 Renderer::SceneData* Renderer::s_SceneData = new SceneData();
 
+void Renderer::Init()
+{
+    RenderCommand::Init();
+}
+
 void Renderer::BeginScene(const OrthographicCamera& p_Camera)
 {
     s_SceneData->ViewProjMatrix = p_Camera.GetViewProjMatrix();

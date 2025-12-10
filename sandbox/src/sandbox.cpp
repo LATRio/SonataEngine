@@ -1,6 +1,7 @@
 #include "sandbox.hpp"
 
 #include "glad/gl.h"
+#include "rendering/texture.hpp"
 
 #include <sonata.hpp>
 
@@ -68,15 +69,16 @@ public:
         m_SquareVA.reset(Sonata::VertexArray::Create());
         m_SquareVA->Bind();
         constexpr float squareVertices[] = {
-            -0.5f, -0.5f, 0.0f,
-             0.5f, -0.5f, 0.0f,
-             0.5f,  0.5f, 0.0f,
-            -0.5f,  0.5f, 0.0f,
+            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+             0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+             0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+            -0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
         };
         Sonata::Ref<Sonata::VertexBuffer> m_SquareVB;
         m_SquareVB.reset(Sonata::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
         m_SquareVB->SetLayout({
             {Sonata::ShaderDataType::Float3, "a_Position"},
+            {Sonata::ShaderDataType::Float2, "a_TexCoord"},
         });
         m_SquareVA->AddVertexBuffer(m_SquareVB);
 
@@ -116,6 +118,45 @@ public:
             }
         )";
         m_FlatColorShader.reset(Sonata::Shader::Create(flatColorShaderVertSrc.data(), flatColorShaderFragSrc.data()));
+
+        constexpr std::string_view textureShaderVertSrc = R"(
+            #version 460
+
+            layout(location = 0) in vec3 a_Position;
+            layout(location = 1) in vec2 a_TexCoord;
+
+            uniform mat4 u_ViewProj;
+            uniform mat4 u_Transform;
+
+            out vec2 v_TexCoord;
+
+            void main()
+            {
+                v_TexCoord = a_TexCoord;
+                gl_Position = u_ViewProj * u_Transform * vec4(a_Position, 1.0);
+            }
+        )";
+        constexpr std::string_view textureShaderFragSrc = R"(
+            #version 460
+
+            layout(location = 0) out vec4 color;
+
+            in vec2 v_TexCoord;
+
+            uniform sampler2D u_Texture;
+
+            void main()
+            {
+                color = texture(u_Texture, v_TexCoord);
+            }
+        )";
+        m_TextureShader.reset(Sonata::Shader::Create(textureShaderVertSrc.data(), textureShaderFragSrc.data()));
+
+        m_Texture = Sonata::Texture2D::Create("assets/container.jpg");
+        m_TransparentTexture = Sonata::Texture2D::Create("assets/awesomeface.png");
+
+        m_TextureShader->Bind();
+        m_TextureShader->SetInt("u_Texture", 0);
     }
     ~ExampleLayer() override = default;
 
@@ -161,7 +202,13 @@ public:
             }
         }
 
-        Sonata::Renderer::Submit(m_Shader, m_VertexArray);
+        m_Texture->Bind();
+        Sonata::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+
+        m_TransparentTexture->Bind();
+        Sonata::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+
+        // Sonata::Renderer::Submit(m_Shader, m_VertexArray);
 
         Sonata::Renderer::EndScene();
     }
@@ -195,8 +242,11 @@ private:
     Sonata::Ref<Sonata::Shader> m_Shader;
     Sonata::Ref<Sonata::VertexArray> m_VertexArray;
 
-    Sonata::Ref<Sonata::Shader> m_FlatColorShader;
+    Sonata::Ref<Sonata::Shader> m_FlatColorShader, m_TextureShader;
     Sonata::Ref<Sonata::VertexArray> m_SquareVA;
+
+    Sonata::Ref<Sonata::Texture> m_Texture;
+    Sonata::Ref<Sonata::Texture> m_TransparentTexture;
 
     glm::vec4 m_SquareColor{0.8f, 0.2f, 0.3f, 1.0f};
 };
