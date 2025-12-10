@@ -5,7 +5,7 @@ namespace Sonata {
 
 class OrthographicCamera {
 public:
-    OrthographicCamera(float left, float right, float bottom, float top);
+    OrthographicCamera(float p_Left, float p_Right, float p_Bottom, float p_Top);
 
     void Translate(const glm::vec3& p_Translation);
 

@@ -13,12 +13,13 @@ public:
     void AddVertexBuffer(const std::shared_ptr<VertexBuffer>& p_VertexBuffer) override;
     void SetIndexBuffer(const std::shared_ptr<IndexBuffer>& p_IndexBuffer) override;
 
-    const std::shared_ptr<IndexBuffer>& GetIndexBuffer() const override;
+    [[nodiscard]] const std::shared_ptr<IndexBuffer>& GetIndexBuffer() const override;
 
 private:
     std::vector<std::shared_ptr<VertexBuffer>> m_VertexBuffers;
     std::shared_ptr<IndexBuffer> m_IndexBuffer;
     GLuint m_ArrayID{};
+    GLuint m_VertexBufferIndex{};
 };
 
 }

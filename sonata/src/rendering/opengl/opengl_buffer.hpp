@@ -12,8 +12,6 @@ public:
     void Bind() const override;
     void Unbind() const override;
 
-    void Link() const override;
-
     void SetLayout(const BufferLayout& layout) override { m_Layout = layout; }
     [[nodiscard]] const BufferLayout& GetLayout() const override { return m_Layout; }
 

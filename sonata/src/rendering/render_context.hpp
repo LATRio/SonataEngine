@@ -6,8 +6,8 @@ namespace Sonata {
 
 class RenderContext {
 public:
-    explicit RenderContext(GLFWwindow* p_window)
-        : m_Window(p_window) {}
+    explicit RenderContext(GLFWwindow* p_Window)
+        : m_Window(p_Window) {}
     virtual ~RenderContext() = default;
 
     virtual void Init() = 0;

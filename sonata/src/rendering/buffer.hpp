@@ -51,7 +51,7 @@ struct BufferElement
     BufferElement(const ShaderDataType p_Type, const std::string& p_Name, const bool p_Normalized = false)
         : Name(p_Name), Type(p_Type), Size(ShaderDataTypeSize(p_Type)), Normalized(p_Normalized) {}
 
-    [[nodiscard]] int GetComponentCount() const
+    [[nodiscard]] uint8_t GetComponentCount() const
     {
         switch (Type)
         {
@@ -98,8 +98,6 @@ public:
 
     virtual void Bind() const = 0;
     virtual void Unbind() const = 0;
-
-    virtual void Link() const = 0;
 
     virtual void SetLayout(const BufferLayout& layout) = 0;
     [[nodiscard]] virtual const BufferLayout& GetLayout() const = 0;

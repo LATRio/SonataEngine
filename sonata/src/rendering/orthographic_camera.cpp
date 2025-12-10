@@ -5,8 +5,8 @@
 
 namespace Sonata {
 
-OrthographicCamera::OrthographicCamera(const float left, const float right, const float bottom, const float top)
-    : m_ProjMatrix(glm::ortho(left, right, bottom, top, -1.0f, 1.0f))
+OrthographicCamera::OrthographicCamera(const float p_Left, const float p_Right, const float p_Bottom, const float p_Top)
+    : m_ProjMatrix(glm::ortho(p_Left, p_Right, p_Bottom, p_Top, -1.0f, 1.0f))
 {
     SetPosition(glm::vec3(0.0f, 0.0f, -1.0f));
 }

@@ -14,9 +14,9 @@ void framebuffer_size_callback([[maybe_unused]] GLFWwindow *p_Window, const int 
     glViewport(0, 0, p_Width, p_Height);
 }
 
-void GLFWErrorCallback(int error_code, const char* description)
+void GLFWErrorCallback(int p_ErrorCode, const char* p_Description)
 {
-    SN_ENGINE_FATAL("GLFW Error ({}): {}", error_code, description);
+    SN_ENGINE_FATAL("GLFW Error ({}): {}", p_ErrorCode, p_Description);
 }
 
 Window::Window(const WindowProps &p_Props)
@@ -55,7 +55,6 @@ Window::Window(const WindowProps &p_Props)
     {
         glfwTerminate();
         SN_ENGINE_FATAL("Failed to create GLFW window");
-        throw std::runtime_error("Failed to create GLFW window!");
     }
     m_RenderContext = std::make_unique<OpenGLContext>(m_Window);
     m_RenderContext->Init();
@@ -65,7 +64,6 @@ Window::Window(const WindowProps &p_Props)
 
     glViewport(0, 0, m_WindowData.m_Width, m_WindowData.m_Height);
     glfwSetFramebufferSizeCallback(m_Window, framebuffer_size_callback);
-    //glEnable(GL_DEPTH_TEST);
 
     glfwSetWindowSizeCallback(m_Window, [](GLFWwindow *window, int width, int height) {
         WindowData& m_Data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
@@ -154,12 +152,13 @@ Window::~Window()
     glfwTerminate();
 }
 
+// ReSharper disable once CppMemberFunctionMayBeStatic
 void Window::PollEvents()
 {
     glfwPollEvents();
 }
 
-void Window::SwapBuffers()
+void Window::SwapBuffers() const
 {
     m_RenderContext->SwapBuffers();
 }
@@ -171,14 +170,7 @@ void Window::SetEventCallback(const EventCallbackFn &p_Callback)
 
 void Window::SetVSync(const bool p_Enable)
 {
-    if (p_Enable)
-    {
-        glfwSwapInterval(1);
-    }
-    else
-    {
-        glfwSwapInterval(0);
-    }
+    glfwSwapInterval(p_Enable ? 1 : 0);
     m_WindowData.m_VSync = p_Enable;
 }
 
@@ -187,4 +179,4 @@ bool Window::IsVSync() const
     return m_WindowData.m_VSync;
 }
 
-} // namespace
+}

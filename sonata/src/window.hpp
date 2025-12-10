@@ -23,7 +23,7 @@ public:
     ~Window();
 
     void PollEvents();
-    void SwapBuffers();
+    void SwapBuffers() const;
 
     void SetEventCallback(const EventCallbackFn &p_Callback);
     void SetVSync(bool p_Enable);

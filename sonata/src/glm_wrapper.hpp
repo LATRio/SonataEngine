@@ -3,4 +3,9 @@
 #pragma GCC diagnostic ignored "-Wsign-conversion"
 #pragma GCC diagnostic ignored "-Wduplicated-branches"
 #include "glm/glm.hpp"
+#include "glm/ext/matrix_transform.hpp"
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/gtx/string_cast.hpp"
 #pragma GCC diagnostic pop
+
+#include "glm/gtc/type_ptr.hpp"

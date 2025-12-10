@@ -6,6 +6,7 @@
 #include "input.hpp"
 #include "input_codes.hpp"
 #include "imgui_wrapper.hpp"
+#include "glm_wrapper.hpp"
 
 #include "events/key_event.hpp"
 

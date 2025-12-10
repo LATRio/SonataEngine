@@ -10,7 +10,7 @@ Shader* Shader::Create(const char* vertexPath, const char* fragmentPath)
 {
     switch (Renderer::GetAPI())
     {
-        case RendererAPI::API::OpenGL:
+    case RendererAPI::API::OpenGL:
             return new OpenGLShader(vertexPath, fragmentPath);
         case RendererAPI::API::None:
             SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
