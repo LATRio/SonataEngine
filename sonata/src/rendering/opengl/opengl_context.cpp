@@ -1,5 +1,4 @@
 #include "opengl_context.hpp"
-
 #include "core.hpp"
 
 namespace Sonata {

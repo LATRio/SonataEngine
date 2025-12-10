@@ -11,7 +11,7 @@ public:
     void SetClearColor(const glm::vec4& p_Color) const override;
     void Clear() const override;
 
-    void DrawIndexed(const std::shared_ptr<VertexArray>& p_VertexArray) const override;
+    void DrawIndexed(const Ref<VertexArray>& p_VertexArray) const override;
 };
 
 }

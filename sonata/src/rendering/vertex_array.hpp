@@ -1,4 +1,5 @@
 #pragma once
+#include "core.hpp"
 
 namespace Sonata {
 
@@ -12,10 +13,10 @@ public:
     virtual void Bind() const = 0;
     virtual void Unbind() const = 0;
 
-    virtual void AddVertexBuffer(const std::shared_ptr<VertexBuffer>& p_VertexBuffer) = 0;
-    virtual void SetIndexBuffer(const std::shared_ptr<IndexBuffer>& p_IndexBuffer) = 0;
+    virtual void AddVertexBuffer(const Ref<VertexBuffer>& p_VertexBuffer) = 0;
+    virtual void SetIndexBuffer(const Ref<IndexBuffer>& p_IndexBuffer) = 0;
 
-    virtual const std::shared_ptr<IndexBuffer>& GetIndexBuffer() const = 0;
+    [[nodiscard]] virtual const Ref<IndexBuffer>& GetIndexBuffer() const = 0;
 
     static VertexArray* Create();
 };

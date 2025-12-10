@@ -1,6 +1,5 @@
 #include "shader.hpp"
 
-#include "core.hpp"
 #include "renderer.hpp"
 #include "opengl/opengl_shader.hpp"
 

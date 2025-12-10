@@ -17,7 +17,7 @@ public:
         s_RendererAPI->Clear();
     }
 
-    static void DrawIndexed(const std::shared_ptr<VertexArray>& p_VertexArray)
+    static void DrawIndexed(const Ref<VertexArray>& p_VertexArray)
     {
         s_RendererAPI->DrawIndexed(p_VertexArray);
     }

@@ -41,7 +41,7 @@ public:
 
 private:
     GLFWwindow* m_Window{};
-    std::unique_ptr<RenderContext> m_RenderContext;
+    Scope<RenderContext> m_RenderContext;
 
     struct WindowData
     {

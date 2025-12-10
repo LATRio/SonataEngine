@@ -4,8 +4,8 @@
 namespace Sonata
 {
 
-std::shared_ptr<spdlog::logger> Log::s_EngineLogger;
-std::shared_ptr<spdlog::logger> Log::s_AppLogger;
+Ref<spdlog::logger> Log::s_EngineLogger;
+Ref<spdlog::logger> Log::s_AppLogger;
 
 void Log::Init()
 {

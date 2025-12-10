@@ -34,7 +34,7 @@ public:
 private:
     static Application* s_Instance;
 
-    std::unique_ptr<Window> m_Window;
+    Scope<Window> m_Window;
     LayerStack m_LayerStack;
     bool m_IsRunning{true};
 

@@ -1,8 +1,6 @@
 #include "application.hpp"
 
-#include "core/timestep.hpp"
 #include "events/app_event.hpp"
-#include "logger/log.hpp"
 #include "window.hpp"
 
 namespace Sonata {

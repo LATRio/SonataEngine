@@ -1,5 +1,6 @@
 #pragma once
 #include "glm_wrapper.hpp"
+#include "core.hpp"
 
 namespace Sonata {
 
@@ -17,7 +18,7 @@ public:
     virtual void SetClearColor(const glm::vec4& p_Color) const = 0;
     virtual void Clear() const = 0;
 
-    virtual void DrawIndexed(const std::shared_ptr<VertexArray>& p_VertexArray) const = 0;
+    virtual void DrawIndexed(const Ref<VertexArray>& p_VertexArray) const = 0;
 
     static API GetAPI() { return s_RenderAPI; }
 

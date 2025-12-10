@@ -17,7 +17,7 @@ public:
              0.5f, -0.5f, 0.0f,     0.0f, 0.0f, 1.0f, 1.0f,
              0.0f,  0.5f, 0.0f,     1.0f, 1.0f, 0.0f, 1.0f,
         };
-        std::shared_ptr<Sonata::VertexBuffer> m_VertexBuffer;
+        Sonata::Ref<Sonata::VertexBuffer> m_VertexBuffer;
         m_VertexBuffer.reset(Sonata::VertexBuffer::Create(vertices, sizeof(vertices)));
         m_VertexBuffer->SetLayout({
             {Sonata::ShaderDataType::Float3, "a_Position"},
@@ -26,7 +26,7 @@ public:
         m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 
         constexpr unsigned int indices[] = { 0, 1, 2 };
-        std::shared_ptr<Sonata::IndexBuffer> m_IndexBuffer;
+        Sonata::Ref<Sonata::IndexBuffer> m_IndexBuffer;
         m_IndexBuffer.reset(Sonata::IndexBuffer::Create(indices, sizeof(indices) / sizeof(unsigned int)));
         m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 
@@ -73,7 +73,7 @@ public:
              0.5f,  0.5f, 0.0f,
             -0.5f,  0.5f, 0.0f,
         };
-        std::shared_ptr<Sonata::VertexBuffer> m_SquareVB;
+        Sonata::Ref<Sonata::VertexBuffer> m_SquareVB;
         m_SquareVB.reset(Sonata::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
         m_SquareVB->SetLayout({
             {Sonata::ShaderDataType::Float3, "a_Position"},
@@ -81,7 +81,7 @@ public:
         m_SquareVA->AddVertexBuffer(m_SquareVB);
 
         constexpr unsigned int squareIndices[] = { 0, 1, 2, 2, 3, 0 };
-        std::shared_ptr<Sonata::IndexBuffer> m_SquareIB;
+        Sonata::Ref<Sonata::IndexBuffer> m_SquareIB;
         m_SquareIB.reset(Sonata::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(unsigned int)));
         m_SquareVA->SetIndexBuffer(m_SquareIB);
 
@@ -192,11 +192,11 @@ private:
 
     Sonata::OrthographicCamera m_Camera;
 
-    std::shared_ptr<Sonata::Shader> m_Shader;
-    std::shared_ptr<Sonata::VertexArray> m_VertexArray;
+    Sonata::Ref<Sonata::Shader> m_Shader;
+    Sonata::Ref<Sonata::VertexArray> m_VertexArray;
 
-    std::shared_ptr<Sonata::Shader> m_FlatColorShader;
-    std::shared_ptr<Sonata::VertexArray> m_SquareVA;
+    Sonata::Ref<Sonata::Shader> m_FlatColorShader;
+    Sonata::Ref<Sonata::VertexArray> m_SquareVA;
 
     glm::vec4 m_SquareColor{0.8f, 0.2f, 0.3f, 1.0f};
 };

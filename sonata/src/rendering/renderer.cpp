@@ -16,7 +16,7 @@ void Renderer::EndScene()
 {
 }
 
-void Renderer::Submit(const std::shared_ptr<Shader>& p_Shader, const std::shared_ptr<VertexArray>& p_VertexArray, const glm::mat4& p_Transform)
+void Renderer::Submit(const Ref<Shader>& p_Shader, const Ref<VertexArray>& p_VertexArray, const glm::mat4& p_Transform)
 {
     p_Shader->Bind();
     p_Shader->SetMat4("u_ViewProj", s_SceneData->ViewProjMatrix);
