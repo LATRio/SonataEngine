@@ -1,4 +1,5 @@
 #pragma once
+#include "core.hpp"
 #include "glm_wrapper.hpp"
 
 namespace Sonata {
@@ -15,8 +16,26 @@ public:
     virtual void SetVec4(std::string_view p_Name, const glm::vec4& p_Value) = 0;
     virtual void SetMat4(std::string_view p_Name, const glm::mat4& p_Value) = 0;
 
-    static Shader* Create(std::string_view p_FilePath);
-    static Shader* Create(std::string_view p_VertexPath, std::string_view p_FragmentPath);
+    [[nodiscard]] virtual std::string_view GetName() const = 0;
+
+    static Ref<Shader> Create(std::string_view p_Filepath);
+    static Ref<Shader> Create(std::string_view p_Name, std::string_view p_VertexPath, std::string_view p_FragmentPath);
+};
+
+class ShaderLibrary
+{
+public:
+    void Add(const Ref<Shader>& p_Shader);
+    void Add(std::string_view p_Name, const Ref<Shader>& p_Shader);
+    Ref<Shader> Load(std::string_view p_Filepath);
+    Ref<Shader> Load(std::string_view p_Name, std::string_view p_Filepath);
+
+    Ref<Shader> Get(std::string_view p_Name);
+
+    bool Exists(std::string_view p_Name) const;
+
+private:
+    std::unordered_map<std::string, Ref<Shader>> m_Shaders;
 };
 
 }

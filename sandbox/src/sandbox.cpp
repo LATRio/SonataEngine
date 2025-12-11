@@ -63,8 +63,7 @@ public:
                 color = v_Color;
             }
         )";
-
-        m_Shader.reset(Sonata::Shader::Create(vertSrc.data(), fragSrc.data()));
+        m_Shader = Sonata::Shader::Create("VertexPosColor", vertSrc.data(), fragSrc.data());
 
         m_SquareVA.reset(Sonata::VertexArray::Create());
         m_SquareVA->Bind();
@@ -117,13 +116,12 @@ public:
                 color = u_Color;
             }
         )";
-        m_FlatColorShader.reset(Sonata::Shader::Create(flatColorShaderVertSrc.data(), flatColorShaderFragSrc.data()));
-
-        m_TextureShader.reset(Sonata::Shader::Create("shaders/texture.glsl"));
+        m_FlatColorShader = Sonata::Shader::Create("FlatColor", flatColorShaderVertSrc.data(), flatColorShaderFragSrc.data());
 
         m_Texture = Sonata::Texture2D::Create("assets/container.jpg");
         m_TransparentTexture = Sonata::Texture2D::Create("assets/awesomeface.png");
 
+        m_TextureShader = m_ShaderLibrary.Load("shaders/texture.glsl");
         m_TextureShader->Bind();
         m_TextureShader->SetInt("u_Texture", 0);
     }
@@ -205,6 +203,8 @@ public:
 private:
     float m_CameraSpeed = 2.0f;
     glm::vec3 m_Velocity{};
+
+    Sonata::ShaderLibrary m_ShaderLibrary;
 
     Sonata::OrthographicCamera m_Camera;
 

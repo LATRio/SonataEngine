@@ -1,10 +1,10 @@
 #include "opengl_shader.hpp"
 
-#include "core.hpp"
-#include "glm_wrapper.hpp"
-
 #include <fstream>
 #include <filesystem>
+
+#include "core.hpp"
+#include "glm_wrapper.hpp"
 
 namespace Sonata {
 
@@ -18,14 +18,16 @@ GLenum StrToType(std::string_view p_Type)
     return 0;
 }
 
-OpenGLShader::OpenGLShader(const std::string_view p_FilePath)
+OpenGLShader::OpenGLShader(const std::string_view p_Filepath)
 {
-    const std::string source = ReadFile(p_FilePath);
+    m_Name = std::filesystem::path(p_Filepath).stem().string();
+    const std::string source = ReadFile(p_Filepath);
     auto shaderSources = Preprocess(source);
     CompileShaders(shaderSources);
 }
 
-OpenGLShader::OpenGLShader(const std::string_view p_VertSrc, const std::string_view p_FragSrc)
+OpenGLShader::OpenGLShader(const std::string_view p_Name, const std::string_view p_VertSrc, const std::string_view p_FragSrc)
+    : m_Name(p_Name)
 {
     std::unordered_map<GLenum, std::string> shaderSources;
     shaderSources.reserve(2);
@@ -84,7 +86,7 @@ std::string OpenGLShader::ReadFile(std::string_view p_FilePath) const
     {
         in.seekg(0, std::ios::end);
         std::string result;
-        result.resize(static_cast<std::string::size_type>(in.tellg()));
+        result.resize(static_cast<size_t>(in.tellg()));
         in.seekg(0, std::ios::beg);
         in.read(&result[0], static_cast<std::streamsize>(result.size()));
         in.close();
@@ -127,7 +129,7 @@ void OpenGLShader::CompileShaders(const std::unordered_map<GLenum, std::string>&
     m_ProgramID = glCreateProgram();
     SN_ASSERT_MSG(p_ShaderSources.size() <= 2, "Too many shaders! Only 2 supported for now.");
     std::array<GLuint, 2> shaderIDs{};
-    int shaderIDIndex{};
+    size_t shaderIDIndex{};
     for (const auto& [type, src] : p_ShaderSources)
     {
         const GLuint shader = glCreateShader(type);
