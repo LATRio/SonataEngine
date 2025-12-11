@@ -48,7 +48,7 @@ struct BufferElement
     int Offset{};
     bool Normalized{};
 
-    BufferElement(const ShaderDataType p_Type, const std::string& p_Name, const bool p_Normalized = false)
+    BufferElement(const ShaderDataType p_Type, const std::string_view p_Name, const bool p_Normalized = false)
         : Name(p_Name), Type(p_Type), Size(ShaderDataTypeSize(p_Type)), Normalized(p_Normalized) {}
 
     [[nodiscard]] uint8_t GetComponentCount() const

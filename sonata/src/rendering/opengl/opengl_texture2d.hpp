@@ -5,7 +5,7 @@ namespace Sonata {
 
 class OpenGLTexture2D final : public Texture2D {
 public:
-    explicit OpenGLTexture2D(const std::string& p_Path);
+    explicit OpenGLTexture2D(std::string_view p_Path);
     ~OpenGLTexture2D() override;
 
     [[nodiscard]] int GetWidth() const override { return m_Width; }

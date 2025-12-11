@@ -10,12 +10,13 @@ public:
     virtual void Bind() const = 0;
     virtual void Unbind() const = 0;
 
-    virtual void SetInt(const std::string& p_Name, int p_Value) = 0;
-    virtual void SetVec3(const std::string& p_Name, const glm::vec3& p_Value) = 0;
-    virtual void SetVec4(const std::string& p_Name, const glm::vec4& p_Value) = 0;
-    virtual void SetMat4(const std::string& p_Name, const glm::mat4& p_Value) = 0;
+    virtual void SetInt(std::string_view p_Name, int p_Value) = 0;
+    virtual void SetVec3(std::string_view p_Name, const glm::vec3& p_Value) = 0;
+    virtual void SetVec4(std::string_view p_Name, const glm::vec4& p_Value) = 0;
+    virtual void SetMat4(std::string_view p_Name, const glm::mat4& p_Value) = 0;
 
-    static Shader* Create(const char* vertexPath, const char* fragmentPath);
+    static Shader* Create(std::string_view p_FilePath);
+    static Shader* Create(std::string_view p_VertexPath, std::string_view p_FragmentPath);
 };
 
 }

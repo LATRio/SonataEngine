@@ -5,7 +5,7 @@ namespace Sonata {
 
 class Layer {
 public:
-    explicit Layer(const std::string& p_DebugName);
+    explicit Layer(std::string_view p_DebugName);
     virtual ~Layer() = default;
 
     virtual void OnAttach() {};
@@ -14,7 +14,7 @@ public:
     virtual void OnImGuiRender() {};
     virtual void OnEvent(Event& p_Event) {}
 
-    [[nodiscard]] const std::string& GetName() const { return m_DebugName; }
+    [[nodiscard]] std::string_view GetName() const { return m_DebugName; }
 
 private:
     std::string m_DebugName;

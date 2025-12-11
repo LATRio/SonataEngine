@@ -5,7 +5,7 @@
 
 namespace Sonata {
 
-Ref<Texture2D> Texture2D::Create(const std::string& p_Path)
+Ref<Texture2D> Texture2D::Create(const std::string_view p_Path)
 {
     switch (Renderer::GetAPI())
     {

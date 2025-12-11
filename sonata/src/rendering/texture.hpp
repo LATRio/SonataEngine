@@ -18,7 +18,7 @@ class Texture2D : public Texture
 public:
     virtual ~Texture2D() override = default;
 
-    static Ref<Texture2D> Create(const std::string& p_Path);
+    static Ref<Texture2D> Create(std::string_view p_Path);
 };
 
 }

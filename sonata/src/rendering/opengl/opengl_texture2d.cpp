@@ -2,7 +2,7 @@
 
 namespace Sonata {
 
-OpenGLTexture2D::OpenGLTexture2D(const std::string& p_Path)
+OpenGLTexture2D::OpenGLTexture2D(const std::string_view p_Path)
     : m_Path(p_Path)
 {
     int channels;
