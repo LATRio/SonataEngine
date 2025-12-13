@@ -61,11 +61,13 @@ void OrthographicCameraController::OnImGuiRender()
     Begin("Camera Controller", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
     DragFloat3("Position", glm::value_ptr(m_Position), 0.01f);
     DragFloat("Movement Speed", &m_TranslationSpeed, 0.01f, 0.0f);
+
     Checkbox("Can Rotate", &m_CanRotate);
     BeginDisabled(!m_CanRotate);
     DragFloat("Rotation", &m_Rotation);
-    EndDisabled();
     DragFloat("Rotation Speed", &m_RotationSpeed);
+    EndDisabled();
+
     DragFloat("ZoomLevel", &m_ZoomLevel, 0.1f, m_ZoomLevelMin);
     DragFloat("Zoom Sensitivity", &m_ZoomSensitivity, 0.01f, 0.0f);
     End();
