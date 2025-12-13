@@ -22,7 +22,7 @@ public:
     explicit Window(const WindowProps& p_Props);
     ~Window();
 
-    void PollEvents();
+    void PollEvents() const;
     void SwapBuffers() const;
 
     void SetEventCallback(const EventCallbackFn &p_Callback);

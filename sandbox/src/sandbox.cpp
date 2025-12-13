@@ -1,15 +1,12 @@
 #include "sandbox.hpp"
 
-#include "glad/gl.h"
-#include "rendering/texture.hpp"
-
 #include <sonata.hpp>
 
 class ExampleLayer final : public Sonata::Layer
 {
 public:
     ExampleLayer()
-        : Layer("ExampleLayer"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
+        : Layer("ExampleLayer"), m_CameraController(16.0f / 9.0f)
     {
         m_VertexArray.reset(Sonata::VertexArray::Create());
         m_VertexArray->Bind();
@@ -129,31 +126,12 @@ public:
 
     void OnUpdate(const float p_DeltaTime) override
     {
-        //SN_APP_TRACE("Delta Time: {}s ({}ms)", p_DeltaTime, p_DeltaTime * 1000.0f);
-
-        m_Velocity = {};
-        if (Sonata::Input::IsKeyPressed(SN_KEY_LEFT))
-        {
-            m_Velocity.x -= m_CameraSpeed * p_DeltaTime;
-        }
-        if (Sonata::Input::IsKeyPressed(SN_KEY_RIGHT))
-        {
-            m_Velocity.x += m_CameraSpeed * p_DeltaTime;
-        }
-        if (Sonata::Input::IsKeyPressed(SN_KEY_DOWN))
-        {
-            m_Velocity.y -= m_CameraSpeed * p_DeltaTime;
-        }
-        if (Sonata::Input::IsKeyPressed(SN_KEY_UP))
-        {
-            m_Velocity.y += m_CameraSpeed * p_DeltaTime;
-        }
-        m_Camera.Translate(m_Velocity);
+        m_CameraController.OnUpdate(p_DeltaTime);
 
         Sonata::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
         Sonata::RenderCommand::Clear();
 
-        Sonata::Renderer::BeginScene(m_Camera);
+        Sonata::Renderer::BeginScene(m_CameraController.GetCamera());
 
         const glm::mat4 scale{glm::scale(glm::mat4(1.0f), glm::vec3(0.1f))};
 
@@ -182,8 +160,7 @@ public:
 
     void OnEvent(Sonata::Event& p_Event) override
     {
-        Sonata::EventDispatcher dispatcher(p_Event);
-        dispatcher.Dispatch<Sonata::EventKeyPressed>(SN_BIND_EVENT_FUNC(ExampleLayer::OnEventKeyPressed));
+        m_CameraController.OnEvent(p_Event);
     }
 
     void OnImGuiRender() override
@@ -193,20 +170,14 @@ public:
         Begin("Settings", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
         ColorEdit4("Color", glm::value_ptr(m_SquareColor));
         End();
-    }
 
-    bool OnEventKeyPressed(const Sonata::EventKeyPressed& p_Event)
-    {
-        return false;
+        m_CameraController.OnImGuiRender();
     }
 
 private:
-    float m_CameraSpeed = 2.0f;
-    glm::vec3 m_Velocity{};
-
     Sonata::ShaderLibrary m_ShaderLibrary;
 
-    Sonata::OrthographicCamera m_Camera;
+    Sonata::OrthographicCameraController m_CameraController;
 
     Sonata::Ref<Sonata::Shader> m_Shader;
     Sonata::Ref<Sonata::VertexArray> m_VertexArray;

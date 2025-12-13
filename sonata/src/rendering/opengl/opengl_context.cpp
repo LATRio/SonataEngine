@@ -73,7 +73,7 @@ void OpenGLContext::Init()
     const int success = gladLoadGL(glfwGetProcAddress);
     SN_ASSERT_MSG(success, "Failed to initialize GLAD");
 
-    SN_ENGINE_INFO("OpenGL Version: {}", reinterpret_cast<const char *>(glGetString(GL_VERSION)));
+    SN_ENGINE_INFO("OpenGL Version: {}", reinterpret_cast<const char*>(glGetString(GL_VERSION)));
     {
         int flags;
         glGetIntegerv(GL_CONTEXT_FLAGS, &flags);

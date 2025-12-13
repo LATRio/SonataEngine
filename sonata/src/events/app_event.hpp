@@ -17,6 +17,7 @@ public:
 
     [[nodiscard]] int GetWidth() const { return m_Width; }
     [[nodiscard]] int GetHeight() const { return m_Height; }
+    [[nodiscard]] float GetAspectRatio() const { return static_cast<float>(m_Width) / static_cast<float>(m_Height); }
 
     [[nodiscard]] std::string ToString() const override
     {

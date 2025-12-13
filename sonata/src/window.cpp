@@ -128,18 +128,18 @@ Window::Window(const WindowProps &p_Props)
         }
     });
 
-    glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xOffset, double yOffset) {
-        const WindowData& m_Data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
+    glfwSetScrollCallback(m_Window, [](GLFWwindow *window, const double xOffset, const double yOffset) {
+        const WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
-        EventMouseScrolled event(xOffset, yOffset);
-        m_Data.m_Callback(event);
+        EventMouseScrolled event(static_cast<float>(xOffset), static_cast<float>(yOffset));
+        data.m_Callback(event);
     });
 
-    glfwSetCursorPosCallback(m_Window, [](GLFWwindow *window, double xPos, double yPos) {
-        const WindowData& m_Data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
+    glfwSetCursorPosCallback(m_Window, [](GLFWwindow *window, const double xPos, const double yPos) {
+        const WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
-        EventMouseMoved event(xPos, yPos);
-        m_Data.m_Callback(event);
+        EventMouseMoved event(static_cast<float>(xPos), static_cast<float>(yPos));
+        data.m_Callback(event);
     });
 }
 
@@ -152,8 +152,7 @@ Window::~Window()
     glfwTerminate();
 }
 
-// ReSharper disable once CppMemberFunctionMayBeStatic
-void Window::PollEvents()
+void Window::PollEvents() const
 {
     glfwPollEvents();
 }

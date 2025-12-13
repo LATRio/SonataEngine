@@ -1,4 +1,5 @@
 #pragma once
+#include "input_codes.hpp"
 
 namespace Sonata {
 

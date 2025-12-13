@@ -8,11 +8,11 @@ namespace Sonata
 class EventMouseMoved final : public Event
 {
 public:
-    EventMouseMoved(const double p_X, const double p_Y)
+    EventMouseMoved(const float p_X, const float p_Y)
         : m_MouseX(p_X), m_MouseY(p_Y) {}
 
-    [[nodiscard]] double GetX() const { return m_MouseX; }
-    [[nodiscard]] double GetY() const { return m_MouseY; }
+    [[nodiscard]] float GetX() const { return m_MouseX; }
+    [[nodiscard]] float GetY() const { return m_MouseY; }
 
     [[nodiscard]] std::string ToString() const override
     {
@@ -23,18 +23,18 @@ public:
     EVENT_CLASS_CATEGORY(EventCategory::eInput | EventCategory::eMouse)
 
 private:
-    double m_MouseX;
-    double m_MouseY;
+    float m_MouseX;
+    float m_MouseY;
 };
 
-class EventMouseScrolled : public Event
+class EventMouseScrolled final : public Event
 {
 public:
-    EventMouseScrolled(const double p_X, const double p_Y)
+    EventMouseScrolled(const float p_X, const float p_Y)
         : m_OffsetX(p_X), m_OffsetY(p_Y) {}
 
-    [[nodiscard]] double GetOffsetX() const { return m_OffsetX; }
-    [[nodiscard]] double GetOffsetY() const { return m_OffsetY; }
+    [[nodiscard]] float GetOffsetX() const { return m_OffsetX; }
+    [[nodiscard]] float GetOffsetY() const { return m_OffsetY; }
 
     [[nodiscard]] std::string ToString() const override
     {
@@ -45,8 +45,8 @@ public:
     EVENT_CLASS_CATEGORY(EventCategory::eInput | EventCategory::eMouse)
 
 private:
-    double m_OffsetX;
-    double m_OffsetY;
+    float m_OffsetX;
+    float m_OffsetY;
 };
 
 class EventMouseButton : public Event

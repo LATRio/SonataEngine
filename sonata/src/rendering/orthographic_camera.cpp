@@ -8,13 +8,13 @@ namespace Sonata {
 OrthographicCamera::OrthographicCamera(const float p_Left, const float p_Right, const float p_Bottom, const float p_Top)
     : m_ProjMatrix(glm::ortho(p_Left, p_Right, p_Bottom, p_Top, -1.0f, 1.0f))
 {
-    SetPosition(glm::vec3(0.0f, 0.0f, -1.0f));
+    m_ViewProjMatrix = m_ProjMatrix * m_ViewMatrix;
 }
 
-void OrthographicCamera::Translate(const glm::vec3& p_Translation)
+void OrthographicCamera::SetProjection(const float p_Left, const float p_Right, const float p_Bottom, const float p_Top)
 {
-    m_Position += p_Translation;
-    RecalculateViewMatrix();
+    m_ProjMatrix = glm::ortho(p_Left, p_Right, p_Bottom, p_Top, -1.0f, 1.0f);
+    m_ViewProjMatrix = m_ProjMatrix * m_ViewMatrix;
 }
 
 void OrthographicCamera::SetPosition(const glm::vec3& p_Position)
