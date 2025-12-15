@@ -17,6 +17,8 @@ public:
 
     static void Submit(const Ref<Shader>& p_Shader, const Ref<VertexArray>& p_VertexArray, const glm::mat4& p_Transform = glm::mat4{1.0f});
 
+    static void OnFramebufferResize(int p_Width, int p_Height);
+
     static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 
 private:

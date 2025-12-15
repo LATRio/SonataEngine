@@ -5,7 +5,7 @@
 #include <imgui_impl_opengl3.h>
 #pragma GCC diagnostic pop
 
-#include "application.hpp"
+#include "../core/application.hpp"
 
 namespace Sonata {
 

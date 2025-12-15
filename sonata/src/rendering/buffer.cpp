@@ -17,12 +17,12 @@ void BufferLayout::CalculateOffsetAndStride()
     }
 }
 
-VertexBuffer* VertexBuffer::Create(const float* p_Vertices, const ssize_t p_Size)
+Ref<VertexBuffer> VertexBuffer::Create(const float* p_Vertices, const ssize_t p_Size)
 {
     switch (Renderer::GetAPI())
     {
     case RendererAPI::API::OpenGL:
-        return new OpenGLVertexBuffer(p_Vertices, p_Size);
+        return CreateRef<OpenGLVertexBuffer>(p_Vertices, p_Size);
     case RendererAPI::API::None:
         SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
         return nullptr;
@@ -32,12 +32,12 @@ VertexBuffer* VertexBuffer::Create(const float* p_Vertices, const ssize_t p_Size
     }
 }
 
-IndexBuffer* IndexBuffer::Create(const unsigned int* p_Indices, const ssize_t p_Count)
+Ref<IndexBuffer> IndexBuffer::Create(const unsigned int* p_Indices, const ssize_t p_Count)
 {
     switch (Renderer::GetAPI())
     {
     case RendererAPI::API::OpenGL:
-        return new OpenGLIndexBuffer(p_Indices, p_Count);
+        return CreateRef<OpenGLIndexBuffer>(p_Indices, p_Count);
     case RendererAPI::API::None:
         SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
         return nullptr;

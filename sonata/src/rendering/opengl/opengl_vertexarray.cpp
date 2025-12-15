@@ -47,6 +47,7 @@ void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& p_VertexBuffer)
 {
     SN_ASSERT_MSG(!p_VertexBuffer->GetLayout().GetElements().empty(), "Vertex buffer has no layout!");
 
+    Bind();
     p_VertexBuffer->Bind();
     const auto& layout = p_VertexBuffer->GetLayout();
     for (const auto& elem : layout.GetElements())

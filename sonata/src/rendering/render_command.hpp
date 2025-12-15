@@ -12,6 +12,11 @@ public:
         s_RendererAPI->Init();
     }
 
+    static void SetViewport(const int p_X, const int p_Y, const int p_Width, const int p_Height)
+    {
+        s_RendererAPI->SetViewport(p_X, p_Y, p_Width, p_Height);
+    }
+
     static void SetClearColor(const glm::vec4& p_Color)
     {
         s_RendererAPI->SetClearColor(p_Color);

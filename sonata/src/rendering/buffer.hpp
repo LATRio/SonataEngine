@@ -102,7 +102,7 @@ public:
     virtual void SetLayout(const BufferLayout& layout) = 0;
     [[nodiscard]] virtual const BufferLayout& GetLayout() const = 0;
 
-    static VertexBuffer* Create(const float* p_Vertices, ssize_t p_Size);
+    static Ref<VertexBuffer> Create(const float* p_Vertices, ssize_t p_Size);
 };
 
 class IndexBuffer
@@ -115,7 +115,7 @@ public:
 
     [[nodiscard]] virtual int GetCount() const = 0;
 
-    static IndexBuffer* Create(const unsigned int* p_Indices, ssize_t p_Count);
+    static Ref<IndexBuffer> Create(const unsigned int* p_Indices, ssize_t p_Count);
 };
 
 }

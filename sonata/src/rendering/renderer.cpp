@@ -1,5 +1,6 @@
 #include "renderer.hpp"
 #include "orthographic_camera.hpp"
+#include "renderer_2d.hpp"
 #include "shader.hpp"
 #include "vertex_array.hpp"
 
@@ -10,6 +11,7 @@ Renderer::SceneData* Renderer::s_SceneData = new SceneData();
 void Renderer::Init()
 {
     RenderCommand::Init();
+    Renderer2D::Init();
 }
 
 void Renderer::BeginScene(const OrthographicCamera& p_Camera)
@@ -29,6 +31,11 @@ void Renderer::Submit(const Ref<Shader>& p_Shader, const Ref<VertexArray>& p_Ver
 
     p_VertexArray->Bind();
     RenderCommand::DrawIndexed(p_VertexArray);
+}
+
+void Renderer::OnFramebufferResize(const int p_Width, const int p_Height)
+{
+    RenderCommand::SetViewport(0, 0, p_Width, p_Height);
 }
 
 }

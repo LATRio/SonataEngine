@@ -1,5 +1,5 @@
 #pragma once
-#include <application.hpp>
+#include <sonata.hpp>
 
 class Sandbox final : public Sonata::Application
 {

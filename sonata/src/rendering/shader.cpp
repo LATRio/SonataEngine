@@ -10,7 +10,7 @@ Ref<Shader> Shader::Create(const std::string_view p_Filepath)
     switch (Renderer::GetAPI())
     {
         case RendererAPI::API::OpenGL:
-            return std::make_shared<OpenGLShader>(p_Filepath);
+            return CreateRef<OpenGLShader>(p_Filepath);
         case RendererAPI::API::None:
             SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
             return nullptr;
@@ -25,7 +25,7 @@ Ref<Shader> Shader::Create(const std::string_view p_Name, const std::string_view
     switch (Renderer::GetAPI())
     {
     case RendererAPI::API::OpenGL:
-        return std::make_shared<OpenGLShader>(p_Name, p_VertexPath, p_FragmentPath);
+        return CreateRef<OpenGLShader>(p_Name, p_VertexPath, p_FragmentPath);
     case RendererAPI::API::None:
         SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
         return nullptr;

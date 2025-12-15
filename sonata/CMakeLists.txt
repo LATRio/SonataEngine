@@ -10,20 +10,18 @@ else()
 endif()
 
 add_library(sonata ${LIB_BUILD_TYPE}
-        src/application.cpp
-        src/application.hpp
-        src/window.cpp
-        src/window.hpp
         src/core.hpp
         src/sonata.hpp
-        src/entry_point.hpp
-        src/input.cpp
-        src/input.hpp
-        src/input_codes.hpp
         src/glm_wrapper.hpp
         src/imgui_wrapper.hpp
-        src/core/timestep.cpp
-        src/core/timestep.hpp
+        src/core/window.cpp
+        src/core/window.hpp
+        src/core/application.cpp
+        src/core/application.hpp
+        src/core/entry_point.hpp
+        src/core/input.cpp
+        src/core/input.hpp
+        src/core/input_codes.hpp
         src/logger/log.cpp
         src/logger/log.hpp
         src/events/event.hpp
@@ -68,6 +66,8 @@ add_library(sonata ${LIB_BUILD_TYPE}
         src/rendering/opengl/opengl_renderer_api.hpp
         src/rendering/opengl/opengl_texture2d.cpp
         src/rendering/opengl/opengl_texture2d.hpp
+        src/rendering/renderer_2d.cpp
+        src/rendering/renderer_2d.hpp
 )
 
 target_compile_features(sonata PRIVATE cxx_std_20)

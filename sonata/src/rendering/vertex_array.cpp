@@ -6,12 +6,12 @@
 
 namespace Sonata {
 
-VertexArray* VertexArray::Create()
+Ref<VertexArray> VertexArray::Create()
 {
     switch (Renderer::GetAPI())
     {
         case RendererAPI::API::OpenGL:
-            return new OpenGLVertexArray();
+            return CreateRef<OpenGLVertexArray>();
         case RendererAPI::API::None:
             SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
             return nullptr;

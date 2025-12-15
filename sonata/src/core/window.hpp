@@ -1,5 +1,5 @@
 #pragma once
-#include "events/event.hpp"
+#include "../events/event.hpp"
 
 class GLFWwindow;
 

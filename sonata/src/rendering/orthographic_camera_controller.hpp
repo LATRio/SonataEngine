@@ -22,11 +22,14 @@ private:
     bool OnMouseScrolled(const EventMouseScrolled& p_Event);
     bool OnWindowResized(const EventWindowResize& p_Event);
 
+    void CalculateCameraProjection();
+
     float m_AspectRatio{};
     bool m_CanRotate{};
 
     float m_ZoomLevel{1.0f};
     float m_ZoomLevelMin{0.25f};
+    float m_ZoomLevelMax{100.0f};
     float m_ZoomSensitivity{0.05f};
 
     OrthographicCamera m_Camera;

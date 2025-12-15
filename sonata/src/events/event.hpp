@@ -11,6 +11,8 @@ enum class EventType
     eWindowFocusLost,
     eWindowFocusGained,
     eWindowMoved,
+    eWindowMinimize,
+    eFramebufferResize,
     eKeyPressed,
     eKeyReleased,
     eMouseButtonPressed,

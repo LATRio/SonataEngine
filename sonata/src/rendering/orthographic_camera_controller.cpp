@@ -1,8 +1,8 @@
 #include "orthographic_camera_controller.hpp"
 
+#include "../core/input.hpp"
 #include "events/app_event.hpp"
 #include "events/mouse_event.hpp"
-#include "input.hpp"
 
 namespace Sonata {
 
@@ -68,7 +68,10 @@ void OrthographicCameraController::OnImGuiRender()
     DragFloat("Rotation Speed", &m_RotationSpeed);
     EndDisabled();
 
-    DragFloat("ZoomLevel", &m_ZoomLevel, 0.1f, m_ZoomLevelMin);
+    if (DragFloat("ZoomLevel", &m_ZoomLevel, 0.01f, m_ZoomLevelMin, m_ZoomLevelMax))
+    {
+        CalculateCameraProjection();
+    }
     DragFloat("Zoom Sensitivity", &m_ZoomSensitivity, 0.01f, 0.0f);
     End();
 }
@@ -77,15 +80,20 @@ bool OrthographicCameraController::OnMouseScrolled(const EventMouseScrolled& p_E
 {
     m_ZoomLevel -= p_Event.GetOffsetY() * m_ZoomSensitivity;
     m_ZoomLevel = std::max(m_ZoomLevel, m_ZoomLevelMin);
-    m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+    CalculateCameraProjection();
     return false;
 }
 
 bool OrthographicCameraController::OnWindowResized(const EventWindowResize& p_Event)
 {
     m_AspectRatio = p_Event.GetAspectRatio();
-    m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+    CalculateCameraProjection();
     return false;
+}
+
+void OrthographicCameraController::CalculateCameraProjection()
+{
+    m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 }
 
 }

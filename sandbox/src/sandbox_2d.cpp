@@ -1,0 +1,49 @@
+#include "sandbox_2d.hpp"
+
+Sandbox2D::Sandbox2D()
+    : Layer("Sandbox2D"), m_CameraController(16.0f / 9.0f)
+{
+}
+
+void Sandbox2D::OnAttach()
+{
+
+}
+
+void Sandbox2D::OnDetach()
+{
+
+}
+
+void Sandbox2D::OnUpdate(const float p_DeltaTime)
+{
+    m_CameraController.OnUpdate(p_DeltaTime);
+
+    Sonata::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
+    Sonata::RenderCommand::Clear();
+
+    Sonata::Renderer2D::BeginScene(m_CameraController.GetCamera());
+
+    Sonata::Renderer2D::DrawQuad({0.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 0.2f, 0.3f, 1.0f});
+
+    Sonata::Renderer2D::EndScene();
+
+    // m_FlatColorShader->Bind();
+    // m_FlatColorShader->SetVec4("u_Color", m_SquareColor);
+}
+
+void Sandbox2D::OnEvent(Sonata::Event& p_Event)
+{
+    m_CameraController.OnEvent(p_Event);
+}
+
+void Sandbox2D::OnImGuiRender()
+{
+    using namespace ImGui;
+
+    Begin("Settings", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+    ColorEdit4("Color", glm::value_ptr(m_SquareColor));
+    End();
+
+    m_CameraController.OnImGuiRender();
+}
