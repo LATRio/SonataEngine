@@ -11,7 +11,7 @@ public:
     [[nodiscard]] int GetWidth() const override { return m_Width; }
     [[nodiscard]] int GetHeight() const override { return m_Height; }
 
-    void Bind(uint32_t p_Unit) const override;
+    void Bind(uint32_t p_Unit = 0) const override;
 
 private:
     std::string m_Path;

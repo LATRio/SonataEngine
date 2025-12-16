@@ -5,7 +5,6 @@ namespace Sonata {
 
 class LayerStack {
 public:
-    LayerStack();
     ~LayerStack();
 
     void PushLayer(Layer* p_Layer);

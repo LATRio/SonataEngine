@@ -18,5 +18,7 @@ private:
     Sonata::Ref<Sonata::VertexArray> m_SquareVA;
     Sonata::Ref<Sonata::Shader> m_FlatColorShader;
 
+    Sonata::Ref<Sonata::Texture2D> m_Texture;
+
     glm::vec4 m_SquareColor{0.8f, 0.2f, 0.3f, 1.0f};
 };

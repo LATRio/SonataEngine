@@ -9,6 +9,8 @@ void OpenGLRendererAPI::Init()
 {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glEnable(GL_DEPTH_TEST);
 }
 
 void OpenGLRendererAPI::SetViewport(const int p_X, const int p_Y, const int p_Width, const int p_Height) const

@@ -1,7 +1,10 @@
 #pragma once
+#include "core.hpp"
 #include "orthographic_camera.hpp"
 
 namespace Sonata {
+
+class Texture2D;
 
 class Renderer2D {
 public:
@@ -13,6 +16,8 @@ public:
 
     static void DrawQuad(const glm::vec2& p_Position, const glm::vec2& p_Size, const glm::vec4& p_Color);
     static void DrawQuad(const glm::vec3& p_Position, const glm::vec2& p_Size, const glm::vec4& p_Color);
+    static void DrawQuad(const glm::vec2& p_Position, const glm::vec2& p_Size, const Ref<Texture2D>& p_Texture);
+    static void DrawQuad(const glm::vec3& p_Position, const glm::vec2& p_Size, const Ref<Texture2D>& p_Texture);
 };
 
 }

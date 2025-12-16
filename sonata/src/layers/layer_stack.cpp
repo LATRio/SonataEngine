@@ -2,10 +2,6 @@
 
 namespace Sonata {
 
-LayerStack::LayerStack()
-{
-}
-
 LayerStack::~LayerStack()
 {
     for (auto* layer : m_Layers)
@@ -18,6 +14,7 @@ LayerStack::~LayerStack()
 void LayerStack::PushLayer(Layer* p_Layer)
 {
     m_Layers.emplace(m_Layers.begin() + m_LayerInsertIndex, p_Layer);
+    p_Layer->OnAttach();
     ++m_LayerInsertIndex;
 }
 
