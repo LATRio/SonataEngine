@@ -32,6 +32,7 @@ void OpenGLRendererAPI::Clear() const
 void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& p_VertexArray) const
 {
     glDrawElements(GL_TRIANGLES, p_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 }

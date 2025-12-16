@@ -6,12 +6,15 @@ namespace Sonata {
 class OpenGLTexture2D final : public Texture2D {
 public:
     explicit OpenGLTexture2D(std::string_view p_Path);
+    OpenGLTexture2D(int p_Width, int p_Height);
     ~OpenGLTexture2D() override;
 
     [[nodiscard]] int GetWidth() const override { return m_Width; }
     [[nodiscard]] int GetHeight() const override { return m_Height; }
 
-    void Bind(uint32_t p_Unit = 0) const override;
+    void SetData(const void* p_Data, int p_Size) override;
+
+    void Bind(uint32_t p_Unit) const override;
 
 private:
     std::string m_Path;
@@ -20,6 +23,8 @@ private:
     int m_Height{};
 
     GLuint m_TextureID{};
+    GLenum m_InternalFormat{};
+    GLenum m_DataFormat{};
 };
 
 }
