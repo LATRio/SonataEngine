@@ -3,6 +3,7 @@
 #include "../events/key_event.hpp"
 #include "../events/mouse_event.hpp"
 #include "../rendering/opengl/opengl_context.hpp"
+#include "profiler/instrumentor.hpp"
 
 namespace Sonata
 {
@@ -16,6 +17,7 @@ void GLFWErrorCallback(int p_ErrorCode, const char* p_Description)
 
 Window::Window(const WindowProps &p_Props)
 {
+    SN_PROFILE_FUNCTION();
     if (!glfwInitialized)
     {
         const int success = glfwInit();
@@ -41,16 +43,20 @@ Window::Window(const WindowProps &p_Props)
         p_Props.m_VSync
     };
 
-    m_Window = glfwCreateWindow(
-        m_WindowData.m_Width,
-        m_WindowData.m_Height,
-        m_WindowData.m_Title.data(),
-        nullptr, nullptr);
-    if (!m_Window)
     {
-        glfwTerminate();
-        SN_ENGINE_FATAL("Failed to create GLFW window");
+        SN_PROFILE_SCOPE("glfwCreateWindow");
+        m_Window = glfwCreateWindow(
+            m_WindowData.m_Width,
+            m_WindowData.m_Height,
+            m_WindowData.m_Title.data(),
+            nullptr, nullptr);
+        if (!m_Window)
+        {
+            glfwTerminate();
+            SN_ENGINE_FATAL("Failed to create GLFW window");
+        }
     }
+
     m_RenderContext = CreateScope<OpenGLContext>(m_Window);
     m_RenderContext->Init();
 
@@ -152,6 +158,7 @@ Window::Window(const WindowProps &p_Props)
 
 Window::~Window()
 {
+    SN_PROFILE_FUNCTION();
     glfwDestroyWindow(m_Window);
 #if GLFW_VERSION_MAJOR <= 3 && GLFW_VERSION_MINOR < 5
     glfwPollEvents();
@@ -161,11 +168,13 @@ Window::~Window()
 
 void Window::PollEvents() const
 {
+    SN_PROFILE_FUNCTION();
     glfwPollEvents();
 }
 
 void Window::SwapBuffers() const
 {
+    SN_PROFILE_FUNCTION();
     m_RenderContext->SwapBuffers();
 }
 
@@ -176,6 +185,7 @@ void Window::SetEventCallback(const EventCallbackFn &p_Callback)
 
 void Window::SetVSync(const bool p_Enable)
 {
+    SN_PROFILE_FUNCTION();
     glfwSwapInterval(p_Enable ? 1 : 0);
     m_WindowData.m_VSync = p_Enable;
 }

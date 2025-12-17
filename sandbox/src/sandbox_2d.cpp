@@ -1,4 +1,5 @@
 #include "sandbox_2d.hpp"
+#include "profiler/instrumentor.hpp"
 
 Sandbox2D::Sandbox2D()
     : Layer("Sandbox2D"), m_CameraController(16.0f / 9.0f)
@@ -7,17 +8,23 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttach()
 {
+    SN_PROFILE_FUNCTION();
+
     Sonata::Renderer2D::Init();
     m_Texture = Sonata::Texture2D::Create("assets/awesomeface.png");
 }
 
 void Sandbox2D::OnDetach()
 {
+    SN_PROFILE_FUNCTION();
+
     Sonata::Renderer2D::Shutdown();
 }
 
 void Sandbox2D::OnUpdate(const float p_DeltaTime)
 {
+    SN_PROFILE_FUNCTION();
+
     m_CameraController.OnUpdate(p_DeltaTime);
 
     Sonata::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
@@ -30,23 +37,18 @@ void Sandbox2D::OnUpdate(const float p_DeltaTime)
     Sonata::Renderer2D::DrawQuad({0.2f, 0.5f}, {0.5f, 0.5f}, m_Texture);
 
     Sonata::Renderer2D::EndScene();
-
-    // m_FlatColorShader->Bind();
-    // m_FlatColorShader->SetVec4("u_Color", m_SquareColor);
 }
 
 void Sandbox2D::OnEvent(Sonata::Event& p_Event)
 {
+    SN_PROFILE_FUNCTION();
+
     m_CameraController.OnEvent(p_Event);
 }
 
 void Sandbox2D::OnImGuiRender()
 {
-    using namespace ImGui;
-
-    Begin("Settings", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-    ColorEdit4("Color", glm::value_ptr(m_SquareColor));
-    End();
+    SN_PROFILE_FUNCTION();
 
     m_CameraController.OnImGuiRender();
 }

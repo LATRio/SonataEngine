@@ -5,6 +5,7 @@
 
 #include "core.hpp"
 #include "glm_wrapper.hpp"
+#include "profiler/instrumentor.hpp"
 
 namespace Sonata {
 
@@ -20,6 +21,8 @@ GLenum StrToType(std::string_view p_Type)
 
 OpenGLShader::OpenGLShader(const std::string_view p_Filepath)
 {
+    SN_PROFILE_FUNCTION();
+
     m_Name = std::filesystem::path(p_Filepath).stem().string();
     const std::string source = ReadFile(p_Filepath);
     auto shaderSources = Preprocess(source);
@@ -29,6 +32,8 @@ OpenGLShader::OpenGLShader(const std::string_view p_Filepath)
 OpenGLShader::OpenGLShader(const std::string_view p_Name, const std::string_view p_VertSrc, const std::string_view p_FragSrc)
     : m_Name(p_Name)
 {
+    SN_PROFILE_FUNCTION();
+
     std::unordered_map<GLenum, std::string> shaderSources;
     shaderSources.reserve(2);
     shaderSources[GL_VERTEX_SHADER] = p_VertSrc;
@@ -38,21 +43,29 @@ OpenGLShader::OpenGLShader(const std::string_view p_Name, const std::string_view
 
 OpenGLShader::~OpenGLShader()
 {
+    SN_PROFILE_FUNCTION();
+
     glDeleteProgram(m_ProgramID);
 }
 
 void OpenGLShader::Bind() const
 {
+    SN_PROFILE_FUNCTION();
+
     glUseProgram(m_ProgramID);
 }
 
 void OpenGLShader::Unbind() const
 {
+    SN_PROFILE_FUNCTION();
+
     glUseProgram(0);
 }
 
 void OpenGLShader::SetInt(const std::string_view p_Name, const int p_Value)
 {
+    SN_PROFILE_FUNCTION();
+
     const GLint location = glGetUniformLocation(m_ProgramID, p_Name.data());
     SN_ASSERT_MSG(location != -1, std::format("Uniform location wasn't found! Program: {} ({})", m_ProgramID, p_Name));
     glUniform1i(location, p_Value);
@@ -60,6 +73,8 @@ void OpenGLShader::SetInt(const std::string_view p_Name, const int p_Value)
 
 void OpenGLShader::SetVec3(const std::string_view p_Name, const glm::vec3& p_Value)
 {
+    SN_PROFILE_FUNCTION();
+
     const GLint location = glGetUniformLocation(m_ProgramID, p_Name.data());
     SN_ASSERT_MSG(location != -1, std::format("Uniform location wasn't found! Program: {} ({})", m_ProgramID, p_Name));
     glUniform3f(location, p_Value.x, p_Value.y, p_Value.z);
@@ -67,6 +82,8 @@ void OpenGLShader::SetVec3(const std::string_view p_Name, const glm::vec3& p_Val
 
 void OpenGLShader::SetVec4(const std::string_view p_Name, const glm::vec4& p_Value)
 {
+    SN_PROFILE_FUNCTION();
+
     const GLint location = glGetUniformLocation(m_ProgramID, p_Name.data());
     SN_ASSERT_MSG(location != -1, std::format("Uniform location wasn't found! Program: {} ({})", m_ProgramID, p_Name));
     glUniform4f(location, p_Value.x, p_Value.y, p_Value.z, p_Value.w);
@@ -74,6 +91,8 @@ void OpenGLShader::SetVec4(const std::string_view p_Name, const glm::vec4& p_Val
 
 void OpenGLShader::SetMat4(const std::string_view p_Name, const glm::mat4& p_Value)
 {
+    SN_PROFILE_FUNCTION();
+
     const GLint location = glGetUniformLocation(m_ProgramID, p_Name.data());
     SN_ASSERT_MSG(location != -1, std::format("Uniform location wasn't found! Program: {} ({})", m_ProgramID, p_Name));
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(p_Value));
@@ -81,6 +100,8 @@ void OpenGLShader::SetMat4(const std::string_view p_Name, const glm::mat4& p_Val
 
 std::string OpenGLShader::ReadFile(std::string_view p_FilePath) const
 {
+    SN_PROFILE_FUNCTION();
+
     std::ifstream in{p_FilePath.data()};
     if (in.is_open())
     {
@@ -100,6 +121,8 @@ std::string OpenGLShader::ReadFile(std::string_view p_FilePath) const
 
 std::unordered_map<GLenum, std::string> OpenGLShader::Preprocess(std::string_view p_Source) const
 {
+    SN_PROFILE_FUNCTION();
+
     std::unordered_map<GLenum, std::string> shaderSources;
 
     auto* typeToken{"#type"};
@@ -126,6 +149,8 @@ std::unordered_map<GLenum, std::string> OpenGLShader::Preprocess(std::string_vie
 
 void OpenGLShader::CompileShaders(const std::unordered_map<GLenum, std::string>& p_ShaderSources)
 {
+    SN_PROFILE_FUNCTION();
+
     m_ProgramID = glCreateProgram();
     SN_ASSERT_MSG(p_ShaderSources.size() <= 2, "Too many shaders! Only 2 supported for now.");
     std::array<GLuint, 2> shaderIDs{};

@@ -1,6 +1,7 @@
 #include "renderer_2d.hpp"
 
 #include "buffer.hpp"
+#include "profiler/instrumentor.hpp"
 #include "render_command.hpp"
 #include "shader.hpp"
 #include "texture.hpp"
@@ -19,6 +20,8 @@ static Renderer2DStorage* s_Data;
 
 void Renderer2D::Init()
 {
+    SN_PROFILE_FUNCTION();
+
     s_Data = new Renderer2DStorage();
     s_Data->QuadVertexArray = VertexArray::Create();
     constexpr float squareVertices[] = {
@@ -57,6 +60,8 @@ void Renderer2D::Shutdown()
 
 void Renderer2D::BeginScene(const OrthographicCamera& camera)
 {
+    SN_PROFILE_FUNCTION();
+
     s_Data->TextureShader->Bind();
     s_Data->TextureShader->SetMat4("u_ViewProj", camera.GetViewProjMatrix());
 }
@@ -72,6 +77,8 @@ void Renderer2D::DrawQuad(const glm::vec2& p_Position, const glm::vec2& p_Size, 
 
 void Renderer2D::DrawQuad(const glm::vec3& p_Position, const glm::vec2& p_Size, const glm::vec4& p_Color)
 {
+    SN_PROFILE_FUNCTION();
+
     s_Data->TextureShader->SetVec4("u_Color", p_Color);
 
     const glm::mat4 transform =
@@ -91,6 +98,8 @@ void Renderer2D::DrawQuad(const glm::vec2& p_Position, const glm::vec2& p_Size, 
 
 void Renderer2D::DrawQuad(const glm::vec3& p_Position, const glm::vec2& p_Size, const Ref<Texture2D>& p_Texture)
 {
+    SN_PROFILE_FUNCTION();
+
     s_Data->TextureShader->SetVec4("u_Color", glm::vec4(1.0f));
 
     const glm::mat4 transform =

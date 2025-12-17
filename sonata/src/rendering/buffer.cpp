@@ -1,13 +1,16 @@
 #include "buffer.hpp"
 
 #include "core.hpp"
-#include "renderer.hpp"
 #include "opengl/opengl_buffer.hpp"
+#include "profiler/instrumentor.hpp"
+#include "renderer.hpp"
 
 namespace Sonata {
 
 void BufferLayout::CalculateOffsetAndStride()
 {
+    SN_PROFILE_FUNCTION();
+
     int offset{};
     for (auto& element : m_Elements)
     {

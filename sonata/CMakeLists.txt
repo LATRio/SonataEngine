@@ -54,6 +54,8 @@ add_library(sonata ${LIB_BUILD_TYPE}
         src/rendering/orthographic_camera.hpp
         src/rendering/orthographic_camera_controller.cpp
         src/rendering/orthographic_camera_controller.hpp
+        src/rendering/renderer_2d.cpp
+        src/rendering/renderer_2d.hpp
         src/rendering/opengl/opengl_context.cpp
         src/rendering/opengl/opengl_context.hpp
         src/rendering/opengl/opengl_shader.cpp
@@ -66,8 +68,8 @@ add_library(sonata ${LIB_BUILD_TYPE}
         src/rendering/opengl/opengl_renderer_api.hpp
         src/rendering/opengl/opengl_texture2d.cpp
         src/rendering/opengl/opengl_texture2d.hpp
-        src/rendering/renderer_2d.cpp
-        src/rendering/renderer_2d.hpp
+        src/profiler/instrumentor.hpp
+        src/profiler/instrumentor.cpp
 )
 
 target_compile_features(sonata PRIVATE cxx_std_20)
@@ -92,6 +94,8 @@ target_precompile_headers(sonata PRIVATE
         <GLFW/glfw3.h>
         <imgui.h>
         <stb_image.h>
+        src/profiler/instrumentor.hpp
+        src/logger/log.hpp
 )
 
 target_link_libraries(sonata

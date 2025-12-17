@@ -1,9 +1,13 @@
 #include "opengl_texture2d.hpp"
 
+#include "profiler/instrumentor.hpp"
+
 namespace Sonata {
 
 OpenGLTexture2D::OpenGLTexture2D(const std::string_view p_Path) : m_Path(p_Path)
 {
+    SN_PROFILE_FUNCTION();
+
     int channels;
     stbi_set_flip_vertically_on_load(true);
     stbi_uc* data{stbi_load(m_Path.c_str(), &m_Width, &m_Height, &channels, 0)};
@@ -30,11 +34,15 @@ OpenGLTexture2D::OpenGLTexture2D(const int p_Width, const int p_Height)
 
 OpenGLTexture2D::~OpenGLTexture2D()
 {
+    SN_PROFILE_FUNCTION();
+
     glDeleteTextures(1, &m_TextureID);
 }
 
 void OpenGLTexture2D::SetData(const void* p_Data, const int p_Size)
 {
+    SN_PROFILE_FUNCTION();
+
     // ReSharper disable once CppDFAConstantConditions
     const int bpp{m_DataFormat == GL_RGBA ? 4 : 3};
     SN_ASSERT_MSG(p_Size == m_Width * m_Height * bpp, "Data must be entire texture!");
@@ -53,6 +61,8 @@ void OpenGLTexture2D::SetData(const void* p_Data, const int p_Size)
 
 void OpenGLTexture2D::Bind(const uint32_t p_Unit) const
 {
+    SN_PROFILE_FUNCTION();
+
     glBindTextureUnit(p_Unit, m_TextureID);
 }
 

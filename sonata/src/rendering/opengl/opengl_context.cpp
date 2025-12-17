@@ -1,5 +1,6 @@
 #include "opengl_context.hpp"
 #include "core.hpp"
+#include "profiler/instrumentor.hpp"
 
 namespace Sonata {
 
@@ -68,6 +69,8 @@ void APIENTRY glDebugOutput(GLenum p_Source,
 
 void OpenGLContext::Init()
 {
+    SN_PROFILE_FUNCTION();
+
     glfwMakeContextCurrent(m_Window);
 
     const int success = gladLoadGL(glfwGetProcAddress);
@@ -89,6 +92,8 @@ void OpenGLContext::Init()
 
 void OpenGLContext::SwapBuffers()
 {
+    SN_PROFILE_FUNCTION();
+
     glfwSwapBuffers(m_Window);
 }
 
