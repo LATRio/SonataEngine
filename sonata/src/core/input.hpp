@@ -12,4 +12,4 @@ public:
     static std::pair<double, double> GetCursorPosition();
 };
 
-}
+} // namespace Sonata

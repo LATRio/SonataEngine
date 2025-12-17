@@ -1,8 +1,8 @@
 #include "application.hpp"
 
-#include "../events/app_event.hpp"
-#include "../rendering/renderer.hpp"
+#include "events/app_event.hpp"
 #include "profiler/instrumentor.hpp"
+#include "rendering/renderer.hpp"
 #include "window.hpp"
 
 namespace Sonata {
@@ -31,6 +31,7 @@ void Application::Init(const WindowProps& p_Props)
 void Application::Loop()
 {
     SN_PROFILE_FUNCTION();
+
     while (m_IsRunning)
     {
         SN_PROFILE_SCOPE("Application Loop");
@@ -56,6 +57,7 @@ void Application::Loop()
 void Application::OnEvent(Event& p_Event)
 {
     SN_PROFILE_FUNCTION();
+
     EventDispatcher dispatcher(p_Event);
     dispatcher.Dispatch<EventWindowClose>(SN_BIND_EVENT_FUNC(Application::OnWindowClosed));
     dispatcher.Dispatch<EventFramebufferResize>(SN_BIND_EVENT_FUNC(Application::OnFramebufferResize));
@@ -66,6 +68,7 @@ void Application::OnEvent(Event& p_Event)
 bool Application::OnWindowClosed(const EventWindowClose& p_Event)
 {
     SN_PROFILE_FUNCTION();
+
     Shutdown();
     return true;
 }
@@ -73,6 +76,7 @@ bool Application::OnWindowClosed(const EventWindowClose& p_Event)
 bool Application::OnWindowMinimized(const EventWindowMinimize& p_Event)
 {
     SN_PROFILE_FUNCTION();
+
     m_IsMinimized = p_Event.IsMinimized();
     return true;
 }
@@ -80,6 +84,7 @@ bool Application::OnWindowMinimized(const EventWindowMinimize& p_Event)
 bool Application::OnFramebufferResize(const EventFramebufferResize& p_Event) const
 {
     SN_PROFILE_FUNCTION();
+
     Renderer::OnFramebufferResize(p_Event.GetWidth(), p_Event.GetHeight());
     return true;
 }
@@ -87,19 +92,22 @@ bool Application::OnFramebufferResize(const EventFramebufferResize& p_Event) con
 void Application::PushLayer(Layer* p_Layer)
 {
     SN_PROFILE_FUNCTION();
+
     m_LayerStack.PushLayer(p_Layer);
 }
 
 void Application::PushOverlay(Layer* p_Layer)
 {
     SN_PROFILE_FUNCTION();
+
     m_LayerStack.PushOverlay(p_Layer);
 }
 
 void Application::Shutdown()
 {
     SN_PROFILE_FUNCTION();
+
     m_IsRunning = false;
 }
 
-} // Sonata
+} // namespace Sonata

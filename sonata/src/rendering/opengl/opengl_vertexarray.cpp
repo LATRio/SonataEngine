@@ -9,18 +9,23 @@ GLenum TypeToGL(ShaderDataType p_Type)
 {
     switch (p_Type)
     {
-    case ShaderDataType::Float:
-    case ShaderDataType::Float2:
-    case ShaderDataType::Float3:
-    case ShaderDataType::Float4:
-    case ShaderDataType::Mat3:
-    case ShaderDataType::Mat4:      return GL_FLOAT;
-    case ShaderDataType::Int:
-    case ShaderDataType::Int2:
-    case ShaderDataType::Int3:
-    case ShaderDataType::Int4:      return GL_INT;
-    case ShaderDataType::Bool:      return GL_BOOL;
-    default: SN_ENGINE_ERR("Wrong ShaderDataType: {}", static_cast<int>(p_Type)); return GL_NONE;
+        case ShaderDataType::Float:
+        case ShaderDataType::Float2:
+        case ShaderDataType::Float3:
+        case ShaderDataType::Float4:
+        case ShaderDataType::Mat3:
+        case ShaderDataType::Mat4:
+            return GL_FLOAT;
+        case ShaderDataType::Int:
+        case ShaderDataType::Int2:
+        case ShaderDataType::Int3:
+        case ShaderDataType::Int4:
+            return GL_INT;
+        case ShaderDataType::Bool:
+            return GL_BOOL;
+        default:
+            SN_ENGINE_ERR("Wrong ShaderDataType: {}", static_cast<int>(p_Type));
+            return GL_NONE;
     }
 }
 
@@ -70,12 +75,9 @@ void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& p_VertexBuffer)
             case ShaderDataType::Float3:
             case ShaderDataType::Float4: {
                 glEnableVertexAttribArray(m_VertexBufferIndex);
-                glVertexAttribPointer(m_VertexBufferIndex,
-                    elem.GetComponentCount(),
-                    TypeToGL(elem.Type),
-                    elem.Normalized,
-                    layout.GetStride(),
-                    reinterpret_cast<void*>(elem.Offset));
+                glVertexAttribPointer(
+                    m_VertexBufferIndex, elem.GetComponentCount(), TypeToGL(elem.Type), elem.Normalized,
+                    layout.GetStride(), reinterpret_cast<void*>(elem.Offset));
                 m_VertexBufferIndex++;
                 break;
             }
@@ -85,10 +87,8 @@ void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& p_VertexBuffer)
             case ShaderDataType::Int4:
             case ShaderDataType::Bool: {
                 glEnableVertexAttribArray(m_VertexBufferIndex);
-                glVertexAttribIPointer(m_VertexBufferIndex,
-                    elem.GetComponentCount(),
-                    TypeToGL(elem.Type),
-                    layout.GetStride(),
+                glVertexAttribIPointer(
+                    m_VertexBufferIndex, elem.GetComponentCount(), TypeToGL(elem.Type), layout.GetStride(),
                     reinterpret_cast<void*>(elem.Offset));
                 m_VertexBufferIndex++;
                 break;
@@ -99,11 +99,8 @@ void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& p_VertexBuffer)
                 for (int i = 0; i < count; i++)
                 {
                     glEnableVertexAttribArray(m_VertexBufferIndex);
-                    glVertexAttribPointer(m_VertexBufferIndex,
-                        count,
-                        TypeToGL(elem.Type),
-                        elem.Normalized,
-                        layout.GetStride(),
+                    glVertexAttribPointer(
+                        m_VertexBufferIndex, count, TypeToGL(elem.Type), elem.Normalized, layout.GetStride(),
                         reinterpret_cast<void*>(elem.Offset + static_cast<int>(sizeof(float)) * count * i));
                     glVertexAttribDivisor(m_VertexBufferIndex, 1);
                     m_VertexBufferIndex++;
@@ -126,10 +123,6 @@ void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& p_IndexBuffer)
     p_IndexBuffer->Bind();
 
     m_IndexBuffer = p_IndexBuffer;
-}
-const Ref<IndexBuffer>& OpenGLVertexArray::GetIndexBuffer() const
-{
-    return m_IndexBuffer;
 }
 
 } // namespace Sonata

@@ -1,7 +1,8 @@
 #pragma once
-#include <csignal>
 #include "logger/log.hpp"
+#include <csignal>
 
+/* clang-format off */
 #define TEXT(x) #x
 #define BIT(x) (1 << (x))
 #define SN_BIND_EVENT_FUNC(func) std::bind(&func, this, std::placeholders::_1)
@@ -60,3 +61,4 @@ constexpr Ref<T> CreateRef(Args&& ... p_Args)
 #define SN_ASSERT(cond)
 #define SN_ASSERT_MSG(cond, msg)
 #endif
+/* clang-format on */

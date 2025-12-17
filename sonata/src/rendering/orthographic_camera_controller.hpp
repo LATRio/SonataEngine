@@ -9,11 +9,14 @@ class EventMouseScrolled;
 
 class OrthographicCameraController {
 public:
-    explicit OrthographicCameraController(float p_AspectRation, bool p_CanRotate = false);
+    explicit OrthographicCameraController(const float p_AspectRation, const bool p_CanRotate = false)
+        : m_AspectRatio(p_AspectRation)
+        , m_CanRotate(p_CanRotate)
+        , m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel)
+    {}
 
     void OnUpdate(float p_DeltaTime);
     void OnEvent(Event& e);
-    void OnImGuiRender();
 
     OrthographicCamera& GetCamera() { return m_Camera; }
     const OrthographicCamera& GetCamera() const { return m_Camera; }
@@ -40,4 +43,4 @@ private:
     float m_RotationSpeed{45.0f};
 };
 
-}
+} // namespace Sonata

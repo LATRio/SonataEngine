@@ -12,7 +12,6 @@ public:
 
     void OnAttach() override;
     void OnDetach() override;
-    void OnEvent(Event& event) override;
     void Begin() const;
     void End() const;
 
@@ -20,4 +19,4 @@ private:
     float m_Time{};
 };
 
-}
+} // namespace Sonata

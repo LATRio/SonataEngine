@@ -1,8 +1,7 @@
 #include "vertex_array.hpp"
 
-#include "buffer.hpp"
-#include "renderer.hpp"
 #include "opengl/opengl_vertexarray.hpp"
+#include "renderer.hpp"
 
 namespace Sonata {
 
@@ -21,4 +20,4 @@ Ref<VertexArray> VertexArray::Create()
     }
 }
 
-}
+} // namespace Sonata

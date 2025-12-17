@@ -7,12 +7,6 @@
 
 namespace Sonata {
 
-OrthographicCameraController::OrthographicCameraController(const float p_AspectRation, const bool p_CanRotate)
-    : m_AspectRatio(p_AspectRation), m_CanRotate(p_CanRotate),
-      m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel)
-{
-}
-
 void OrthographicCameraController::OnUpdate(const float p_DeltaTime)
 {
     SN_PROFILE_FUNCTION();
@@ -35,8 +29,10 @@ void OrthographicCameraController::OnUpdate(const float p_DeltaTime)
     }
     m_Camera.SetPosition(m_Position);
 
+    // ReSharper disable once CppDFAConstantConditions
     if (m_CanRotate)
     {
+        // ReSharper disable once CppDFAUnreachableCode
         if (Input::IsKeyPressed(SN_KEY_Q))
         {
             m_Rotation += m_RotationSpeed * p_DeltaTime;
@@ -57,28 +53,6 @@ void OrthographicCameraController::OnEvent(Event& e)
     EventDispatcher dispatcher(e);
     dispatcher.Dispatch<EventMouseScrolled>(SN_BIND_EVENT_FUNC(OrthographicCameraController::OnMouseScrolled));
     dispatcher.Dispatch<EventWindowResize>(SN_BIND_EVENT_FUNC(OrthographicCameraController::OnWindowResized));
-}
-
-void OrthographicCameraController::OnImGuiRender()
-{
-    // using namespace ImGui;
-    //
-    // Begin("Camera Controller", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-    // DragFloat3("Position", glm::value_ptr(m_Position), 0.01f);
-    // DragFloat("Movement Speed", &m_TranslationSpeed, 0.01f, 0.0f);
-    //
-    // Checkbox("Can Rotate", &m_CanRotate);
-    // BeginDisabled(!m_CanRotate);
-    // DragFloat("Rotation", &m_Rotation);
-    // DragFloat("Rotation Speed", &m_RotationSpeed);
-    // EndDisabled();
-    //
-    // if (DragFloat("ZoomLevel", &m_ZoomLevel, 0.01f, m_ZoomLevelMin, m_ZoomLevelMax))
-    // {
-    //     CalculateCameraProjection();
-    // }
-    // DragFloat("Zoom Sensitivity", &m_ZoomSensitivity, 0.01f, 0.0f);
-    // End();
 }
 
 bool OrthographicCameraController::OnMouseScrolled(const EventMouseScrolled& p_Event)
@@ -107,4 +81,4 @@ void OrthographicCameraController::CalculateCameraProjection()
     m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 }
 
-}
+} // namespace Sonata

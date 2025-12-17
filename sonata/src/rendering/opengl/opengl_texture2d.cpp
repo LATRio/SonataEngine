@@ -4,7 +4,8 @@
 
 namespace Sonata {
 
-OpenGLTexture2D::OpenGLTexture2D(const std::string_view p_Path) : m_Path(p_Path)
+OpenGLTexture2D::OpenGLTexture2D(const std::string_view p_Path)
+    : m_Path(p_Path)
 {
     SN_PROFILE_FUNCTION();
 
@@ -28,9 +29,6 @@ OpenGLTexture2D::OpenGLTexture2D(const std::string_view p_Path) : m_Path(p_Path)
 
     stbi_image_free(data);
 }
-
-OpenGLTexture2D::OpenGLTexture2D(const int p_Width, const int p_Height)
-    : m_Width(p_Width), m_Height(p_Height), m_InternalFormat(GL_RGBA8), m_DataFormat(GL_RGBA) {}
 
 OpenGLTexture2D::~OpenGLTexture2D()
 {
@@ -66,4 +64,4 @@ void OpenGLTexture2D::Bind(const uint32_t p_Unit) const
     glBindTextureUnit(p_Unit, m_TextureID);
 }
 
-}
+} // namespace Sonata

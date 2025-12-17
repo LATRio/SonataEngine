@@ -6,7 +6,12 @@ namespace Sonata {
 class OpenGLTexture2D final : public Texture2D {
 public:
     explicit OpenGLTexture2D(std::string_view p_Path);
-    OpenGLTexture2D(int p_Width, int p_Height);
+    OpenGLTexture2D(const int p_Width, const int p_Height)
+        : m_Width(p_Width)
+        , m_Height(p_Height)
+        , m_InternalFormat(GL_RGBA8)
+        , m_DataFormat(GL_RGBA)
+    {}
     ~OpenGLTexture2D() override;
 
     [[nodiscard]] int GetWidth() const override { return m_Width; }
@@ -27,4 +32,4 @@ private:
     GLenum m_DataFormat{};
 };
 
-}
+} // namespace Sonata

@@ -20,7 +20,7 @@ enum class EventType
     eMouseMoved,
     eMouseScrolled,
 };
-
+/* clang-format off */
 enum EventCategory
 {
     eNone = 0,
@@ -31,23 +31,24 @@ enum EventCategory
     eMouseButton     = BIT(4),
 };
 
-#define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::e##type; } \
+#define EVENT_CLASS_TYPE(type)                                              \
+static EventType GetStaticType() { return EventType::e##type; }             \
 virtual EventType GetEventType() const override { return GetStaticType(); } \
 virtual const char* GetName() const override { return #type; }
 
 #define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override { return category; }
-
+/* clang-format on */
 // TODO: Test with std::variant
-class Event
-{
+class Event {
     friend class EventDispatcher;
+
 public:
     virtual ~Event() = default;
 
     bool Handled{};
 
     [[nodiscard]] virtual EventType GetEventType() const = 0;
-    [[nodiscard]] virtual const char *GetName() const = 0;
+    [[nodiscard]] virtual const char* GetName() const = 0;
     [[nodiscard]] virtual int GetCategoryFlags() const = 0;
     [[nodiscard]] virtual std::string ToString() const { return GetName(); }
 
@@ -57,16 +58,16 @@ public:
     }
 };
 
-class EventDispatcher
-{
-    template<typename T>
+class EventDispatcher {
+    template <typename T>
     using EventFn = std::function<bool(T&)>;
 
 public:
     explicit EventDispatcher(Event& p_Event)
-        : m_Event(p_Event) {}
+        : m_Event(p_Event)
+    {}
 
-    template<typename T>
+    template <typename T>
     bool Dispatch(EventFn<T> p_Func)
     {
         if (m_Event.GetEventType() == T::GetStaticType())
@@ -81,40 +82,4 @@ private:
     Event& m_Event;
 };
 
-}
-
-// template<typename FuncSig>
-// struct Callable
-// {
-//     void* obj{};
-//     std::function<FuncSig> func;
-//     bool standalone{};
-// };
-
-// template <typename FuncSig>
-// class Event
-// {
-// public:
-//     [[maybe_unused]] void AddBind(std::function<FuncSig> callback, void* object)
-//     {
-//         callbacks.push_back({object, callback});
-//     }
-//
-//     [[maybe_unused]] void AddBind(std::function<FuncSig> callback)
-//     {
-//         callbacks.push_back({callback, nullptr, true});
-//     }
-//
-//     [[maybe_unused]] void Execute()
-//     {
-//         for (auto& callback : callbacks)
-//         {
-//             if (callback.obj || callback.standalone)
-//             {
-//                 callback.func();
-//             }
-//         }
-//     }
-// private:
-//     std::vector<Callable<FuncSig>> callbacks{};
-// };
+} // namespace Sonata

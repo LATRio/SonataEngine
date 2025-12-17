@@ -1,15 +1,16 @@
 #pragma once
-#include "events/event.hpp"
-
 #include <format>
 
-namespace Sonata
-{
-class EventMouseMoved final : public Event
-{
+#include "events/event.hpp"
+
+namespace Sonata {
+
+class EventMouseMoved final : public Event {
 public:
     EventMouseMoved(const float p_X, const float p_Y)
-        : m_MouseX(p_X), m_MouseY(p_Y) {}
+        : m_MouseX(p_X)
+        , m_MouseY(p_Y)
+    {}
 
     [[nodiscard]] float GetX() const { return m_MouseX; }
     [[nodiscard]] float GetY() const { return m_MouseY; }
@@ -27,11 +28,12 @@ private:
     float m_MouseY;
 };
 
-class EventMouseScrolled final : public Event
-{
+class EventMouseScrolled final : public Event {
 public:
     EventMouseScrolled(const float p_X, const float p_Y)
-        : m_OffsetX(p_X), m_OffsetY(p_Y) {}
+        : m_OffsetX(p_X)
+        , m_OffsetY(p_Y)
+    {}
 
     [[nodiscard]] float GetOffsetX() const { return m_OffsetX; }
     [[nodiscard]] float GetOffsetY() const { return m_OffsetY; }
@@ -49,8 +51,7 @@ private:
     float m_OffsetY;
 };
 
-class EventMouseButton : public Event
-{
+class EventMouseButton : public Event {
 public:
     [[nodiscard]] int GetMouseButton() const { return m_Button; }
 
@@ -58,30 +59,28 @@ public:
 
 protected:
     explicit EventMouseButton(const int p_Button)
-        : m_Button(p_Button) {}
+        : m_Button(p_Button)
+    {}
 
     int m_Button;
 };
 
-class EventMouseButtonPressed final : public EventMouseButton
-{
+class EventMouseButtonPressed final : public EventMouseButton {
 public:
     explicit EventMouseButtonPressed(const int p_Button)
-        : EventMouseButton(p_Button) {}
+        : EventMouseButton(p_Button)
+    {}
 
-    [[nodiscard]] std::string ToString() const override
-    {
-        return std::format("EventMouseButtonPressed: {}", m_Button);
-    }
+    [[nodiscard]] std::string ToString() const override { return std::format("EventMouseButtonPressed: {}", m_Button); }
 
     EVENT_CLASS_TYPE(MouseButtonPressed)
 };
 
-class EventMouseButtonReleased final : public EventMouseButton
-{
+class EventMouseButtonReleased final : public EventMouseButton {
 public:
     explicit EventMouseButtonReleased(const int p_Button)
-        : EventMouseButton(p_Button) {}
+        : EventMouseButton(p_Button)
+    {}
 
     [[nodiscard]] std::string ToString() const override
     {
@@ -90,4 +89,5 @@ public:
 
     EVENT_CLASS_TYPE(MouseButtonReleased)
 };
-}
+
+} // namespace Sonata

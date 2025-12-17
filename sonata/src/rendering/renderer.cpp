@@ -24,10 +24,6 @@ void Renderer::BeginScene(const OrthographicCamera& p_Camera)
     s_SceneData->ViewProjMatrix = p_Camera.GetViewProjMatrix();
 }
 
-void Renderer::EndScene()
-{
-}
-
 void Renderer::Submit(const Ref<Shader>& p_Shader, const Ref<VertexArray>& p_VertexArray, const glm::mat4& p_Transform)
 {
     SN_PROFILE_FUNCTION();
@@ -47,4 +43,4 @@ void Renderer::OnFramebufferResize(const int p_Width, const int p_Height)
     RenderCommand::SetViewport(0, 0, p_Width, p_Height);
 }
 
-}
+} // namespace Sonata

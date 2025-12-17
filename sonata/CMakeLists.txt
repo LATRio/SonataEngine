@@ -28,7 +28,6 @@ add_library(sonata ${LIB_BUILD_TYPE}
         src/events/app_event.hpp
         src/events/key_event.hpp
         src/events/mouse_event.hpp
-        src/layers/layer.cpp
         src/layers/layer.hpp
         src/layers/layer_stack.cpp
         src/layers/layer_stack.hpp
@@ -40,7 +39,6 @@ add_library(sonata ${LIB_BUILD_TYPE}
         src/rendering/renderer_api.hpp
         src/rendering/render_command.cpp
         src/rendering/render_command.hpp
-        src/rendering/render_context.cpp
         src/rendering/render_context.hpp
         src/rendering/shader.cpp
         src/rendering/shader.hpp

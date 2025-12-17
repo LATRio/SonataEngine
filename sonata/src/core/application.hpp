@@ -1,9 +1,9 @@
 #pragma once
 #include <memory>
 
-#include "../events/app_event.hpp"
-#include "../layers/imgui_layer.hpp"
-#include "../layers/layer_stack.hpp"
+#include "events/app_event.hpp"
+#include "layers/imgui_layer.hpp"
+#include "layers/layer_stack.hpp"
 #include "window.hpp"
 
 namespace Sonata {
@@ -22,9 +22,9 @@ public:
     [[maybe_unused]] void Loop();
 
     void OnEvent(Event& p_Event);
-    bool OnWindowClosed(const EventWindowClose& p_Event);
-    bool OnWindowMinimized(const EventWindowMinimize& p_Event);
-    bool OnFramebufferResize(const EventFramebufferResize& p_Event) const;
+    [[nodiscard]] bool OnWindowClosed(const EventWindowClose& p_Event);
+    [[nodiscard]] bool OnWindowMinimized(const EventWindowMinimize& p_Event);
+    [[nodiscard]] bool OnFramebufferResize(const EventFramebufferResize& p_Event) const;
 
     void PushLayer(Layer* p_Layer);
     void PushOverlay(Layer* p_Layer);

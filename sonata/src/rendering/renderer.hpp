@@ -1,6 +1,6 @@
 #pragma once
-#include "render_command.hpp"
 #include "glm_wrapper.hpp"
+#include "render_command.hpp"
 
 namespace Sonata {
 
@@ -13,9 +13,11 @@ public:
     static void Init();
 
     static void BeginScene(const OrthographicCamera& p_Camera);
-    static void EndScene();
+    static void EndScene() {}
 
-    static void Submit(const Ref<Shader>& p_Shader, const Ref<VertexArray>& p_VertexArray, const glm::mat4& p_Transform = glm::mat4{1.0f});
+    static void Submit(
+        const Ref<Shader>& p_Shader, const Ref<VertexArray>& p_VertexArray,
+        const glm::mat4& p_Transform = glm::mat4{1.0f});
 
     static void OnFramebufferResize(int p_Width, int p_Height);
 
@@ -30,4 +32,4 @@ private:
     static SceneData* s_SceneData;
 };
 
-}
+} // namespace Sonata

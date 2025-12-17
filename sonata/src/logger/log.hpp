@@ -3,22 +3,20 @@
 
 #include "core.hpp"
 
-namespace Sonata
-{
+namespace Sonata {
 
 typedef std::shared_ptr<spdlog::logger> LoggerPtr;
 
-class Log
-{
-  public:
+class Log {
+public:
     static void Init();
 
-    static spdlog::logger* GetEngineLogger();
-    static spdlog::logger* GetAppLogger();
+    static spdlog::logger* GetEngineLogger() { return s_EngineLogger.get(); }
+    static spdlog::logger* GetAppLogger() { return s_AppLogger.get(); }
 
-  private:
+private:
     static LoggerPtr s_EngineLogger;
     static LoggerPtr s_AppLogger;
 };
 
-}
+} // namespace Sonata

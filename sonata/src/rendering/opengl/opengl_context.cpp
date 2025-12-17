@@ -4,6 +4,7 @@
 
 namespace Sonata {
 
+/* clang-format off */
 // TODO: Use proper level of severity for logger
 void APIENTRY glDebugOutput(GLenum p_Source,
                             GLenum p_Type,
@@ -58,14 +59,14 @@ void APIENTRY glDebugOutput(GLenum p_Source,
 
     switch (p_Severity)
     {
-    case GL_DEBUG_SEVERITY_HIGH:         SN_ENGINE_FATAL(ss.str()); break;
-    case GL_DEBUG_SEVERITY_MEDIUM:       SN_ENGINE_ERR(ss.str()); break;
-    case GL_DEBUG_SEVERITY_LOW:          SN_ENGINE_WARN(ss.str()); break;
-    case GL_DEBUG_SEVERITY_NOTIFICATION: SN_ENGINE_INFO(ss.str()); break;
-    default: SN_ENGINE_TRACE(ss.str()); break;
+        case GL_DEBUG_SEVERITY_HIGH:         SN_ENGINE_FATAL(ss.str()); break;
+        case GL_DEBUG_SEVERITY_MEDIUM:       SN_ENGINE_ERR(ss.str()); break;
+        case GL_DEBUG_SEVERITY_LOW:          SN_ENGINE_WARN(ss.str()); break;
+        case GL_DEBUG_SEVERITY_NOTIFICATION: SN_ENGINE_INFO(ss.str()); break;
+        default: SN_ENGINE_TRACE(ss.str()); break;
     }
-
 }
+/* clang-format on */
 
 void OpenGLContext::Init()
 {

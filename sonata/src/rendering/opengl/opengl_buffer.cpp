@@ -72,9 +72,5 @@ void OpenGLIndexBuffer::Unbind() const
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
-int OpenGLIndexBuffer::GetCount() const
-{
-    return static_cast<int>(m_Count);
-}
 
 } // namespace Sonata

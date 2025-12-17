@@ -15,8 +15,7 @@ public:
     virtual void Bind(uint32_t p_Unit = 0) const = 0;
 };
 
-class Texture2D : public Texture
-{
+class Texture2D : public Texture {
 public:
     virtual ~Texture2D() override = default;
 
@@ -24,4 +23,4 @@ public:
     static Ref<Texture2D> Create(std::string_view p_Path);
 };
 
-}
+} // namespace Sonata

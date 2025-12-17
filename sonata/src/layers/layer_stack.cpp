@@ -1,5 +1,7 @@
 #include "layer_stack.hpp"
 
+#include <ranges>
+
 #include "profiler/instrumentor.hpp"
 
 namespace Sonata {
@@ -77,10 +79,11 @@ void LayerStack::OnEvent(Event& e)
 {
     SN_PROFILE_FUNCTION();
 
-    for (auto it = m_Layers.rbegin(); it != m_Layers.rend(); ++it)
+    for (const auto& m_Layer : std::ranges::reverse_view(m_Layers))
     {
-        if (e.Handled) break;
-        (*it)->OnEvent(e);
+        if (e.Handled)
+            break;
+        m_Layer->OnEvent(e);
     }
 }
 

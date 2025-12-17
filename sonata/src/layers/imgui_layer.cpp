@@ -12,8 +12,7 @@ namespace Sonata {
 
 ImGuiLayer::ImGuiLayer()
     : Layer("ImGuiLayer")
-{
-}
+{}
 
 void ImGuiLayer::OnAttach()
 {
@@ -37,10 +36,6 @@ void ImGuiLayer::OnDetach()
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-}
-
-void ImGuiLayer::OnEvent(Event& event)
-{
 }
 
 void ImGuiLayer::Begin() const
@@ -71,4 +66,4 @@ void ImGuiLayer::End() const
     }
 }
 
-}
+} // namespace Sonata

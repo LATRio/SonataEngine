@@ -1,5 +1,6 @@
 #pragma once
 
+/* clang-format off */
 // Keycodes from GLFW 3.4
 
 /* Printable keys */
@@ -200,3 +201,5 @@
 #define SN_GAMEPAD_AXIS_LEFT_TRIGGER        4
 #define SN_GAMEPAD_AXIS_RIGHT_TRIGGER       5
 #define SN_GAMEPAD_AXIS_LAST                SN_GAMEPAD_AXIS_RIGHT_TRIGGER
+
+/* clang-format on */

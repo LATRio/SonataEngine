@@ -1,6 +1,6 @@
 #pragma once
-#include "glm_wrapper.hpp"
 #include "core.hpp"
+#include "glm_wrapper.hpp"
 
 namespace Sonata {
 
@@ -28,4 +28,4 @@ private:
     static API s_RenderAPI;
 };
 
-}
+} // namespace Sonata

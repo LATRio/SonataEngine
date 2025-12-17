@@ -1,7 +1,7 @@
 #include "shader.hpp"
 
-#include "renderer.hpp"
 #include "opengl/opengl_shader.hpp"
+#include "renderer.hpp"
 
 namespace Sonata {
 
@@ -20,18 +20,19 @@ Ref<Shader> Shader::Create(const std::string_view p_Filepath)
     }
 }
 
-Ref<Shader> Shader::Create(const std::string_view p_Name, const std::string_view p_VertexPath, const std::string_view p_FragmentPath)
+Ref<Shader> Shader::Create(
+    const std::string_view p_Name, const std::string_view p_VertexPath, const std::string_view p_FragmentPath)
 {
     switch (Renderer::GetAPI())
     {
-    case RendererAPI::API::OpenGL:
-        return CreateRef<OpenGLShader>(p_Name, p_VertexPath, p_FragmentPath);
-    case RendererAPI::API::None:
-        SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
-        return nullptr;
-    default:
-        SN_ASSERT_MSG(false, "Unknown RenderAPI");
-        return nullptr;
+        case RendererAPI::API::OpenGL:
+            return CreateRef<OpenGLShader>(p_Name, p_VertexPath, p_FragmentPath);
+        case RendererAPI::API::None:
+            SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
+            return nullptr;
+        default:
+            SN_ASSERT_MSG(false, "Unknown RenderAPI");
+            return nullptr;
     }
 }
 

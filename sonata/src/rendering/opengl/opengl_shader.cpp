@@ -1,7 +1,7 @@
 #include "opengl_shader.hpp"
 
-#include <fstream>
 #include <filesystem>
+#include <fstream>
 
 #include "core.hpp"
 #include "glm_wrapper.hpp"
@@ -11,9 +11,12 @@ namespace Sonata {
 
 GLenum StrToType(std::string_view p_Type)
 {
-    if (p_Type == "vertex") return GL_VERTEX_SHADER;
-    if (p_Type == "fragment" || p_Type == "pixel") return GL_FRAGMENT_SHADER;
-    if (p_Type == "geometry") return GL_GEOMETRY_SHADER;
+    if (p_Type == "vertex")
+        return GL_VERTEX_SHADER;
+    if (p_Type == "fragment" || p_Type == "pixel")
+        return GL_FRAGMENT_SHADER;
+    if (p_Type == "geometry")
+        return GL_GEOMETRY_SHADER;
 
     SN_ENGINE_ERR("Unknown shader type '{}'", p_Type);
     return 0;
@@ -25,11 +28,12 @@ OpenGLShader::OpenGLShader(const std::string_view p_Filepath)
 
     m_Name = std::filesystem::path(p_Filepath).stem().string();
     const std::string source = ReadFile(p_Filepath);
-    auto shaderSources = Preprocess(source);
+    const auto shaderSources = Preprocess(source);
     CompileShaders(shaderSources);
 }
 
-OpenGLShader::OpenGLShader(const std::string_view p_Name, const std::string_view p_VertSrc, const std::string_view p_FragSrc)
+OpenGLShader::OpenGLShader(
+    const std::string_view p_Name, const std::string_view p_VertSrc, const std::string_view p_FragSrc)
     : m_Name(p_Name)
 {
     SN_PROFILE_FUNCTION();
@@ -140,8 +144,8 @@ std::unordered_map<GLenum, std::string> OpenGLShader::Preprocess(std::string_vie
 
         const size_t nextLinePos{p_Source.find_first_not_of('\n', eol)};
         posToken = p_Source.find(typeToken, nextLinePos);
-        shaderSources[StrToType(type)] = p_Source.substr(nextLinePos,
-            posToken - (nextLinePos == std::string::npos ? p_Source.size() - 1 : nextLinePos));
+        shaderSources[StrToType(type)] = p_Source.substr(
+            nextLinePos, posToken - (nextLinePos == std::string::npos ? p_Source.size() - 1 : nextLinePos));
     }
 
     return shaderSources;
@@ -207,4 +211,4 @@ void OpenGLShader::CompileShaders(const std::unordered_map<GLenum, std::string>&
     }
 }
 
-}
+} // namespace Sonata

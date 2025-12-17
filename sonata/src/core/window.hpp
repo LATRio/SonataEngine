@@ -1,10 +1,9 @@
 #pragma once
-#include "../events/event.hpp"
+#include "events/event.hpp"
 
 class GLFWwindow;
 
-namespace Sonata
-{
+namespace Sonata {
 class RenderContext;
 
 struct WindowProps
@@ -25,18 +24,18 @@ public:
     void PollEvents() const;
     void SwapBuffers() const;
 
-    void SetEventCallback(const EventCallbackFn &p_Callback);
+    void SetEventCallback(const EventCallbackFn& p_Callback);
     void SetVSync(bool p_Enable);
     [[nodiscard]] bool IsVSync() const;
 
     [[nodiscard]] int GetWidth() const { return m_WindowData.m_Width; }
     [[nodiscard]] int GetHeight() const { return m_WindowData.m_Height; }
-
-    template<typename T>
+    /* clang-format off */
+    template <typename T>
     T GetWidth() const { return static_cast<T>(m_WindowData.m_Width); }
-    template<typename T>
+    template <typename T>
     T GetHeight() const { return static_cast<T>(m_WindowData.m_Height); }
-
+    /* clang-format on */
     [[nodiscard]] GLFWwindow* GetNativeWindow() const { return m_Window; };
 
 private:
@@ -45,7 +44,8 @@ private:
 
     struct WindowData
     {
-        int m_Width{}, m_Height{};
+        int m_Width{};
+        int m_Height{};
         std::string_view m_Title{};
         bool m_VSync{};
 
@@ -53,4 +53,4 @@ private:
     } m_WindowData{};
 };
 
-}
+} // namespace Sonata

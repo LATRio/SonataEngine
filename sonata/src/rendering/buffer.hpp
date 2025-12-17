@@ -18,7 +18,7 @@ enum class ShaderDataType
     Int4,
     Bool,
 };
-
+/* clang-format off */
 static int ShaderDataTypeSize(const ShaderDataType p_Type)
 {
     switch (p_Type)
@@ -39,7 +39,7 @@ static int ShaderDataTypeSize(const ShaderDataType p_Type)
 
     SN_ASSERT_MSG(false, "Unknown ShaderDataType");
 }
-
+/* clang-format on */
 struct BufferElement
 {
     std::string Name{};
@@ -49,8 +49,12 @@ struct BufferElement
     bool Normalized{};
 
     BufferElement(const ShaderDataType p_Type, const std::string_view p_Name, const bool p_Normalized = false)
-        : Name(p_Name), Type(p_Type), Size(ShaderDataTypeSize(p_Type)), Normalized(p_Normalized) {}
-
+        : Name(p_Name)
+        , Type(p_Type)
+        , Size(ShaderDataTypeSize(p_Type))
+        , Normalized(p_Normalized)
+    {}
+    /* clang-format off */
     [[nodiscard]] uint8_t GetComponentCount() const
     {
         switch (Type)
@@ -69,10 +73,10 @@ struct BufferElement
             default:                        return 0;
         }
     }
+    /* clang-format on */
 };
 
-class BufferLayout
-{
+class BufferLayout {
 public:
     BufferLayout() = default;
     BufferLayout(const std::initializer_list<BufferElement>& p_Elements)
@@ -105,8 +109,7 @@ public:
     static Ref<VertexBuffer> Create(const float* p_Vertices, ssize_t p_Size);
 };
 
-class IndexBuffer
-{
+class IndexBuffer {
 public:
     virtual ~IndexBuffer() = default;
 
@@ -118,4 +121,4 @@ public:
     static Ref<IndexBuffer> Create(const unsigned int* p_Indices, ssize_t p_Count);
 };
 
-}
+} // namespace Sonata

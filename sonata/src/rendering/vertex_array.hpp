@@ -21,4 +21,4 @@ public:
     static Ref<VertexArray> Create();
 };
 
-}
+} // namespace Sonata

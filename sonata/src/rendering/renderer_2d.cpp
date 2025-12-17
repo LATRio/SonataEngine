@@ -24,15 +24,14 @@ void Renderer2D::Init()
 
     s_Data = new Renderer2DStorage();
     s_Data->QuadVertexArray = VertexArray::Create();
+    /* clang-format off */
     constexpr float squareVertices[] = {
         -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
          0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
          0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
-        -0.5f,  0.5f, 0.0f, 0.0f, 1.0f
-    };
-
-    const Ref<VertexBuffer> m_SquareVB =
-        VertexBuffer::Create(squareVertices, sizeof(squareVertices));
+        -0.5f,  0.5f, 0.0f, 0.0f, 1.0f};
+    /* clang-format on */
+    const Ref<VertexBuffer> m_SquareVB = VertexBuffer::Create(squareVertices, sizeof(squareVertices));
     m_SquareVB->SetLayout({
         {ShaderDataType::Float3, "a_Position"},
         {ShaderDataType::Float2, "a_TexCoord"},
@@ -40,8 +39,7 @@ void Renderer2D::Init()
     s_Data->QuadVertexArray->AddVertexBuffer(m_SquareVB);
 
     constexpr uint32_t squareIndices[] = {0, 1, 2, 2, 3, 0};
-    const Ref<IndexBuffer> m_SquareIB =
-        IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
+    const Ref<IndexBuffer> m_SquareIB = IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
     s_Data->QuadVertexArray->SetIndexBuffer(m_SquareIB);
 
     s_Data->WhiteTexture = Texture2D::Create(1, 1);
@@ -64,10 +62,6 @@ void Renderer2D::BeginScene(const OrthographicCamera& camera)
 
     s_Data->TextureShader->Bind();
     s_Data->TextureShader->SetMat4("u_ViewProj", camera.GetViewProjMatrix());
-}
-
-void Renderer2D::EndScene()
-{
 }
 
 void Renderer2D::DrawQuad(const glm::vec2& p_Position, const glm::vec2& p_Size, const glm::vec4& p_Color)
@@ -112,4 +106,4 @@ void Renderer2D::DrawQuad(const glm::vec3& p_Position, const glm::vec2& p_Size, 
     RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
 }
 
-}
+} // namespace Sonata

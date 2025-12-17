@@ -16,4 +16,4 @@ public:
     void DrawIndexed(const Ref<VertexArray>& p_VertexArray) const override;
 };
 
-}
+} // namespace Sonata

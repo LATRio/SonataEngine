@@ -13,7 +13,7 @@ public:
     void AddVertexBuffer(const Ref<VertexBuffer>& p_VertexBuffer) override;
     void SetIndexBuffer(const Ref<IndexBuffer>& p_IndexBuffer) override;
 
-    [[nodiscard]] const Ref<IndexBuffer>& GetIndexBuffer() const override;
+    [[nodiscard]] const Ref<IndexBuffer>& GetIndexBuffer() const override { return m_IndexBuffer; }
 
 private:
     std::vector<Ref<VertexBuffer>> m_VertexBuffers;
@@ -22,4 +22,4 @@ private:
     GLuint m_VertexBufferIndex{};
 };
 
-}
+} // namespace Sonata

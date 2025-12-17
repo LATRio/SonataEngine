@@ -54,4 +54,4 @@ Instrumentor& Instrumentor::GetInstance()
     return s_Instance;
 }
 
-}
+} // namespace Sonata

@@ -46,4 +46,4 @@ void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& p_VertexArray) const
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-}
+} // namespace Sonata

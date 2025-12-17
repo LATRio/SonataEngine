@@ -5,7 +5,9 @@ namespace Sonata {
 
 class Layer {
 public:
-    explicit Layer(std::string_view p_DebugName);
+    explicit Layer(const std::string_view p_DebugName)
+        : m_DebugName(p_DebugName)
+    {}
     virtual ~Layer() = default;
 
     virtual void OnAttach() {};
@@ -20,4 +22,4 @@ private:
     std::string m_DebugName;
 };
 
-}
+} // namespace Sonata

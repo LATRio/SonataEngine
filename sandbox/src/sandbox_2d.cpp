@@ -2,7 +2,8 @@
 #include "profiler/instrumentor.hpp"
 
 Sandbox2D::Sandbox2D()
-    : Layer("Sandbox2D"), m_CameraController(16.0f / 9.0f)
+    : Layer("Sandbox2D")
+    , m_CameraController(16.0f / 9.0f)
 {
 }
 
@@ -50,5 +51,5 @@ void Sandbox2D::OnImGuiRender()
 {
     SN_PROFILE_FUNCTION();
 
-    m_CameraController.OnImGuiRender();
+    //m_CameraController.OnImGuiRender();
 }

@@ -1,9 +1,9 @@
 #pragma once
 #include <chrono>
 #include <fstream>
+#include <source_location>
 #include <string>
 #include <thread>
-#include <source_location>
 
 namespace Sonata {
 
@@ -42,7 +42,9 @@ class InstrumentationTimer {
 public:
     InstrumentationTimer() = delete;
     explicit InstrumentationTimer(const std::string_view& p_Name)
-        : m_Name(p_Name), m_StartTimepoint(std::chrono::steady_clock::now()){}
+        : m_Name(p_Name)
+        , m_StartTimepoint(std::chrono::steady_clock::now())
+    {}
     ~InstrumentationTimer()
     {
         if (!m_Stopped)
@@ -56,10 +58,10 @@ public:
         const auto endTimepoint = std::chrono::steady_clock::now();
         const auto highResStart = FloatingPointMicroseconds{m_StartTimepoint.time_since_epoch()};
         const auto dur{
-            std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch() - std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTimepoint).time_since_epoch()
-        };
+            std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch() -
+            std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTimepoint).time_since_epoch()};
 
-        Instrumentor::GetInstance().WriteProfile({m_Name, highResStart,dur, std::this_thread::get_id()});
+        Instrumentor::GetInstance().WriteProfile({m_Name, highResStart, dur, std::this_thread::get_id()});
 
         m_Stopped = true;
     }
@@ -70,9 +72,11 @@ private:
     bool m_Stopped{};
 };
 
-}
+} // namespace Sonata
 
+/* clang-format off */
 #define SN_PROFILE_BEGIN_SESSION(name, filepath) ::Sonata::Instrumentor::GetInstance().BeginSession(name, filepath)
 #define SN_PROFILE_END_SESSION() ::Sonata::Instrumentor::GetInstance().EndSession()
 #define SN_PROFILE_SCOPE(name) ::Sonata::InstrumentationTimer timer##__LINE__{(name)}
 #define SN_PROFILE_FUNCTION() SN_PROFILE_SCOPE(std::source_location::current().function_name())
+/* clang-format on */

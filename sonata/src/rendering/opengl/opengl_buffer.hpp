@@ -1,5 +1,6 @@
 #pragma once
 #include <glad/gl.h>
+
 #include "rendering/buffer.hpp"
 
 namespace Sonata {
@@ -20,8 +21,7 @@ private:
     BufferLayout m_Layout{};
 };
 
-class OpenGLIndexBuffer final : public IndexBuffer
-{
+class OpenGLIndexBuffer final : public IndexBuffer {
 public:
     OpenGLIndexBuffer(const GLuint* p_Data, ssize_t p_Count);
     ~OpenGLIndexBuffer() override;
@@ -29,11 +29,11 @@ public:
     void Bind() const override;
     void Unbind() const override;
 
-    [[nodiscard]] int GetCount() const override;
+    [[nodiscard]] int GetCount() const override { return static_cast<int>(m_Count); }
 
 private:
     GLuint m_BufferID{};
     ssize_t m_Count{};
 };
 
-}
+} // namespace Sonata

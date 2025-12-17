@@ -22,8 +22,7 @@ public:
     static Ref<Shader> Create(std::string_view p_Name, std::string_view p_VertexPath, std::string_view p_FragmentPath);
 };
 
-class ShaderLibrary
-{
+class ShaderLibrary {
 public:
     void Add(const Ref<Shader>& p_Shader);
     void Add(std::string_view p_Name, const Ref<Shader>& p_Shader);
@@ -38,4 +37,4 @@ private:
     std::unordered_map<std::string, Ref<Shader>> m_Shaders;
 };
 
-}
+} // namespace Sonata

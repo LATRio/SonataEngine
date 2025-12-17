@@ -1,7 +1,7 @@
 ---
 BasedOnStyle: Microsoft
 AccessModifierOffset: -4
-AlignAfterOpenBracket: Align
+AlignAfterOpenBracket: AlwaysBreak
 AlignArrayOfStructures: Right
 AlignConsecutiveAssignments:
   Enabled: false
@@ -71,7 +71,7 @@ AllowShortCaseExpressionOnASingleLine: true
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortCompoundRequirementOnASingleLine: true
 AllowShortEnumsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: None
+AllowShortFunctionsOnASingleLine: InlineOnly
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: false
@@ -98,7 +98,7 @@ BraceWrapping:
   BeforeLambdaBody: false
   BeforeWhile: false
   IndentBraces: false
-  SplitEmptyFunction: true
+  SplitEmptyFunction: false
   SplitEmptyRecord: true
   SplitEmptyNamespace: true
 BreakAdjacentStringLiterals: true
@@ -111,11 +111,11 @@ BreakBeforeBraces: Custom
 BreakBeforeConceptDeclarations: Always
 BreakBeforeInlineASMColon: OnlyMultiline
 BreakBeforeTernaryOperators: true
-BreakConstructorInitializers: BeforeColon
+BreakConstructorInitializers: BeforeComma
 BreakFunctionDefinitionParameters: false
 BreakInheritanceList: BeforeColon
 BreakStringLiterals: true
-BreakTemplateDeclarations: MultiLine
+BreakTemplateDeclarations: Leave # Broken
 ColumnLimit: 120
 CommentPragmas: "^ IWYU pragma:"
 CompactNamespaces: false
@@ -160,7 +160,7 @@ IndentRequiresClause: true
 IndentWidth: 4
 IndentWrappedFunctionNames: false
 InsertBraces: false
-InsertNewlineAtEOF: false
+InsertNewlineAtEOF: true
 InsertTrailingCommas: None
 IntegerLiteralSeparator:
   Binary: 0

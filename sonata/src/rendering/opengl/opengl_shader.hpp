@@ -30,4 +30,4 @@ private:
     void CompileShaders(const std::unordered_map<GLenum, std::string>& p_ShaderSources);
 };
 
-}
+} // namespace Sonata

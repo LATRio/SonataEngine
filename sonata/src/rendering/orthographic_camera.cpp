@@ -43,9 +43,9 @@ void OrthographicCamera::RecalculateViewMatrix()
     SN_PROFILE_FUNCTION();
 
     const glm::mat4 transform = glm::translate(glm::mat4(1.0f), m_Position) *
-        glm::rotate(glm::mat4(1.0f), glm::radians(m_Rotation), glm::vec3(0, 0, 1));
+                                glm::rotate(glm::mat4(1.0f), glm::radians(m_Rotation), glm::vec3(0, 0, 1));
     m_ViewMatrix = glm::inverse(transform);
     m_ViewProjMatrix = m_ProjMatrix * m_ViewMatrix;
 }
 
-}
+} // namespace Sonata

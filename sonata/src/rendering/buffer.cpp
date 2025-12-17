@@ -24,14 +24,14 @@ Ref<VertexBuffer> VertexBuffer::Create(const float* p_Vertices, const ssize_t p_
 {
     switch (Renderer::GetAPI())
     {
-    case RendererAPI::API::OpenGL:
-        return CreateRef<OpenGLVertexBuffer>(p_Vertices, p_Size);
-    case RendererAPI::API::None:
-        SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
-        return nullptr;
-    default:
-        SN_ASSERT_MSG(false, "Unknown RenderAPI");
-        return nullptr;
+        case RendererAPI::API::OpenGL:
+            return CreateRef<OpenGLVertexBuffer>(p_Vertices, p_Size);
+        case RendererAPI::API::None:
+            SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
+            return nullptr;
+        default:
+            SN_ASSERT_MSG(false, "Unknown RenderAPI");
+            return nullptr;
     }
 }
 
@@ -39,15 +39,15 @@ Ref<IndexBuffer> IndexBuffer::Create(const unsigned int* p_Indices, const ssize_
 {
     switch (Renderer::GetAPI())
     {
-    case RendererAPI::API::OpenGL:
-        return CreateRef<OpenGLIndexBuffer>(p_Indices, p_Count);
-    case RendererAPI::API::None:
-        SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
-        return nullptr;
-    default:
-        SN_ASSERT_MSG(false, "Unknown RenderAPI");
-        return nullptr;
+        case RendererAPI::API::OpenGL:
+            return CreateRef<OpenGLIndexBuffer>(p_Indices, p_Count);
+        case RendererAPI::API::None:
+            SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
+            return nullptr;
+        default:
+            SN_ASSERT_MSG(false, "Unknown RenderAPI");
+            return nullptr;
     }
 }
 
-}
+} // namespace Sonata
