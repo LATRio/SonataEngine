@@ -1,4 +1,8 @@
 function(enable_sanitizers pname)
+    if(NOT UNIX)
+        message(STATUS "Sanitizers are only supported on UNIX.")
+        return()
+    endif()
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
         set(SANITIZERS "")
 
@@ -27,6 +31,7 @@ function(enable_sanitizers pname)
 
     if(LIST_OF_SANITIZERS)
         if(NOT "${LIST_OF_SANITIZERS}" STREQUAL "")
+            message(STATUS "Adding sanitizers")
             target_compile_options(${pname} PRIVATE -fsanitize=${LIST_OF_SANITIZERS})
             target_link_libraries(${pname} PRIVATE -fsanitize=${LIST_OF_SANITIZERS})
         endif()

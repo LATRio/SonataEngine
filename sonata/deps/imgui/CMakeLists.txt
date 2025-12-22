@@ -48,5 +48,10 @@ target_include_directories(imgui PUBLIC
 
 target_link_libraries(imgui PRIVATE
     glfw
-    X11
 )
+
+if(UNIX)
+    target_link_libraries(imgui PRIVATE
+        X11
+    )
+endif()
