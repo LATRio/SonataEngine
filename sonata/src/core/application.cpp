@@ -65,7 +65,7 @@ void Application::OnEvent(Event& p_Event)
     m_LayerStack.OnEvent(p_Event);
 }
 
-bool Application::OnWindowClosed(const EventWindowClose& p_Event)
+bool Application::OnWindowClosed([[maybe_unused]] const EventWindowClose& p_Event)
 {
     SN_PROFILE_FUNCTION();
 

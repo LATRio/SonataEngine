@@ -87,8 +87,8 @@ Window::Window(const WindowProps& p_Props)
     });
 
     glfwSetKeyCallback(
-        m_Window,
-        [](GLFWwindow* p_Window, const int p_Key, const int p_Scancode, const int p_Action, const int p_Mods) {
+        m_Window, [](GLFWwindow* p_Window, const int p_Key, [[maybe_unused]] const int p_Scancode, const int p_Action,
+                     [[maybe_unused]] const int p_Mods) {
             const WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(p_Window));
 
             switch (p_Action)
@@ -115,7 +115,7 @@ Window::Window(const WindowProps& p_Props)
         });
 
     glfwSetMouseButtonCallback(
-        m_Window, [](GLFWwindow* p_Window, const int p_Button, const int p_Action, const int p_Mods) {
+        m_Window, [](GLFWwindow* p_Window, const int p_Button, const int p_Action, [[maybe_unused]] const int p_Mods) {
             const WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(p_Window));
 
             switch (p_Action)

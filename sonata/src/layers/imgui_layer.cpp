@@ -1,9 +1,13 @@
 #include "imgui_layer.hpp"
+#ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wold-style-cast"
+#endif
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+#ifdef __GNUC__
 #pragma GCC diagnostic pop
+#endif
 
 #include "core/application.hpp"
 #include "profiler/instrumentor.hpp"

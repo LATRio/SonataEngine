@@ -1,7 +1,7 @@
 #pragma once
 #include "events/event.hpp"
 
-class GLFWwindow;
+struct GLFWwindow;
 
 namespace Sonata {
 class RenderContext;

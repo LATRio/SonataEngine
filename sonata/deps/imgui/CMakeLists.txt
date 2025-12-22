@@ -36,8 +36,10 @@ add_library(imgui STATIC
 
 target_compile_features(imgui PRIVATE cxx_std_20)
 
-if(IMGUI_BUILD_PIC)
-    target_compile_options(imgui PRIVATE -fPIC)
+if(NOT MSVC)
+    if(IMGUI_BUILD_PIC)
+        target_compile_options(imgui PRIVATE -fPIC)
+    endif()
 endif()
 
 target_include_directories(imgui PUBLIC

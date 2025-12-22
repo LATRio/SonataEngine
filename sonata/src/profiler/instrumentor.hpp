@@ -75,8 +75,25 @@ private:
 } // namespace Sonata
 
 /* clang-format off */
+//#define ENABLE_PROFILER
+
+#ifdef ENABLE_PROFILER
 #define SN_PROFILE_BEGIN_SESSION(name, filepath) ::Sonata::Instrumentor::GetInstance().BeginSession(name, filepath)
 #define SN_PROFILE_END_SESSION() ::Sonata::Instrumentor::GetInstance().EndSession()
+
+#ifdef _MSC_VER
+#define SN_PROFILE_SCOPE(name) \
+__pragma(warning(suppress:4456)) \
+::Sonata::InstrumentationTimer timer##__LINE__{(name)}
+#elif
 #define SN_PROFILE_SCOPE(name) ::Sonata::InstrumentationTimer timer##__LINE__{(name)}
+#endif
+
 #define SN_PROFILE_FUNCTION() SN_PROFILE_SCOPE(std::source_location::current().function_name())
+#else
+#define SN_PROFILE_BEGIN_SESSION(name, filepath)
+#define SN_PROFILE_END_SESSION()
+#define SN_PROFILE_SCOPE(name)
+#define SN_PROFILE_FUNCTION()
+#endif
 /* clang-format on */

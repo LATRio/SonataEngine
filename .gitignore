@@ -1,5 +1,7 @@
 /.idea/
+/.vs/
 /bin/
+/build/
 
 # Prerequisites
 *.d

@@ -55,8 +55,8 @@ constexpr Ref<T> CreateRef(Args&& ... p_Args)
 #endif
 
 #ifndef NDEBUG
-#define SN_ASSERT(cond) if(!(cond)) { SN_ENGINE_FATAL("{} is not true", TEXT(cond)); DebugBreak(); }
-#define SN_ASSERT_MSG(cond, msg) if(!(cond)) { SN_ENGINE_FATAL("{}: {}", TEXT(cond), msg); DebugBreak(); }
+#define SN_ASSERT(cond) if(!(cond)) { SN_ENGINE_FATAL("{} is not true", TEXT(cond)); }
+#define SN_ASSERT_MSG(cond, msg) if(!(cond)) { SN_ENGINE_FATAL("{}: {}", TEXT(cond), msg); }
 #else
 #define SN_ASSERT(cond)
 #define SN_ASSERT_MSG(cond, msg)

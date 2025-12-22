@@ -33,6 +33,9 @@ function(set_project_warnings pname)
             /w14928 # illegal copy-initialization; more than one user-defined
             # conversion has been implicitly applied
             /permissive- # standards conformance mode for MSVC compiler.
+
+            # DISABLE FOLLOWING WARNINGS
+            # /wd4100 # unreferenced parameter
     )
 
     set(CLANG_WARNINGS

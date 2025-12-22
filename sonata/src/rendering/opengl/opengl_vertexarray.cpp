@@ -77,7 +77,7 @@ void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& p_VertexBuffer)
                 glEnableVertexAttribArray(m_VertexBufferIndex);
                 glVertexAttribPointer(
                     m_VertexBufferIndex, elem.GetComponentCount(), TypeToGL(elem.Type), elem.Normalized,
-                    layout.GetStride(), reinterpret_cast<void*>(elem.Offset));
+                    layout.GetStride(), reinterpret_cast<void*>(static_cast<int64_t>(elem.Offset)));
                 m_VertexBufferIndex++;
                 break;
             }
@@ -89,7 +89,7 @@ void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& p_VertexBuffer)
                 glEnableVertexAttribArray(m_VertexBufferIndex);
                 glVertexAttribIPointer(
                     m_VertexBufferIndex, elem.GetComponentCount(), TypeToGL(elem.Type), layout.GetStride(),
-                    reinterpret_cast<void*>(elem.Offset));
+                    reinterpret_cast<void*>(static_cast<int64_t>(elem.Offset)));
                 m_VertexBufferIndex++;
                 break;
             }
@@ -101,7 +101,8 @@ void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& p_VertexBuffer)
                     glEnableVertexAttribArray(m_VertexBufferIndex);
                     glVertexAttribPointer(
                         m_VertexBufferIndex, count, TypeToGL(elem.Type), elem.Normalized, layout.GetStride(),
-                        reinterpret_cast<void*>(elem.Offset + static_cast<int>(sizeof(float)) * count * i));
+                        reinterpret_cast<void*>(
+                            static_cast<int64_t>(elem.Offset + static_cast<int>(sizeof(float)) * count * i)));
                     glVertexAttribDivisor(m_VertexBufferIndex, 1);
                     m_VertexBufferIndex++;
                 }

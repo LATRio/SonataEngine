@@ -12,9 +12,9 @@ public:
 
     virtual void OnAttach() {};
     virtual void OnDetach() {};
-    virtual void OnUpdate(float p_DeltaTime) {};
+    virtual void OnUpdate([[maybe_unused]] float p_DeltaTime) {};
     virtual void OnImGuiRender() {};
-    virtual void OnEvent(Event& p_Event) {}
+    virtual void OnEvent([[maybe_unused]] Event& p_Event) {}
 
     [[nodiscard]] std::string_view GetName() const { return m_DebugName; }
 

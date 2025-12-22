@@ -34,10 +34,8 @@ static int ShaderDataTypeSize(const ShaderDataType p_Type)
         case ShaderDataType::Int3:      return 12;
         case ShaderDataType::Int4:      return 16;
         case ShaderDataType::Bool:      return 1;
-        default:                        return 0;
+        default:                        SN_ENGINE_ERR("Unknown ShaderDataType"); return 0;
     }
-
-    SN_ASSERT_MSG(false, "Unknown ShaderDataType");
 }
 /* clang-format on */
 struct BufferElement
@@ -106,7 +104,7 @@ public:
     virtual void SetLayout(const BufferLayout& layout) = 0;
     [[nodiscard]] virtual const BufferLayout& GetLayout() const = 0;
 
-    static Ref<VertexBuffer> Create(const float* p_Vertices, ssize_t p_Size);
+    static Ref<VertexBuffer> Create(const float* p_Vertices, int64_t p_Size);
 };
 
 class IndexBuffer {
@@ -118,7 +116,7 @@ public:
 
     [[nodiscard]] virtual int GetCount() const = 0;
 
-    static Ref<IndexBuffer> Create(const unsigned int* p_Indices, ssize_t p_Count);
+    static Ref<IndexBuffer> Create(const unsigned int* p_Indices, int64_t p_Count);
 };
 
 } // namespace Sonata

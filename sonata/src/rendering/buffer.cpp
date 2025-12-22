@@ -20,7 +20,7 @@ void BufferLayout::CalculateOffsetAndStride()
     }
 }
 
-Ref<VertexBuffer> VertexBuffer::Create(const float* p_Vertices, const ssize_t p_Size)
+Ref<VertexBuffer> VertexBuffer::Create(const float* p_Vertices, const int64_t p_Size)
 {
     switch (Renderer::GetAPI())
     {
@@ -35,7 +35,7 @@ Ref<VertexBuffer> VertexBuffer::Create(const float* p_Vertices, const ssize_t p_
     }
 }
 
-Ref<IndexBuffer> IndexBuffer::Create(const unsigned int* p_Indices, const ssize_t p_Count)
+Ref<IndexBuffer> IndexBuffer::Create(const unsigned int* p_Indices, const int64_t p_Count)
 {
     switch (Renderer::GetAPI())
     {

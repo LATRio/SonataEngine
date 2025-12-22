@@ -23,7 +23,7 @@ private:
 
 class OpenGLIndexBuffer final : public IndexBuffer {
 public:
-    OpenGLIndexBuffer(const GLuint* p_Data, ssize_t p_Count);
+    OpenGLIndexBuffer(const GLuint* p_Data, int64_t p_Count);
     ~OpenGLIndexBuffer() override;
 
     void Bind() const override;
@@ -33,7 +33,7 @@ public:
 
 private:
     GLuint m_BufferID{};
-    ssize_t m_Count{};
+    int64_t m_Count{};
 };
 
 } // namespace Sonata

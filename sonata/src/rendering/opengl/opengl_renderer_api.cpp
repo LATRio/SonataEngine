@@ -16,7 +16,8 @@ void OpenGLRendererAPI::Init()
     glEnable(GL_DEPTH_TEST);
 }
 
-void OpenGLRendererAPI::SetViewport(const int p_X, const int p_Y, const int p_Width, const int p_Height) const
+void OpenGLRendererAPI::SetViewport(
+    [[maybe_unused]] const int p_X, [[maybe_unused]] const int p_Y, const int p_Width, const int p_Height) const
 {
     SN_PROFILE_FUNCTION();
 

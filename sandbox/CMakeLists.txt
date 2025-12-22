@@ -1,10 +1,15 @@
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/bin)
 
 add_executable(sandbox
         src/sandbox.cpp
         src/sandbox_2d.cpp
         src/sandbox_2d.hpp
 )
+
+if(MSVC)
+set_target_properties(sandbox PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+endif()
 
 target_compile_features(sandbox PRIVATE cxx_std_20)
 

@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <fstream>
+#include <array>
 
 #include "core.hpp"
 #include "glm_wrapper.hpp"
@@ -119,7 +120,7 @@ std::string OpenGLShader::ReadFile(std::string_view p_FilePath) const
         return result;
     }
 
-    SN_ENGINE_ERR("Could not open file \"{}\"", p_FilePath);
+    SN_ENGINE_ERR("Could not open file \"{}\" at \"{}\"", p_FilePath, std::filesystem::current_path().string().c_str());
     return "";
 }
 

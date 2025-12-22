@@ -42,7 +42,7 @@ void OpenGLVertexBuffer::Unbind() const
 // OpenGLIndexBuffer //
 ///////////////////////
 
-OpenGLIndexBuffer::OpenGLIndexBuffer(const GLuint* p_Data, const ssize_t p_Count)
+OpenGLIndexBuffer::OpenGLIndexBuffer(const GLuint* p_Data, const int64_t p_Count)
     : m_Count(p_Count)
 {
     SN_PROFILE_FUNCTION();
