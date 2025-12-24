@@ -13,7 +13,7 @@ public:
     void SetClearColor(const glm::vec4& p_Color) const override;
     void Clear() const override;
 
-    void DrawIndexed(const Ref<VertexArray>& p_VertexArray) const override;
+    void DrawIndexed(const Ref<VertexArray>& p_VertexArray, int64_t p_IndexCount = 0) const override;
 };
 
 } // namespace Sonata

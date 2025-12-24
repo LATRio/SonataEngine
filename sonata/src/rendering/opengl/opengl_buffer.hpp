@@ -7,11 +7,14 @@ namespace Sonata {
 
 class OpenGLVertexBuffer final : public VertexBuffer {
 public:
+    explicit OpenGLVertexBuffer(GLsizeiptr p_Size);
     OpenGLVertexBuffer(const GLfloat* p_Vertices, GLsizeiptr p_Size);
     ~OpenGLVertexBuffer() override;
 
     void Bind() const override;
     void Unbind() const override;
+
+    void SetData(const void* p_Data, int64_t p_Size) override;
 
     void SetLayout(const BufferLayout& layout) override { m_Layout = layout; }
     [[nodiscard]] const BufferLayout& GetLayout() const override { return m_Layout; }

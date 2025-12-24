@@ -35,7 +35,7 @@ void Sandbox2D::OnUpdate(const float p_DeltaTime)
 
     Sonata::Renderer2D::DrawQuad({-1.0f, 0.0f}, {0.8f, 0.8f}, {0.8f, 0.2f, 0.3f, 1.0f});
     Sonata::Renderer2D::DrawQuad({0.5f, -0.5f}, {0.5f, 0.75f}, {0.2f, 0.3f, 0.8f, 1.0f});
-    Sonata::Renderer2D::DrawQuad({0.2f, 0.5f}, {0.5f, 0.5f}, m_Texture);
+    Sonata::Renderer2D::DrawQuad({-5.0f, -5.0f, -0.1f}, {10.0f, 10.0f}, m_Texture, 10.0f);
 
     Sonata::Renderer2D::EndScene();
 }

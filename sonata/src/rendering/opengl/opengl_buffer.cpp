@@ -8,6 +8,15 @@ namespace Sonata {
 // OpenGLVertexBuffer //
 ////////////////////////
 
+OpenGLVertexBuffer::OpenGLVertexBuffer(const GLsizeiptr p_Size)
+{
+    SN_PROFILE_FUNCTION();
+
+    glCreateBuffers(1, &m_BufferID);
+    glBindBuffer(GL_ARRAY_BUFFER, m_BufferID);
+    glBufferData(GL_ARRAY_BUFFER, p_Size, nullptr, GL_DYNAMIC_DRAW);
+}
+
 OpenGLVertexBuffer::OpenGLVertexBuffer(const GLfloat* p_Vertices, const GLsizeiptr p_Size)
 {
     SN_PROFILE_FUNCTION();
@@ -36,6 +45,14 @@ void OpenGLVertexBuffer::Unbind() const
     SN_PROFILE_FUNCTION();
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void OpenGLVertexBuffer::SetData(const void* p_Data, const int64_t p_Size)
+{
+    SN_PROFILE_FUNCTION();
+
+    Bind();
+    glBufferSubData(GL_ARRAY_BUFFER, 0, p_Size, p_Data);
 }
 
 ///////////////////////

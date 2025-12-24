@@ -104,6 +104,9 @@ public:
     virtual void SetLayout(const BufferLayout& layout) = 0;
     [[nodiscard]] virtual const BufferLayout& GetLayout() const = 0;
 
+    virtual void SetData(const void* p_Data, int64_t p_Size) = 0;
+
+    static Ref<VertexBuffer> Create(int64_t p_Size);
     static Ref<VertexBuffer> Create(const float* p_Vertices, int64_t p_Size);
 };
 

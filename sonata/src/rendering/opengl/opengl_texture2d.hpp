@@ -21,6 +21,11 @@ public:
 
     void Bind(uint32_t p_Unit) const override;
 
+    bool operator==(const Texture& p_Other) const override
+    {
+        return m_TextureID == static_cast<const OpenGLTexture2D&>(p_Other).m_TextureID;
+    }
+
 private:
     std::string m_Path;
 

@@ -18,7 +18,7 @@ public:
 
     static void Clear() { s_RendererAPI->Clear(); }
 
-    static void DrawIndexed(const Ref<VertexArray>& p_VertexArray) { s_RendererAPI->DrawIndexed(p_VertexArray); }
+    static void DrawIndexed(const Ref<VertexArray>& p_VertexArray, const int64_t p_IndexCount = 0) { s_RendererAPI->DrawIndexed(p_VertexArray, p_IndexCount); }
 
 private:
     static RendererAPI* s_RendererAPI;

@@ -71,36 +71,74 @@ void OpenGLShader::SetInt(const std::string_view p_Name, const int p_Value)
 {
     SN_PROFILE_FUNCTION();
 
-    const GLint location = glGetUniformLocation(m_ProgramID, p_Name.data());
-    SN_ASSERT_MSG(location != -1, std::format("Uniform location wasn't found! Program: {} ({})", m_ProgramID, p_Name));
-    glUniform1i(location, p_Value);
+    glUniform1i(GetUniformLocation(p_Name), p_Value);
 }
 
-void OpenGLShader::SetVec3(const std::string_view p_Name, const glm::vec3& p_Value)
+void OpenGLShader::SetIntN(const std::string_view p_Name, const int* p_Value, const int p_Count)
 {
     SN_PROFILE_FUNCTION();
 
-    const GLint location = glGetUniformLocation(m_ProgramID, p_Name.data());
-    SN_ASSERT_MSG(location != -1, std::format("Uniform location wasn't found! Program: {} ({})", m_ProgramID, p_Name));
-    glUniform3f(location, p_Value.x, p_Value.y, p_Value.z);
+    glUniform1iv(GetUniformLocation(p_Name), p_Count, p_Value);
 }
 
-void OpenGLShader::SetVec4(const std::string_view p_Name, const glm::vec4& p_Value)
+void OpenGLShader::SetFloat(const std::string_view p_Name, const float p_Value)
 {
     SN_PROFILE_FUNCTION();
 
-    const GLint location = glGetUniformLocation(m_ProgramID, p_Name.data());
-    SN_ASSERT_MSG(location != -1, std::format("Uniform location wasn't found! Program: {} ({})", m_ProgramID, p_Name));
-    glUniform4f(location, p_Value.x, p_Value.y, p_Value.z, p_Value.w);
+    glUniform1f(GetUniformLocation(p_Name), p_Value);
+}
+
+void OpenGLShader::SetFloat3(const std::string_view p_Name, const glm::vec3& p_Value)
+{
+    SN_PROFILE_FUNCTION();
+
+    glUniform3f(GetUniformLocation(p_Name), p_Value.x, p_Value.y, p_Value.z);
+}
+
+void OpenGLShader::SetFloat4(const std::string_view p_Name, const glm::vec4& p_Value)
+{
+    SN_PROFILE_FUNCTION();
+
+    glUniform4f(GetUniformLocation(p_Name), p_Value.x, p_Value.y, p_Value.z, p_Value.w);
 }
 
 void OpenGLShader::SetMat4(const std::string_view p_Name, const glm::mat4& p_Value)
 {
     SN_PROFILE_FUNCTION();
 
-    const GLint location = glGetUniformLocation(m_ProgramID, p_Name.data());
-    SN_ASSERT_MSG(location != -1, std::format("Uniform location wasn't found! Program: {} ({})", m_ProgramID, p_Name));
-    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(p_Value));
+    glUniformMatrix4fv(GetUniformLocation(p_Name), 1, GL_FALSE, glm::value_ptr(p_Value));
+}
+
+void OpenGLShader::PrintAttributesAndUniforms()
+{
+    GLint count;
+
+    GLint size; // size of the variable
+    GLenum type; // type of the variable (float, vec3 or mat4, etc)
+
+    constexpr GLsizei bufSize = 16; // maximum name length
+    GLchar name[bufSize]; // variable name in GLSL
+    GLsizei length; // name length
+
+    glGetProgramiv(m_ProgramID, GL_ACTIVE_ATTRIBUTES, &count);
+    printf("Active Attributes: %d\n", count);
+
+    for (GLint i = 0; i < count; i++)
+    {
+        glGetActiveAttrib(m_ProgramID, static_cast<GLuint>(i), bufSize, &length, &size, &type, name);
+
+        SN_ENGINE_DEBUG("Attribute #{} Type: {} Name: {}\n", i, type, name);
+    }
+
+    glGetProgramiv(m_ProgramID, GL_ACTIVE_UNIFORMS, &count);
+    printf("Active Uniforms: %d\n", count);
+
+    for (GLint i = 0; i < count; i++)
+    {
+        glGetActiveUniform(m_ProgramID, static_cast<GLuint>(i), bufSize, &length, &size, &type, name);
+
+        SN_ENGINE_DEBUG("Uniform #{} Type: {} Name: {}\n", i, type, name);
+    }
 }
 
 std::string OpenGLShader::ReadFile(std::string_view p_FilePath) const
@@ -210,6 +248,13 @@ void OpenGLShader::CompileShaders(const std::unordered_map<GLenum, std::string>&
     {
         glDetachShader(m_ProgramID, id);
     }
+}
+
+GLint OpenGLShader::GetUniformLocation(std::string_view p_Name)
+{
+    const GLint location = glGetUniformLocation(m_ProgramID, p_Name.data());
+    SN_ASSERT_MSG(location != -1, std::format("Uniform location wasn't found! Program: {} ({})", m_ProgramID, p_Name));
+    return location;
 }
 
 } // namespace Sonata

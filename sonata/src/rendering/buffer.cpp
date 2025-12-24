@@ -20,6 +20,21 @@ void BufferLayout::CalculateOffsetAndStride()
     }
 }
 
+Ref<VertexBuffer> VertexBuffer::Create(const int64_t p_Size)
+{
+    switch (Renderer::GetAPI())
+    {
+        case RendererAPI::API::OpenGL:
+            return CreateRef<OpenGLVertexBuffer>(p_Size);
+        case RendererAPI::API::None:
+            SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
+            return nullptr;
+        default:
+            SN_ASSERT_MSG(false, "Unknown RenderAPI");
+            return nullptr;
+    }
+}
+
 Ref<VertexBuffer> VertexBuffer::Create(const float* p_Vertices, const int64_t p_Size)
 {
     switch (Renderer::GetAPI())
