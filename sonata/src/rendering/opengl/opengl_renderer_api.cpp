@@ -39,7 +39,7 @@ void OpenGLRendererAPI::Clear() const
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& p_VertexArray, const int64_t p_IndexCount) const
+void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& p_VertexArray, const int32_t p_IndexCount) const
 {
     SN_PROFILE_FUNCTION();
 

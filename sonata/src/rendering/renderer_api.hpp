@@ -20,7 +20,7 @@ public:
     virtual void SetClearColor(const glm::vec4& p_Color) const = 0;
     virtual void Clear() const = 0;
 
-    virtual void DrawIndexed(const Ref<VertexArray>& p_VertexArray, int64_t p_IndexCount = 0) const = 0;
+    virtual void DrawIndexed(const Ref<VertexArray>& p_VertexArray, int32_t p_IndexCount = 0) const = 0;
 
     static API GetAPI() { return s_RenderAPI; }
 
