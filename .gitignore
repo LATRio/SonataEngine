@@ -1,7 +1,21 @@
-/.idea/
-/.vs/
-/bin/
-/build/
+# IDE files
+.idea/
+.vs/
+
+# Build Artefacts
+build/
+bin/libsonata.so
+bin/sandbox
+bin/sandbox.exe
+bin/sandbox.pdb
+
+# Profiling data
+bin/SonataProfile*
+
+# ImGui temp files
+imgui.ini
+
+#=====================================
 
 # Prerequisites
 *.d
