@@ -28,6 +28,8 @@ void Sandbox2D::OnUpdate(const float p_DeltaTime)
 
     m_CameraController.OnUpdate(p_DeltaTime);
 
+    Sonata::Renderer2D::ResetStats();
+
     Sonata::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
     Sonata::RenderCommand::Clear();
 
@@ -35,13 +37,22 @@ void Sandbox2D::OnUpdate(const float p_DeltaTime)
     rotation += 50.0f * p_DeltaTime;
 
     Sonata::Renderer2D::BeginScene(m_CameraController.GetCamera());
-
     Sonata::Renderer2D::DrawRotatedQuad({1.0f, 0.0f}, {0.8f, 0.8f}, 45.0f, {0.8f, 0.2f, 0.3f, 1.0f});
     Sonata::Renderer2D::DrawQuad({-1.0f, 0.0f}, {0.8f, 0.8f}, {0.8f, 0.2f, 0.3f, 1.0f});
     Sonata::Renderer2D::DrawQuad({0.5f, -0.5f}, {0.5f, 0.75f}, {0.2f, 0.3f, 0.8f, 1.0f});
-    Sonata::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1f}, {10.0f, 10.0f}, m_Texture, 10.0f);
+    Sonata::Renderer2D::DrawQuad({0.0f, 0.0f, -0.1f}, {20.0f, 20.0f}, m_Texture, 20.0f);
     Sonata::Renderer2D::DrawRotatedQuad({-2.0f, 0.0f, 0.0f}, {1.0f, 1.0f}, rotation, m_Texture, 20.0f);
+    Sonata::Renderer2D::EndScene();
 
+    Sonata::Renderer2D::BeginScene(m_CameraController.GetCamera());
+    for (float y = -5.0f; y < 5.0f; y += 0.5f)
+    {
+        for (float x = -5.0f; x < 5.0f; x += 0.5f)
+        {
+            glm::vec4 color{(x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 0.7f};
+            Sonata::Renderer2D::DrawQuad({x, y}, {0.45f, 0.45f}, color);
+        }
+    }
     Sonata::Renderer2D::EndScene();
 }
 
@@ -56,5 +67,17 @@ void Sandbox2D::OnImGuiRender()
 {
     SN_PROFILE_FUNCTION();
 
-    //m_CameraController.OnImGuiRender();
+    using namespace ImGui;
+
+    const auto stats = Sonata::Renderer2D::GetStats();
+
+    Begin("Settings", nullptr, ImGuiChildFlags_AlwaysAutoResize);
+
+    Text("Renderer2D Stats:");
+    Text("Draw Calls: %d", stats.DrawCalls);
+    Text("Quads: %d", stats.QuadCount);
+    Text("Vertices: %d", stats.GetTotalVertexCount());
+    Text("Indices: %d", stats.GetTotalIndexCount());
+
+    End();
 }
