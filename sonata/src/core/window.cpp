@@ -50,7 +50,7 @@ Window::Window(const WindowProps& p_Props)
         }
     }
 
-    m_RenderContext = CreateScope<OpenGLContext>(m_Window);
+    m_RenderContext = RenderContext::Create(m_Window);
     m_RenderContext->Init();
 
     glfwSetWindowUserPointer(m_Window, &m_WindowData);

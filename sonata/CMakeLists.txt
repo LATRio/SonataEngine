@@ -68,6 +68,7 @@ add_library(sonata ${LIB_BUILD_TYPE}
         src/rendering/opengl/opengl_texture2d.hpp
         src/profiler/instrumentor.hpp
         src/profiler/instrumentor.cpp
+        src/rendering/render_context.cpp
 )
 
 target_compile_features(sonata PRIVATE cxx_std_20)

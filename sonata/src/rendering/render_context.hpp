@@ -14,6 +14,8 @@ public:
     virtual void Init() = 0;
     virtual void SwapBuffers() = 0;
 
+    static Scope<RenderContext> Create(GLFWwindow* p_Window);
+
 protected:
     GLFWwindow* m_Window;
 };
