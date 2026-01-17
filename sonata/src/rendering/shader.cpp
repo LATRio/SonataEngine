@@ -11,6 +11,9 @@ Ref<Shader> Shader::Create(const std::string_view p_Filepath)
     {
         case RendererAPI::API::OpenGL:
             return CreateRef<OpenGLShader>(p_Filepath);
+        case RendererAPI::API::Vulkan:
+            SN_ASSERT_MSG(false, "Vulkan Shader isn't implemented yet!");
+            return nullptr;
         case RendererAPI::API::None:
             SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
             return nullptr;
@@ -27,6 +30,9 @@ Ref<Shader> Shader::Create(
     {
         case RendererAPI::API::OpenGL:
             return CreateRef<OpenGLShader>(p_Name, p_VertexPath, p_FragmentPath);
+        case RendererAPI::API::Vulkan:
+            SN_ASSERT_MSG(false, "Vulkan Shader isn't implemented yet!");
+            return nullptr;
         case RendererAPI::API::None:
             SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
             return nullptr;

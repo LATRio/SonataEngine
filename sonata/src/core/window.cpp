@@ -44,6 +44,9 @@ Window::Window(const WindowProps& p_Props)
             case RendererAPI::API::OpenGL:
                 windowFlags |= SDL_WINDOW_OPENGL;
                 break;
+            case RendererAPI::API::Vulkan:
+                windowFlags |= SDL_WINDOW_VULKAN;
+                break;
             default:
                 break;
         }

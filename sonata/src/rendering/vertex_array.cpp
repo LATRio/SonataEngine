@@ -11,6 +11,9 @@ Ref<VertexArray> VertexArray::Create()
     {
         case RendererAPI::API::OpenGL:
             return CreateRef<OpenGLVertexArray>();
+        case RendererAPI::API::Vulkan:
+            SN_ASSERT_MSG(false, "Vulkan VertexArray isn't implemented yet!");
+            return nullptr;
         case RendererAPI::API::None:
             SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
             return nullptr;

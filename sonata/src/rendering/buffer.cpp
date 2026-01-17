@@ -26,6 +26,9 @@ Ref<VertexBuffer> VertexBuffer::Create(const int64_t p_Size)
     {
         case RendererAPI::API::OpenGL:
             return CreateRef<OpenGLVertexBuffer>(p_Size);
+        case RendererAPI::API::Vulkan:
+            SN_ASSERT_MSG(false, "Vulkan VertexBuffer isn't implemented yet!");
+            return nullptr;
         case RendererAPI::API::None:
             SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
             return nullptr;
@@ -41,6 +44,9 @@ Ref<VertexBuffer> VertexBuffer::Create(const float* p_Vertices, const int64_t p_
     {
         case RendererAPI::API::OpenGL:
             return CreateRef<OpenGLVertexBuffer>(p_Vertices, p_Size);
+        case RendererAPI::API::Vulkan:
+            SN_ASSERT_MSG(false, "Vulkan VertexBuffer isn't implemented yet!");
+            return nullptr;
         case RendererAPI::API::None:
             SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
             return nullptr;
@@ -56,6 +62,9 @@ Ref<IndexBuffer> IndexBuffer::Create(const unsigned int* p_Indices, const int64_
     {
         case RendererAPI::API::OpenGL:
             return CreateRef<OpenGLIndexBuffer>(p_Indices, p_Count);
+        case RendererAPI::API::Vulkan:
+            SN_ASSERT_MSG(false, "Vulkan IndexBuffer isn't implemented yet!");
+            return nullptr;
         case RendererAPI::API::None:
             SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
             return nullptr;

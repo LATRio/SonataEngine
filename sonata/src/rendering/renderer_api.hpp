@@ -12,6 +12,7 @@ public:
     {
         None = 0,
         OpenGL = 1,
+        Vulkan = 2,
     };
     virtual ~RendererAPI() = default;
 

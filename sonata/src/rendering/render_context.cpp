@@ -11,6 +11,9 @@ Scope<RenderContext> RenderContext::Create(SDL_Window* p_Window)
     {
         case RendererAPI::API::OpenGL:
             return CreateScope<OpenGLContext>(p_Window);
+        case RendererAPI::API::Vulkan:
+            SN_ASSERT_MSG(false, "Vulkan RenderContext isn't implemented yet!");
+            return nullptr;
         case RendererAPI::API::None:
             SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
             return nullptr;

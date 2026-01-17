@@ -11,6 +11,9 @@ Ref<Texture2D> Texture2D::Create(int p_Width, int p_Height)
     {
         case RendererAPI::API::OpenGL:
             return CreateRef<OpenGLTexture2D>(p_Width, p_Height);
+        case RendererAPI::API::Vulkan:
+            SN_ASSERT_MSG(false, "Vulkan Texture2D isn't implemented yet!");
+            return nullptr;
         case RendererAPI::API::None:
             SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
             return nullptr;
@@ -26,6 +29,9 @@ Ref<Texture2D> Texture2D::Create(const std::string_view p_Path)
     {
         case RendererAPI::API::OpenGL:
             return CreateRef<OpenGLTexture2D>(p_Path);
+        case RendererAPI::API::Vulkan:
+            SN_ASSERT_MSG(false, "Vulkan Texture2D isn't implemented yet!");
+            return nullptr;
         case RendererAPI::API::None:
             SN_ASSERT_MSG(false, "RenderAPI::None is not supported");
             return nullptr;
