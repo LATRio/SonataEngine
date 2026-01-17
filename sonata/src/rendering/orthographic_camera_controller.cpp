@@ -11,19 +11,19 @@ void OrthographicCameraController::OnUpdate(const float p_DeltaTime)
 {
     SN_PROFILE_FUNCTION();
 
-    if (Input::IsKeyPressed(SN_KEY_LEFT))
+    if (Input::IsKeyPressed(Key::LEFT))
     {
         m_Position.x -= m_TranslationSpeed * p_DeltaTime;
     }
-    if (Input::IsKeyPressed(SN_KEY_RIGHT))
+    if (Input::IsKeyPressed(Key::RIGHT))
     {
         m_Position.x += m_TranslationSpeed * p_DeltaTime;
     }
-    if (Input::IsKeyPressed(SN_KEY_DOWN))
+    if (Input::IsKeyPressed(Key::DOWN))
     {
         m_Position.y -= m_TranslationSpeed * p_DeltaTime;
     }
-    if (Input::IsKeyPressed(SN_KEY_UP))
+    if (Input::IsKeyPressed(Key::UP))
     {
         m_Position.y += m_TranslationSpeed * p_DeltaTime;
     }
@@ -33,11 +33,11 @@ void OrthographicCameraController::OnUpdate(const float p_DeltaTime)
     if (m_CanRotate)
     {
         // ReSharper disable once CppDFAUnreachableCode
-        if (Input::IsKeyPressed(SN_KEY_Q))
+        if (Input::IsKeyPressed(Key::Q))
         {
             m_Rotation += m_RotationSpeed * p_DeltaTime;
         }
-        if (Input::IsKeyPressed(SN_KEY_E))
+        if (Input::IsKeyPressed(Key::E))
         {
             m_Rotation -= m_RotationSpeed * p_DeltaTime;
         }

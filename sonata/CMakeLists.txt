@@ -90,7 +90,7 @@ target_precompile_headers(sonata PRIVATE
         <string_view>
         <format>
         <glad/gl.h>
-        <GLFW/glfw3.h>
+        <SDL3/SDL.h>
         <imgui.h>
         <stb_image.h>
         src/profiler/instrumentor.hpp
@@ -99,6 +99,7 @@ target_precompile_headers(sonata PRIVATE
 
 target_link_libraries(sonata
         PUBLIC
+        SDL3::SDL3
         glad
         imgui
         glm::glm

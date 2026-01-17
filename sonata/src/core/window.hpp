@@ -1,7 +1,7 @@
 #pragma once
 #include "events/event.hpp"
 
-struct GLFWwindow;
+struct SDL_Window;
 
 namespace Sonata {
 class RenderContext;
@@ -36,10 +36,10 @@ public:
     template <typename T>
     T GetHeight() const { return static_cast<T>(m_WindowData.m_Height); }
     /* clang-format on */
-    [[nodiscard]] GLFWwindow* GetNativeWindow() const { return m_Window; };
+    [[nodiscard]] SDL_Window* GetNativeWindow() const { return m_Window; };
 
 private:
-    GLFWwindow* m_Window{};
+    SDL_Window* m_Window{};
     Scope<RenderContext> m_RenderContext;
 
     struct WindowData
@@ -48,6 +48,7 @@ private:
         int m_Height{};
         std::string_view m_Title{};
         bool m_VSync{};
+        SDL_Window* m_Window{};
 
         EventCallbackFn m_Callback{};
     } m_WindowData{};

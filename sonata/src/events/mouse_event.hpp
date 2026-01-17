@@ -53,38 +53,38 @@ private:
 
 class EventMouseButton : public Event {
 public:
-    [[nodiscard]] int GetMouseButton() const { return m_Button; }
+    [[nodiscard]] MouseButton GetMouseButton() const { return m_Button; }
 
     EVENT_CLASS_CATEGORY(EventCategory::eInput | EventCategory::eMouseButton)
 
 protected:
-    explicit EventMouseButton(const int p_Button)
+    explicit EventMouseButton(const MouseButton p_Button)
         : m_Button(p_Button)
     {}
 
-    int m_Button;
+    MouseButton m_Button;
 };
 
 class EventMouseButtonPressed final : public EventMouseButton {
 public:
-    explicit EventMouseButtonPressed(const int p_Button)
+    explicit EventMouseButtonPressed(const MouseButton p_Button)
         : EventMouseButton(p_Button)
     {}
 
-    [[nodiscard]] std::string ToString() const override { return std::format("EventMouseButtonPressed: {}", m_Button); }
+    [[nodiscard]] std::string ToString() const override { return std::format("EventMouseButtonPressed: {}", static_cast<uint32_t>(m_Button)); }
 
     EVENT_CLASS_TYPE(MouseButtonPressed)
 };
 
 class EventMouseButtonReleased final : public EventMouseButton {
 public:
-    explicit EventMouseButtonReleased(const int p_Button)
+    explicit EventMouseButtonReleased(const MouseButton p_Button)
         : EventMouseButton(p_Button)
     {}
 
     [[nodiscard]] std::string ToString() const override
     {
-        return std::format("EventMouseButtonReleased: {}", m_Button);
+        return std::format("EventMouseButtonReleased: {}", static_cast<uint32_t>(m_Button));
     }
 
     EVENT_CLASS_TYPE(MouseButtonReleased)

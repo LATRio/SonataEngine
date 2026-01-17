@@ -1,14 +1,29 @@
 #pragma once
+#define SDL_MAIN_USE_CALLBACKS 1
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wuseless-cast"
+#endif
+#include "SDL3/SDL_main.h"
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 #include "profiler/instrumentor.hpp"
 
 extern Sonata::Application* CreateApplication();
+inline Sonata::Application* app{};
 
-int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
+inline SDL_AppResult SDL_AppInit(void**, int, char*[])
 {
     Sonata::Log::Init();
 
+    if (!SDL_SetAppMetadata("Sonata Engine", "0.0", "com.latrio.sonataengine"))
+    {
+        return SDL_APP_FAILURE;
+    }
+
     SN_PROFILE_BEGIN_SESSION("Initialization", "SonataProfile-Initialization.json");
-    Sonata::Application* app = CreateApplication();
+    app = CreateApplication();
     // TODO: Fetch settings from config file
     constexpr Sonata::WindowProps props{
         1280,
@@ -20,12 +35,24 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
     SN_PROFILE_END_SESSION();
 
     SN_PROFILE_BEGIN_SESSION("Runtime", "SonataProfile-Runtime.json");
-    app->Loop();
+    return SDL_APP_CONTINUE;
+}
+
+inline SDL_AppResult SDL_AppEvent(void*, SDL_Event*)
+{
+    return SDL_APP_CONTINUE;
+}
+
+inline SDL_AppResult SDL_AppIterate(void*)
+{
+    return app->Loop();
+}
+
+inline void SDL_AppQuit(void*, SDL_AppResult)
+{
     SN_PROFILE_END_SESSION();
 
     SN_PROFILE_BEGIN_SESSION("Shutdown", "SonataProfile-Shutdown.json");
     delete app;
     SN_PROFILE_END_SESSION();
-
-    return EXIT_SUCCESS;
 }

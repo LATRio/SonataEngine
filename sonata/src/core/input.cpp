@@ -3,42 +3,42 @@
 #include "application.hpp"
 #include "profiler/instrumentor.hpp"
 
+#include <SDL3/SDL.h>
+
 namespace Sonata {
 
-bool Input::IsKeyPressed(const int p_Key)
+bool Input::IsKeyPressed(Key p_Key)
 {
     SN_PROFILE_FUNCTION();
 
-    GLFWwindow* window = Application::GetInstance()->GetWindow()->GetNativeWindow();
-    return glfwGetKey(window, p_Key) == GLFW_PRESS;
+    const bool* states{SDL_GetKeyboardState(nullptr)};
+    return states[SDL_GetScancodeFromKey(static_cast<uint32_t>(p_Key), nullptr)];
 }
 
-bool Input::IsMouseButtonPressed(const int p_Button)
+bool Input::IsMouseButtonPressed(MouseButton p_Button)
 {
     SN_PROFILE_FUNCTION();
 
-    GLFWwindow* window = Application::GetInstance()->GetWindow()->GetNativeWindow();
-    return glfwGetMouseButton(window, p_Button) == GLFW_PRESS;
+    return SDL_GetMouseState(nullptr, nullptr) & static_cast<SDL_MouseButtonFlags>(p_Button);
 }
 
-double Input::GetCursorX()
+float Input::GetCursorX()
 {
     auto [x, y] = GetCursorPosition();
     return x;
 }
 
-double Input::GetCursorY()
+float Input::GetCursorY()
 {
     auto [x, y] = GetCursorPosition();
     return y;
 }
-std::pair<double, double> Input::GetCursorPosition()
+std::pair<float, float> Input::GetCursorPosition()
 {
     SN_PROFILE_FUNCTION();
 
-    GLFWwindow* window = Application::GetInstance()->GetWindow()->GetNativeWindow();
-    std::pair<double, double> pos;
-    glfwGetCursorPos(window, &pos.first, &pos.second);
+    std::pair<float, float> pos;
+    SDL_GetMouseState(&pos.first, &pos.second);
     return pos;
 }
 

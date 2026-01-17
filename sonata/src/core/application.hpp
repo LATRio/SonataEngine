@@ -1,5 +1,13 @@
 #pragma once
 #include <memory>
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wuseless-cast"
+#endif
+#include <SDL3/SDL.h>
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 
 #include "events/app_event.hpp"
 #include "layers/imgui_layer.hpp"
@@ -19,7 +27,7 @@ public:
 
     // TODO: Add support for Unicode
     [[maybe_unused]] virtual void Init(const WindowProps& p_Props);
-    [[maybe_unused]] void Loop();
+    SDL_AppResult Loop();
 
     void OnEvent(Event& p_Event);
     [[nodiscard]] bool OnWindowClosed(const EventWindowClose& p_Event);
@@ -40,7 +48,7 @@ private:
 
     Scope<Window> m_Window;
     LayerStack m_LayerStack;
-    bool m_IsRunning{true};
+    SDL_AppResult m_LoopState{SDL_APP_CONTINUE};
     bool m_IsMinimized{false};
 
     ImGuiLayer* m_ImGuiLayer{};

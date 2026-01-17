@@ -6,7 +6,7 @@ project(imgui
 
 option(IMGUI_BUILD_PIC "Build position independent code (-fPIC)" OFF)
 
-set(IMGUI_PLATFORM_BACKEND "glfw" CACHE STRING "Specify which imgui platform backend to use")
+set(IMGUI_PLATFORM_BACKEND "sdl3" CACHE STRING "Specify which imgui platform backend to use")
 set(IMGUI_RENDERER_BACKEND "opengl3" CACHE STRING "Specify which imgui renderer backend to use")
 
 set(IMGUI_SOURCES
@@ -27,6 +27,7 @@ set(IMGUI_RENDERER_SOURCES
     backends/imgui_impl_${IMGUI_RENDERER_BACKEND}.h
 )
 
+message(STATUS "IMGUI BACKENDS ${IMGUI_PLATFORM_SOURCES} ${IMGUI_RENDERER_SOURCES}")
 
 add_library(imgui STATIC
     ${IMGUI_SOURCES}
@@ -45,15 +46,11 @@ endif()
 target_include_directories(imgui PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/
     ${CMAKE_CURRENT_SOURCE_DIR}/backends
-    ${IMGUI_GLFW_PATH}/include
-)
-
-target_link_libraries(imgui PRIVATE
-    glfw
 )
 
 if(UNIX)
     target_link_libraries(imgui PRIVATE
+        SDL3::SDL3
         X11
     )
 endif()

@@ -2,26 +2,27 @@
 #include <format>
 
 #include "events/event.hpp"
+#include "core/input_codes.hpp"
 
 namespace Sonata {
 
 class EventKey : public Event {
 public:
-    [[nodiscard]] int GetKeyCode() const { return m_KeyCode; }
+    [[nodiscard]] Key GetKeyCode() const { return m_KeyCode; }
 
     EVENT_CLASS_CATEGORY(EventCategory::eInput | EventCategory::eKeyboard)
 
 protected:
-    explicit EventKey(const int p_Key)
+    explicit EventKey(const Key p_Key)
         : m_KeyCode(p_Key)
     {}
 
-    int m_KeyCode{};
+    Key m_KeyCode{};
 };
 
 class EventKeyPressed final : public EventKey {
 public:
-    EventKeyPressed(const int p_KeyCode, const int p_RepeatCount)
+    EventKeyPressed(const Key p_KeyCode, const int p_RepeatCount)
         : EventKey(p_KeyCode)
         , m_RepeatCount(p_RepeatCount)
     {}
@@ -30,7 +31,7 @@ public:
 
     [[nodiscard]] std::string ToString() const override
     {
-        return std::format("EventKeyPressed: {} ({} repeats)", m_KeyCode, m_RepeatCount);
+        return std::format("EventKeyPressed: {} ({} repeats)", static_cast<uint32_t>(m_KeyCode), m_RepeatCount);
     }
 
     EVENT_CLASS_TYPE(KeyPressed)
@@ -41,11 +42,11 @@ private:
 
 class EventKeyReleased final : public EventKey {
 public:
-    explicit EventKeyReleased(const int p_KeyCode)
+    explicit EventKeyReleased(const Key p_KeyCode)
         : EventKey(p_KeyCode)
     {}
 
-    [[nodiscard]] std::string ToString() const override { return std::format("EventKeyReleased: {}", m_KeyCode); }
+    [[nodiscard]] std::string ToString() const override { return std::format("EventKeyReleased: {}", static_cast<uint32_t>(m_KeyCode)); }
 
     EVENT_CLASS_TYPE(KeyReleased)
 };

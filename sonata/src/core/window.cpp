@@ -1,172 +1,171 @@
 #include "window.hpp"
+#include "SDL3/SDL.h"
 #include "events/app_event.hpp"
 #include "events/key_event.hpp"
 #include "events/mouse_event.hpp"
 #include "profiler/instrumentor.hpp"
 #include "rendering/opengl/opengl_context.hpp"
+#include "rendering/renderer.hpp"
 
 namespace Sonata {
 
-static bool glfwInitialized = false;
-
-void GLFWErrorCallback(int p_ErrorCode, const char* p_Description)
-{
-    SN_ENGINE_FATAL("GLFW Error ({}): {}", p_ErrorCode, p_Description);
-}
+static bool sdlInitialized = false;
 
 Window::Window(const WindowProps& p_Props)
 {
     SN_PROFILE_FUNCTION();
 
-    if (!glfwInitialized)
+    if (!sdlInitialized)
     {
-        const int success = glfwInit();
-        SN_ASSERT_MSG(success, "Failed to initialize GLFW3");
-        glfwSetErrorCallback(GLFWErrorCallback);
-        glfwInitialized = true;
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-        glfwWindowHint(GLFW_CONTEXT_DEBUG, GL_TRUE);
+        const int success = SDL_Init(SDL_INIT_VIDEO);
+        SN_ASSERT_MSG(success, SDL_GetError());
 
-        int major_version;
-        int minor_version;
-        glfwGetVersion(&major_version, &minor_version, nullptr);
-        SN_ENGINE_INFO("Window Initialized! (powered by glfw-{}.{})", major_version, minor_version);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
+
+        SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+        sdlInitialized = true;
+
+        int version{SDL_GetVersion()};
+        SN_ENGINE_INFO("Window Initialized! (powered by SDL-{}.{})", version / 1000000, (version % 1000000) / 1000);
     }
 
-    m_WindowData = {p_Props.m_Width, p_Props.m_Height, p_Props.m_Title, p_Props.m_VSync};
+    m_WindowData = {p_Props.m_Width, p_Props.m_Height, p_Props.m_Title, p_Props.m_VSync, m_Window};
 
     {
         SN_PROFILE_SCOPE("glfwCreateWindow");
 
-        m_Window = glfwCreateWindow(
-            m_WindowData.m_Width, m_WindowData.m_Height, m_WindowData.m_Title.data(), nullptr, nullptr);
-        if (!m_Window)
+        SDL_WindowFlags windowFlags{SDL_WINDOW_RESIZABLE};
+        switch (Renderer::GetAPI())
         {
-            glfwTerminate();
-            SN_ENGINE_FATAL("Failed to create GLFW window");
+            case RendererAPI::API::OpenGL:
+                windowFlags |= SDL_WINDOW_OPENGL;
+                break;
+            default:
+                break;
         }
+        m_Window =
+            SDL_CreateWindow(m_WindowData.m_Title.data(), m_WindowData.m_Width, m_WindowData.m_Height, windowFlags);
+        SN_ASSERT_MSG(m_Window, std::format("Failed to create window: {}", SDL_GetError()));
     }
 
     m_RenderContext = RenderContext::Create(m_Window);
     m_RenderContext->Init();
 
-    glfwSetWindowUserPointer(m_Window, &m_WindowData);
+    // glfwSetWindowUserPointer(m_Window, &m_WindowData);
     SetVSync(m_WindowData.m_VSync);
 
-    glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow* p_Window, const int p_Width, const int p_Height) {
-        const WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(p_Window));
+    SDL_ShowWindow(m_Window);
 
-        EventFramebufferResize event{p_Width, p_Height};
-        data.m_Callback(event);
-    });
-
-    glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* p_Window, const int p_Width, const int p_Height) {
-        WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(p_Window));
-        data.m_Width = p_Width;
-        data.m_Height = p_Height;
-
-        EventWindowResize event(p_Width, p_Height);
-        data.m_Callback(event);
-    });
-
-    glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* p_Window) {
-        const WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(p_Window));
-
-        EventWindowClose event;
-        data.m_Callback(event);
-    });
-
-    glfwSetWindowIconifyCallback(m_Window, [](GLFWwindow* p_Window, const int p_Iconified) {
-        const WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(p_Window));
-
-        EventWindowMinimize event(p_Iconified);
-        data.m_Callback(event);
-    });
-
-    glfwSetKeyCallback(
-        m_Window, [](GLFWwindow* p_Window, const int p_Key, [[maybe_unused]] const int p_Scancode, const int p_Action,
-                     [[maybe_unused]] const int p_Mods) {
-            const WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(p_Window));
-
-            switch (p_Action)
+    SDL_AddEventWatch(
+        [](void* p_Userdata, SDL_Event* p_Event) -> bool {
+            switch (p_Event->type)
             {
-                case GLFW_RELEASE: {
-                    EventKeyReleased event(p_Key);
+                case SDL_EVENT_WINDOW_RESIZED: {
+                    const WindowData& data{*static_cast<WindowData*>(p_Userdata)};
+
+                    EventWindowResize event{p_Event->window.data1, p_Event->window.data2};
                     data.m_Callback(event);
-                    break;
+
+                    return true;
                 }
-                case GLFW_PRESS: {
-                    EventKeyPressed event(p_Key, 0);
+                case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED: {
+                    const WindowData& data{*static_cast<WindowData*>(p_Userdata)};
+
+                    int width, height;
+                    SDL_GetWindowSizeInPixels(data.m_Window, &width, &height);
+                    EventFramebufferResize event{width, height};
                     data.m_Callback(event);
-                    break;
+
+                    return true;
                 }
-                case GLFW_REPEAT: {
-                    EventKeyPressed event(p_Key, 1);
+                case SDL_EVENT_QUIT: {
+                    const WindowData& data{*static_cast<WindowData*>(p_Userdata)};
+
+                    EventWindowClose event;
                     data.m_Callback(event);
-                    break;
+
+                    return true;
                 }
-                default: {
-                    break;
+                case SDL_EVENT_WINDOW_MINIMIZED: {
+                    const WindowData& data{*static_cast<WindowData*>(p_Userdata)};
+
+                    EventWindowMinimize event{static_cast<bool>(p_Event->window.data1)};
+                    data.m_Callback(event);
+
+                    return true;
                 }
+                case SDL_EVENT_KEY_DOWN: {
+                    const WindowData& data{*static_cast<WindowData*>(p_Userdata)};
+
+                    EventKeyPressed event{static_cast<Key>(p_Event->key.key), p_Event->key.repeat};
+                    data.m_Callback(event);
+
+                    return true;
+                }
+                case SDL_EVENT_KEY_UP: {
+                    const WindowData& data{*static_cast<WindowData*>(p_Userdata)};
+
+                    EventKeyReleased event{static_cast<Key>(p_Event->key.key)};
+                    data.m_Callback(event);
+
+                    return true;
+                }
+                case SDL_EVENT_MOUSE_BUTTON_DOWN: {
+                    const WindowData& data{*static_cast<WindowData*>(p_Userdata)};
+
+                    EventMouseButtonPressed event{static_cast<MouseButton>(p_Event->button.button)};
+                    data.m_Callback(event);
+
+                    return true;
+                }
+                case SDL_EVENT_MOUSE_BUTTON_UP: {
+                    const WindowData& data{*static_cast<WindowData*>(p_Userdata)};
+
+                    EventMouseButtonReleased event{static_cast<MouseButton>(p_Event->button.button)};
+                    data.m_Callback(event);
+
+                    return true;
+                }
+                case SDL_EVENT_MOUSE_WHEEL: {
+                    const WindowData& data{*static_cast<WindowData*>(p_Userdata)};
+
+                    EventMouseScrolled event{p_Event->wheel.x, p_Event->wheel.y};
+                    data.m_Callback(event);
+
+                    return true;
+                }
+                case SDL_EVENT_MOUSE_MOTION: {
+                    const WindowData& data{*static_cast<WindowData*>(p_Userdata)};
+
+                    EventMouseMoved event{p_Event->motion.x, p_Event->motion.y};
+                    data.m_Callback(event);
+
+                    return true;
+                }
+                default:
+                    return false;
             }
-        });
-
-    glfwSetMouseButtonCallback(
-        m_Window, [](GLFWwindow* p_Window, const int p_Button, const int p_Action, [[maybe_unused]] const int p_Mods) {
-            const WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(p_Window));
-
-            switch (p_Action)
-            {
-                case GLFW_RELEASE: {
-                    EventMouseButtonReleased event(p_Button);
-                    data.m_Callback(event);
-                    break;
-                }
-                case GLFW_PRESS: {
-                    EventMouseButtonPressed event(p_Button);
-                    data.m_Callback(event);
-                    break;
-                }
-                default: {
-                    break;
-                }
-            }
-        });
-
-    glfwSetScrollCallback(m_Window, [](GLFWwindow* p_Window, const double p_OffsetX, const double p_OffsetY) {
-        const WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(p_Window));
-
-        EventMouseScrolled event(static_cast<float>(p_OffsetX), static_cast<float>(p_OffsetY));
-        data.m_Callback(event);
-    });
-
-    glfwSetCursorPosCallback(m_Window, [](GLFWwindow* p_Window, const double p_PosX, const double p_PosY) {
-        const WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(p_Window));
-
-        EventMouseMoved event(static_cast<float>(p_PosX), static_cast<float>(p_PosY));
-        data.m_Callback(event);
-    });
+        },
+        &m_WindowData);
 }
 
 Window::~Window()
 {
     SN_PROFILE_FUNCTION();
 
-    glfwDestroyWindow(m_Window);
-#if GLFW_VERSION_MAJOR <= 3 && GLFW_VERSION_MINOR < 5
-    glfwPollEvents();
-#endif
-    glfwTerminate();
+    SDL_DestroyWindow(m_Window);
+    SDL_Quit();
 }
 
 void Window::PollEvents() const
 {
     SN_PROFILE_FUNCTION();
 
-    glfwPollEvents();
+    SDL_PumpEvents();
 }
 
 void Window::SwapBuffers() const
@@ -185,7 +184,7 @@ void Window::SetVSync(const bool p_Enable)
 {
     SN_PROFILE_FUNCTION();
 
-    glfwSwapInterval(p_Enable ? 1 : 0);
+    SDL_GL_SetSwapInterval(p_Enable);
     m_WindowData.m_VSync = p_Enable;
 }
 

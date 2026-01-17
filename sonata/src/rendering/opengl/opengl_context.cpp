@@ -1,4 +1,5 @@
 #include "opengl_context.hpp"
+#include <SDL3/SDL_video.h>
 #include "core.hpp"
 #include "profiler/instrumentor.hpp"
 
@@ -6,7 +7,7 @@ namespace Sonata {
 
 /* clang-format off */
 // TODO: Use proper level of severity for logger
-void APIENTRY glDebugOutput(GLenum p_Source,
+void glDebugOutput(GLenum p_Source,
                             GLenum p_Type,
                             unsigned int p_Id,
                             GLenum p_Severity,
@@ -68,13 +69,24 @@ void APIENTRY glDebugOutput(GLenum p_Source,
 }
 /* clang-format on */
 
+OpenGLContext::~OpenGLContext()
+{
+    SDL_GL_DestroyContext(m_Context);
+}
+
 void OpenGLContext::Init()
 {
     SN_PROFILE_FUNCTION();
 
-    glfwMakeContextCurrent(m_Window);
+    m_Context = SDL_GL_CreateContext(m_Window);
+    SN_ASSERT_MSG(m_Context, std::format("Failed to create OpenGL context: {}", SDL_GetError()));
 
-    const int success = gladLoadGL(glfwGetProcAddress);
+    if (!SDL_GL_MakeCurrent(m_Window, m_Context))
+    {
+        SN_ENGINE_ERR("Failed to make OpenGL context current: {}", SDL_GetError());
+    }
+
+    const int success = gladLoadGL(SDL_GL_GetProcAddress);
     SN_ASSERT_MSG(success, "Failed to initialize GLAD");
 
     SN_ENGINE_INFO("OpenGL Version: {}", reinterpret_cast<const char*>(glGetString(GL_VERSION)));
@@ -95,7 +107,14 @@ void OpenGLContext::SwapBuffers()
 {
     SN_PROFILE_FUNCTION();
 
-    glfwSwapBuffers(m_Window);
+    SDL_GL_SwapWindow(m_Window);
+}
+
+void OpenGLContext::SetSwapInterval(int p_Interval)
+{
+    SN_PROFILE_FUNCTION();
+
+    SDL_GL_SetSwapInterval(p_Interval);
 }
 
 } // namespace Sonata

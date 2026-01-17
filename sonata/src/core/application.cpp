@@ -28,30 +28,27 @@ void Application::Init(const WindowProps& p_Props)
     PushOverlay(m_ImGuiLayer);
 }
 
-void Application::Loop()
+SDL_AppResult Application::Loop()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_SCOPE("Application Loop");
+    const float time = static_cast<float>(SDL_GetTicksNS()) / 1000000000.0f;
+    const float deltaTime{time - m_LastFrameTime};
+    m_LastFrameTime = time;
 
-    while (m_IsRunning)
+    m_Window->PollEvents();
+
+    if (!m_IsMinimized)
     {
-        SN_PROFILE_SCOPE("Application Loop");
-        const float time = static_cast<float>(glfwGetTime());
-        const float deltaTime{time - m_LastFrameTime};
-        m_LastFrameTime = time;
+        m_LayerStack.OnUpdate(deltaTime);
 
-        m_Window->PollEvents();
+        m_ImGuiLayer->Begin();
+        m_LayerStack.OnImGuiRender();
+        m_ImGuiLayer->End();
 
-        if (!m_IsMinimized)
-        {
-            m_LayerStack.OnUpdate(deltaTime);
-
-            m_ImGuiLayer->Begin();
-            m_LayerStack.OnImGuiRender();
-            m_ImGuiLayer->End();
-
-            m_Window->SwapBuffers();
-        }
+        m_Window->SwapBuffers();
     }
+
+    return m_LoopState;
 }
 
 void Application::OnEvent(Event& p_Event)
@@ -107,7 +104,7 @@ void Application::Shutdown()
 {
     SN_PROFILE_FUNCTION();
 
-    m_IsRunning = false;
+    m_LoopState = SDL_APP_SUCCESS;
 }
 
 } // namespace Sonata

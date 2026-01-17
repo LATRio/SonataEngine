@@ -5,7 +5,7 @@
 
 namespace Sonata {
 
-Scope<RenderContext> RenderContext::Create(GLFWwindow* p_Window)
+Scope<RenderContext> RenderContext::Create(SDL_Window* p_Window)
 {
     switch (Renderer::GetAPI())
     {
