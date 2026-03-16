@@ -7,6 +7,10 @@ add_executable(sandbox
         src/sandbox_2d.hpp
 )
 
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+set_target_properties(sandbox PROPERTIES DEBUG_POSTFIX "${SONATA_DEBUG_POSTFIX}")
+endif()
+
 if(MSVC)
 set_target_properties(sandbox PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 endif()

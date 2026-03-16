@@ -6,6 +6,7 @@
 build/
 bin/libsonata.so
 bin/sandbox
+bin/sandbox-debug
 bin/sandbox.exe
 bin/sandbox.pdb
 

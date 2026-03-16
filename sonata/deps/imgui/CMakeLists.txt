@@ -22,12 +22,14 @@ set(IMGUI_PLATFORM_SOURCES
     backends/imgui_impl_${IMGUI_PLATFORM_BACKEND}.h
 )
 
-set(IMGUI_RENDERER_SOURCES
-    backends/imgui_impl_${IMGUI_RENDERER_BACKEND}.cpp
-    backends/imgui_impl_${IMGUI_RENDERER_BACKEND}.h
+foreach(item IN LISTS IMGUI_RENDERER_BACKENDS)
+list(APPEND IMGUI_RENDERER_SOURCES
+    backends/imgui_impl_${item}.cpp
+    backends/imgui_impl_${item}.h
 )
+endforeach()
 
-message(STATUS "IMGUI BACKENDS ${IMGUI_PLATFORM_SOURCES} ${IMGUI_RENDERER_SOURCES}")
+message(STATUS "IMGUI BACKENDS/RENDERERS ${IMGUI_PLATFORM_SOURCES} ${IMGUI_RENDERER_SOURCES}")
 
 add_library(imgui STATIC
     ${IMGUI_SOURCES}

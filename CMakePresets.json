@@ -1,0 +1,29 @@
+{
+  "version": 10,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 31,
+    "patch": 6
+  },
+  "configurePresets": [
+    {
+      "name": "release",
+      "hidden": false,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "debug",
+      "hidden": false,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "SONATA_DEBUG_POSTFIX": "-debug"
+      }
+    }
+  ]
+}

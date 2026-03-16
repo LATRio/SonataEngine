@@ -1,7 +1,6 @@
 option(SONATA_BUILD_SHARED "Build as shared library" FALSE)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
-add_subdirectory(deps)
 
 if(SONATA_BUILD_SHARED)
     set(LIB_BUILD_TYPE "SHARED")
@@ -71,6 +70,8 @@ add_library(sonata ${LIB_BUILD_TYPE}
         src/rendering/render_context.cpp
 )
 
+add_subdirectory(deps)
+
 target_compile_features(sonata PRIVATE cxx_std_20)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -89,20 +90,6 @@ target_precompile_headers(sonata PRIVATE
         <string>
         <string_view>
         <format>
-        <glad/gl.h>
-        <SDL3/SDL.h>
-        <imgui.h>
-        <stb_image.h>
         src/profiler/instrumentor.hpp
         src/logger/log.hpp
-)
-
-target_link_libraries(sonata
-        PUBLIC
-        SDL3::SDL3
-        glad
-        imgui
-        glm::glm
-        spdlog::spdlog
-        stb
 )

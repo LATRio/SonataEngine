@@ -8,6 +8,7 @@
 #include "glm/glm.hpp"
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/string_cast.hpp"
+#include "glm/gtx/hash.hpp"
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif
