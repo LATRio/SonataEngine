@@ -68,6 +68,8 @@ add_library(sonata ${LIB_BUILD_TYPE}
         src/profiler/instrumentor.hpp
         src/profiler/instrumentor.cpp
         src/rendering/render_context.cpp
+        src/rendering/vulkan/vulkan_context.cpp
+        src/rendering/vulkan/vulkan_context.hpp
 )
 
 add_subdirectory(deps)
@@ -90,6 +92,7 @@ target_precompile_headers(sonata PRIVATE
         <string>
         <string_view>
         <format>
+        <iomanip>
         src/profiler/instrumentor.hpp
         src/logger/log.hpp
 )

@@ -1,17 +1,10 @@
 #include "imgui_layer.hpp"
-#ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wold-style-cast"
-#endif
-#include <imgui_impl_sdl3.h>
-#include <imgui_impl_opengl3.h>
-#ifdef __GNUC__
-#pragma GCC diagnostic pop
-#endif
+#include "imgui_wrapper.hpp"
 #include "SDL3/SDL_video.h"
 
 #include "core/application.hpp"
 #include "profiler/instrumentor.hpp"
+#include "rendering/renderer.hpp"
 
 namespace Sonata {
 
@@ -30,8 +23,41 @@ void ImGuiLayer::OnAttach()
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
-    ImGui_ImplSDL3_InitForOpenGL(SDL_GL_GetCurrentWindow(), SDL_GL_GetCurrentContext());
-    ImGui_ImplOpenGL3_Init("#version 460");
+    switch (Renderer::GetAPI())
+    {
+        case RendererAPI::API::OpenGL: {
+            ImGui_ImplSDL3_InitForOpenGL(SDL_GL_GetCurrentWindow(), SDL_GL_GetCurrentContext());
+            ImGui_ImplOpenGL3_Init("#version 460");
+            break;
+        }
+        case RendererAPI::API::Vulkan: {
+            // ImGui_ImplVulkan_InitInfo vulkanInfo{
+            //     .ApiVersion = ,
+            //     .Instance = ,
+            //     .PhysicalDevice = ,
+            //     .Device = ,
+            //     .QueueFamily = ,
+            //     .Queue = ,
+            //     .DescriptorPool = ,
+            //     .DescriptorPoolSize = ,
+            //     .MinImageCount = ,
+            //     .ImageCount = ,
+            //     .PipelineCache = ,
+            //     .PipelineInfoMain = ,
+            //     .PipelineInfoForViewports = ,
+            //     .UseDynamicRendering = ,
+            //     .Allocator = ,
+            //     .CheckVkResultFn = ,
+            //     .MinAllocationSize = ,
+            //     .CustomShaderVertCreateInfo = ,
+            //     .CustomShaderFragCreateInfo =
+            // };
+            // ImGui_ImplVulkan_Init(&vulkanInfo);
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 void ImGuiLayer::OnDetach()
