@@ -15,6 +15,7 @@ inline Sonata::Application* app{};
 
 inline SDL_AppResult SDL_AppInit(void**, int, char*[])
 {
+    SN_PROFILE_SCOPE("Initialization");
     Sonata::Log::Init();
 
     if (!SDL_SetAppMetadata("Sonata Engine", "0.0", "com.latrio.sonataengine"))
@@ -22,7 +23,8 @@ inline SDL_AppResult SDL_AppInit(void**, int, char*[])
         return SDL_APP_FAILURE;
     }
 
-    SN_PROFILE_BEGIN_SESSION("Initialization", "SonataProfile-Initialization.json");
+    // SN_PROFILE_BEGIN_SESSION("Initialization", "SonataProfile-Initialization.json");
+
     app = CreateApplication();
     // TODO: Fetch settings from config file
     constexpr Sonata::WindowProps props{
@@ -32,27 +34,30 @@ inline SDL_AppResult SDL_AppInit(void**, int, char*[])
         true,
     };
     app->Init(props);
-    SN_PROFILE_END_SESSION();
+    // SN_PROFILE_END_SESSION();
 
-    SN_PROFILE_BEGIN_SESSION("Runtime", "SonataProfile-Runtime.json");
+    // SN_PROFILE_BEGIN_SESSION("Runtime", "SonataProfile-Runtime.json");
     return SDL_APP_CONTINUE;
 }
 
 inline SDL_AppResult SDL_AppEvent(void*, SDL_Event*)
 {
+    SN_PROFILE_SCOPE("Application Event");
     return SDL_APP_CONTINUE;
 }
 
 inline SDL_AppResult SDL_AppIterate(void*)
 {
+    SN_PROFILE_SCOPE("Application Loop");
     return app->Loop();
 }
 
 inline void SDL_AppQuit(void*, SDL_AppResult)
 {
-    SN_PROFILE_END_SESSION();
+    SN_PROFILE_SCOPE("Shutdown");
+    // SN_PROFILE_END_SESSION();
 
-    SN_PROFILE_BEGIN_SESSION("Shutdown", "SonataProfile-Shutdown.json");
+    // SN_PROFILE_BEGIN_SESSION("Shutdown", "SonataProfile-Shutdown.json");
     delete app;
-    SN_PROFILE_END_SESSION();
+    // SN_PROFILE_END_SESSION();
 }

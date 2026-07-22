@@ -9,7 +9,7 @@ namespace Sonata {
 
 void OrthographicCameraController::OnUpdate(const float p_DeltaTime)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     if (Input::IsKeyPressed(Key::LEFT))
     {
@@ -48,7 +48,7 @@ void OrthographicCameraController::OnUpdate(const float p_DeltaTime)
 
 void OrthographicCameraController::OnEvent(Event& e)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     EventDispatcher dispatcher(e);
     dispatcher.Dispatch<EventMouseScrolled>(SN_BIND_EVENT_FUNC(OrthographicCameraController::OnMouseScrolled));
@@ -57,14 +57,14 @@ void OrthographicCameraController::OnEvent(Event& e)
 
 void OrthographicCameraController::CalculateView()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 }
 
 bool OrthographicCameraController::OnMouseScrolled(const EventMouseScrolled& p_Event)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     m_ZoomLevel -= p_Event.GetOffsetY() * m_ZoomSensitivity;
     m_ZoomLevel = std::max(m_ZoomLevel, m_ZoomLevelMin);
@@ -74,7 +74,7 @@ bool OrthographicCameraController::OnMouseScrolled(const EventMouseScrolled& p_E
 
 bool OrthographicCameraController::OnWindowResized(const EventWindowResize& p_Event)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     m_AspectRatio = p_Event.GetAspectRatio();
     CalculateView();

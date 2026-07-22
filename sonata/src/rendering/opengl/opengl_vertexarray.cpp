@@ -31,35 +31,35 @@ GLenum TypeToGL(ShaderDataType p_Type)
 
 OpenGLVertexArray::OpenGLVertexArray()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     glCreateVertexArrays(1, &m_ArrayID);
 }
 
 OpenGLVertexArray::~OpenGLVertexArray()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     glDeleteVertexArrays(1, &m_ArrayID);
 }
 
 void OpenGLVertexArray::Bind() const
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     glBindVertexArray(m_ArrayID);
 }
 
 void OpenGLVertexArray::Unbind() const
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     glBindVertexArray(0);
 }
 
 void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& p_VertexBuffer)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     SN_ASSERT_MSG(!p_VertexBuffer->GetLayout().GetElements().empty(), "Vertex buffer has no layout!");
 
@@ -118,7 +118,7 @@ void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& p_VertexBuffer)
 
 void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& p_IndexBuffer)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     Bind();
     p_IndexBuffer->Bind();

@@ -4,6 +4,7 @@
 #glm | 1.0.2
 #stb_image | 2.3
 #sdl3 | 3.4.0
+#tracy | 0.13.1
 
 if(SONATA_BUILD_SHARED)
     set(GLAD_BUILD_PIC ON)
@@ -44,3 +45,9 @@ set(SDL_STATIC ON)
 add_subdirectory(sdl3)
 target_precompile_headers(sonata PUBLIC <SDL3/SDL.h>)
 target_link_libraries(sonata PUBLIC SDL3::SDL3)
+
+option(TRACY_ENABLE "" OFF)
+option(TRACY_ON_DEMAND "" OFF)
+add_subdirectory(tracy)
+#target_compile_options(sonata PUBLIC <tracy/Tracy.hpp>)
+target_link_libraries(sonata PUBLIC Tracy::TracyClient)

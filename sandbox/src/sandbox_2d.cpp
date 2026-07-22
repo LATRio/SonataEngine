@@ -26,7 +26,7 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttach()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     Sonata::Renderer2D::Init();
     m_Texture = Sonata::Texture2D::Create("assets/container.jpg");
@@ -47,18 +47,20 @@ void Sandbox2D::OnAttach()
 
 void Sandbox2D::OnDetach()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     Sonata::Renderer2D::Shutdown();
 }
 
 void Sandbox2D::OnUpdate(const float p_DeltaTime)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     m_CameraController.OnUpdate(p_DeltaTime);
 
     Sonata::Renderer2D::ResetStats();
+
+    SN_PROFILE_GPU_ZONE("RenderFrame");
 
     Sonata::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
     Sonata::RenderCommand::Clear();
@@ -109,18 +111,20 @@ void Sandbox2D::OnUpdate(const float p_DeltaTime)
         }
     }
     Sonata::Renderer2D::EndScene();
+
+    SN_PROFILE_GPU_COLLECT;
 }
 
 void Sandbox2D::OnEvent(Sonata::Event& p_Event)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     m_CameraController.OnEvent(p_Event);
 }
 
 void Sandbox2D::OnImGuiRender()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     using namespace ImGui;
 

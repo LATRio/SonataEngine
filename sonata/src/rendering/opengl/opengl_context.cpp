@@ -76,7 +76,7 @@ OpenGLContext::~OpenGLContext()
 
 void OpenGLContext::Init()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     m_Context = SDL_GL_CreateContext(m_Window);
     SN_ASSERT_MSG(m_Context, std::format("Failed to create OpenGL context: {}", SDL_GetError()));
@@ -88,6 +88,8 @@ void OpenGLContext::Init()
 
     const int success = gladLoadGL(SDL_GL_GetProcAddress);
     SN_ASSERT_MSG(success, "Failed to initialize GLAD");
+
+    SN_PROFILE_GPU_CONTEXT;
 
     SN_ENGINE_INFO("OpenGL Version: {}", reinterpret_cast<const char*>(glGetString(GL_VERSION)));
     {
@@ -105,14 +107,14 @@ void OpenGLContext::Init()
 
 void OpenGLContext::SwapBuffers()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     SDL_GL_SwapWindow(m_Window);
 }
 
 void OpenGLContext::SetSwapInterval(int p_Interval)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     SDL_GL_SetSwapInterval(p_Interval);
 }

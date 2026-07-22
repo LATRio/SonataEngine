@@ -25,7 +25,7 @@ GLenum StrToType(std::string_view p_Type)
 
 OpenGLShader::OpenGLShader(const std::string_view p_Filepath)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     m_Name = std::filesystem::path(p_Filepath).stem().string();
     const std::string source = ReadFile(p_Filepath);
@@ -37,7 +37,7 @@ OpenGLShader::OpenGLShader(
     const std::string_view p_Name, const std::string_view p_VertSrc, const std::string_view p_FragSrc)
     : m_Name(p_Name)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     std::unordered_map<GLenum, std::string> shaderSources;
     shaderSources.reserve(2);
@@ -48,63 +48,63 @@ OpenGLShader::OpenGLShader(
 
 OpenGLShader::~OpenGLShader()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     glDeleteProgram(m_ProgramID);
 }
 
 void OpenGLShader::Bind() const
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     glUseProgram(m_ProgramID);
 }
 
 void OpenGLShader::Unbind() const
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     glUseProgram(0);
 }
 
 void OpenGLShader::SetInt(const std::string_view p_Name, const int p_Value)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     glUniform1i(GetUniformLocation(p_Name), p_Value);
 }
 
 void OpenGLShader::SetIntN(const std::string_view p_Name, const int* p_Value, const int p_Count)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     glUniform1iv(GetUniformLocation(p_Name), p_Count, p_Value);
 }
 
 void OpenGLShader::SetFloat(const std::string_view p_Name, const float p_Value)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     glUniform1f(GetUniformLocation(p_Name), p_Value);
 }
 
 void OpenGLShader::SetFloat3(const std::string_view p_Name, const glm::vec3& p_Value)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     glUniform3f(GetUniformLocation(p_Name), p_Value.x, p_Value.y, p_Value.z);
 }
 
 void OpenGLShader::SetFloat4(const std::string_view p_Name, const glm::vec4& p_Value)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     glUniform4f(GetUniformLocation(p_Name), p_Value.x, p_Value.y, p_Value.z, p_Value.w);
 }
 
 void OpenGLShader::SetMat4(const std::string_view p_Name, const glm::mat4& p_Value)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     glUniformMatrix4fv(GetUniformLocation(p_Name), 1, GL_FALSE, glm::value_ptr(p_Value));
 }
@@ -143,7 +143,7 @@ void OpenGLShader::PrintAttributesAndUniforms()
 
 std::string OpenGLShader::ReadFile(std::string_view p_FilePath) const
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     std::ifstream in{p_FilePath.data()};
     if (in.is_open())
@@ -164,7 +164,7 @@ std::string OpenGLShader::ReadFile(std::string_view p_FilePath) const
 
 std::unordered_map<GLenum, std::string> OpenGLShader::Preprocess(std::string_view p_Source) const
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     std::unordered_map<GLenum, std::string> shaderSources;
 
@@ -192,7 +192,7 @@ std::unordered_map<GLenum, std::string> OpenGLShader::Preprocess(std::string_vie
 
 void OpenGLShader::CompileShaders(const std::unordered_map<GLenum, std::string>& p_ShaderSources)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     m_ProgramID = glCreateProgram();
     SN_ASSERT_MSG(p_ShaderSources.size() <= 2, "Too many shaders! Only 2 supported for now.");

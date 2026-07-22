@@ -14,7 +14,7 @@ ImGuiLayer::ImGuiLayer()
 
 void ImGuiLayer::OnAttach()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     ImGui::CreateContext();
     ImGui::StyleColorsDark();
@@ -62,7 +62,7 @@ void ImGuiLayer::OnAttach()
 
 void ImGuiLayer::OnDetach()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL3_Shutdown();
@@ -71,7 +71,7 @@ void ImGuiLayer::OnDetach()
 
 void ImGuiLayer::Begin() const
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL3_NewFrame();
@@ -80,7 +80,7 @@ void ImGuiLayer::Begin() const
 
 void ImGuiLayer::End() const
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     ImGuiIO& io = ImGui::GetIO();
     const Window* window = Application::GetInstance()->GetWindow();

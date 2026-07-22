@@ -13,7 +13,7 @@ static bool sdlInitialized = false;
 
 Window::Window(const WindowProps& p_Props)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     if (!sdlInitialized)
     {
@@ -158,7 +158,7 @@ Window::Window(const WindowProps& p_Props)
 
 Window::~Window()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     SDL_DestroyWindow(m_Window);
     SDL_Quit();
@@ -166,14 +166,14 @@ Window::~Window()
 
 void Window::PollEvents() const
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     SDL_PumpEvents();
 }
 
 void Window::SwapBuffers() const
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     m_RenderContext->SwapBuffers();
 }
@@ -185,7 +185,7 @@ void Window::SetEventCallback(const EventCallbackFn& p_Callback)
 
 void Window::SetVSync(const bool p_Enable)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     SDL_GL_SetSwapInterval(p_Enable);
     m_WindowData.m_VSync = p_Enable;

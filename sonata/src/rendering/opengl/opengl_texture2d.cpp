@@ -7,7 +7,7 @@ namespace Sonata {
 OpenGLTexture2D::OpenGLTexture2D(const std::string_view p_Path)
     : m_Path(p_Path)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     int channels;
     stbi_set_flip_vertically_on_load(true);
@@ -32,7 +32,7 @@ OpenGLTexture2D::OpenGLTexture2D(const std::string_view p_Path)
 
 OpenGLTexture2D::~OpenGLTexture2D()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     glDeleteTextures(1, &m_TextureID);
     m_TextureID = 0;
@@ -40,7 +40,7 @@ OpenGLTexture2D::~OpenGLTexture2D()
 
 void OpenGLTexture2D::SetData(const void* p_Data, const int p_Size)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     // ReSharper disable once CppDFAConstantConditions
     const int bpp{m_DataFormat == GL_RGBA ? 4 : 3};
@@ -60,7 +60,7 @@ void OpenGLTexture2D::SetData(const void* p_Data, const int p_Size)
 
 void OpenGLTexture2D::Bind(const uint32_t p_Unit) const
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     glBindTextureUnit(p_Unit, m_TextureID);
 }

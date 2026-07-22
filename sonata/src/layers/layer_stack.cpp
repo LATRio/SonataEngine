@@ -8,7 +8,7 @@ namespace Sonata {
 
 LayerStack::~LayerStack()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     for (auto* layer : m_Layers)
     {
@@ -19,7 +19,7 @@ LayerStack::~LayerStack()
 
 void LayerStack::PushLayer(Layer* p_Layer)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     m_Layers.emplace(m_Layers.begin() + m_LayerInsertIndex, p_Layer);
     p_Layer->OnAttach();
@@ -28,7 +28,7 @@ void LayerStack::PushLayer(Layer* p_Layer)
 
 void LayerStack::PopLayer(Layer* p_Layer)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     if (const auto it = std::ranges::find(m_Layers, p_Layer); it != m_Layers.end())
     {
@@ -40,7 +40,7 @@ void LayerStack::PopLayer(Layer* p_Layer)
 
 void LayerStack::PushOverlay(Layer* p_Overlay)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     m_Layers.emplace_back(p_Overlay);
     p_Overlay->OnAttach();
@@ -48,7 +48,7 @@ void LayerStack::PushOverlay(Layer* p_Overlay)
 
 void LayerStack::PopOverlay(Layer* p_Overlay)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     if (const auto it = std::ranges::find(m_Layers, p_Overlay); it != m_Layers.end())
     {
@@ -58,7 +58,7 @@ void LayerStack::PopOverlay(Layer* p_Overlay)
 }
 void LayerStack::OnImGuiRender() const
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     for (auto* layer : m_Layers)
     {
@@ -67,7 +67,7 @@ void LayerStack::OnImGuiRender() const
 }
 void LayerStack::OnUpdate(const float p_DeltaTime) const
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     for (auto* layer : m_Layers)
     {
@@ -77,7 +77,7 @@ void LayerStack::OnUpdate(const float p_DeltaTime) const
 
 void LayerStack::OnEvent(Event& e)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     for (const auto& m_Layer : std::ranges::reverse_view(m_Layers))
     {

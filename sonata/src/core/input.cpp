@@ -9,7 +9,7 @@ namespace Sonata {
 
 bool Input::IsKeyPressed(Key p_Key)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     const bool* states{SDL_GetKeyboardState(nullptr)};
     return states[SDL_GetScancodeFromKey(static_cast<uint32_t>(p_Key), nullptr)];
@@ -17,7 +17,7 @@ bool Input::IsKeyPressed(Key p_Key)
 
 bool Input::IsMouseButtonPressed(MouseButton p_Button)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     return SDL_GetMouseState(nullptr, nullptr) & static_cast<SDL_MouseButtonFlags>(p_Button);
 }
@@ -35,7 +35,7 @@ float Input::GetCursorY()
 }
 std::pair<float, float> Input::GetCursorPosition()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     std::pair<float, float> pos;
     SDL_GetMouseState(&pos.first, &pos.second);

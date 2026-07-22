@@ -54,7 +54,7 @@ constexpr glm::vec2 textureCoords[]{
 
 void Renderer2D::Init()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     s_Data.QuadVertexArray = VertexArray::Create();
     s_Data.QuadVertexBuffer =
@@ -114,12 +114,12 @@ void Renderer2D::Init()
 
 void Renderer2D::Shutdown()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 }
 
 void Renderer2D::BeginScene(const OrthographicCamera& camera)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     s_Data.TextureShader->Bind();
     s_Data.TextureShader->SetMat4("u_ViewProj", camera.GetViewProjMatrix());
@@ -132,7 +132,7 @@ void Renderer2D::BeginScene(const OrthographicCamera& camera)
 
 void Renderer2D::EndScene()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     const int64_t dataSize{
         reinterpret_cast<uint8_t*>(s_Data.QuadVertexBufferPtr) -
@@ -144,7 +144,7 @@ void Renderer2D::EndScene()
 
 void Renderer2D::Flush()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
     {
@@ -155,7 +155,7 @@ void Renderer2D::Flush()
 }
 void Renderer2D::FlushAndReset()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     EndScene();
 
@@ -170,7 +170,7 @@ void Renderer2D::DrawQuad(const glm::vec2& p_Position, const glm::vec2& p_Size, 
 
 void Renderer2D::DrawQuad(const glm::vec3& p_Position, const glm::vec2& p_Size, const glm::vec4& p_Color)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
     {
@@ -195,7 +195,7 @@ void Renderer2D::DrawQuad(
 void Renderer2D::DrawQuad(
     const glm::vec3& p_Position, const glm::vec2& p_Size, const Ref<Texture2D>& p_Texture, const float p_TilingFactor)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
     {
@@ -237,7 +237,7 @@ void Renderer2D::DrawQuad(
 void Renderer2D::DrawQuad(
     const glm::vec3& p_Position, const glm::vec2& p_Size, const Ref<SubTexture2D>& p_SubTexture, float p_TilingFactor)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
     const Ref<Texture2D> texture = p_SubTexture->GetTexture();
 
     if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
@@ -279,7 +279,7 @@ void Renderer2D::DrawRotatedQuad(
 void Renderer2D::DrawRotatedQuad(
     const glm::vec3& p_Position, const glm::vec2& p_Size, const float p_Rotation, const glm::vec4& p_Color)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
     {
@@ -307,7 +307,7 @@ void Renderer2D::DrawRotatedQuad(
     const glm::vec3& p_Position, const glm::vec2& p_Size, const float p_Rotation, const Ref<Texture2D>& p_Texture,
     const float p_TilingFactor)
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
     {

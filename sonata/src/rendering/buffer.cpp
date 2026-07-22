@@ -9,7 +9,7 @@ namespace Sonata {
 
 void BufferLayout::CalculateOffsetAndStride()
 {
-    SN_PROFILE_FUNCTION();
+    SN_PROFILE_FUNCTION;
 
     int offset{};
     for (auto& element : m_Elements)
