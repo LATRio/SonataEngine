@@ -70,6 +70,8 @@ add_library(sonata ${LIB_BUILD_TYPE}
         src/rendering/render_context.cpp
         src/rendering/vulkan/vulkan_context.cpp
         src/rendering/vulkan/vulkan_context.hpp
+        src/rendering/sub_texture_2d.cpp
+        src/rendering/sub_texture_2d.hpp
 )
 
 add_subdirectory(deps)

@@ -4,8 +4,7 @@
 Sandbox2D::Sandbox2D()
     : Layer("Sandbox2D")
     , m_CameraController(16.0f / 9.0f)
-{
-}
+{}
 
 void Sandbox2D::OnAttach()
 {
@@ -13,6 +12,11 @@ void Sandbox2D::OnAttach()
 
     Sonata::Renderer2D::Init();
     m_Texture = Sonata::Texture2D::Create("assets/container.jpg");
+    m_Spritesheet = Sonata::Texture2D::Create("assets/RPGpack_sheet_2X.png");
+
+    m_TextureStairs = Sonata::SubTexture2D::CreateFromCoords(m_Spritesheet, {7, 6}, {128, 128}, {1, 1});
+    m_TextureBarrel = Sonata::SubTexture2D::CreateFromCoords(m_Spritesheet, {8, 2}, {128, 128}, {1, 1});
+    m_TextureTree = Sonata::SubTexture2D::CreateFromCoords(m_Spritesheet, {2, 1}, {128, 128}, {1, 2});
 }
 
 void Sandbox2D::OnDetach()
@@ -53,6 +57,12 @@ void Sandbox2D::OnUpdate(const float p_DeltaTime)
             Sonata::Renderer2D::DrawQuad({x, y}, {0.45f, 0.45f}, color);
         }
     }
+    Sonata::Renderer2D::EndScene();
+
+    Sonata::Renderer2D::BeginScene(m_CameraController.GetCamera());
+    Sonata::Renderer2D::DrawQuad({0.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, m_TextureStairs);
+    Sonata::Renderer2D::DrawQuad({1.0f, 0.0f, 1.0f}, {1.0f, 1.0f}, m_TextureBarrel);
+    Sonata::Renderer2D::DrawQuad({-1.0f, 0.5f, 1.0f}, {1.0f, 2.0f}, m_TextureTree);
     Sonata::Renderer2D::EndScene();
 }
 

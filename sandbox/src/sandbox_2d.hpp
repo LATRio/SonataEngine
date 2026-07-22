@@ -19,4 +19,8 @@ private:
     Sonata::Ref<Sonata::Shader> m_FlatColorShader;
 
     Sonata::Ref<Sonata::Texture2D> m_Texture;
+    Sonata::Ref<Sonata::Texture2D> m_Spritesheet;
+    Sonata::Ref<Sonata::SubTexture2D> m_TextureStairs;
+    Sonata::Ref<Sonata::SubTexture2D> m_TextureBarrel;
+    Sonata::Ref<Sonata::SubTexture2D> m_TextureTree;
 };

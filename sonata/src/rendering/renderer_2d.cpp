@@ -45,6 +45,12 @@ struct Renderer2DData
 
 static Renderer2DData s_Data;
 glm::vec4 Renderer2D::s_TintColor = glm::vec4(1.0f);
+constexpr glm::vec2 textureCoords[]{
+    {0.0f, 0.0f},
+    {1.0f, 0.0f},
+    {1.0f, 1.0f},
+    {0.0f, 1.0f}
+};
 
 void Renderer2D::Init()
 {
@@ -177,7 +183,7 @@ void Renderer2D::DrawQuad(const glm::vec3& p_Position, const glm::vec2& p_Size, 
     const glm::mat4 transform =
         glm::translate(glm::mat4(1.0f), p_Position) * glm::scale(glm::mat4(1.0f), glm::vec3(p_Size.x, p_Size.y, 1.0f));
 
-    AddQuad(transform, p_Color, texIndex, tilingFactor);
+    AddQuad(transform, p_Color, textureCoords, texIndex, tilingFactor);
 }
 
 void Renderer2D::DrawQuad(
@@ -218,7 +224,50 @@ void Renderer2D::DrawQuad(
     const glm::mat4 transform =
         glm::translate(glm::mat4(1.0f), p_Position) * glm::scale(glm::mat4(1.0f), glm::vec3(p_Size.x, p_Size.y, 1.0f));
 
-    AddQuad(transform, color, textureIndex, p_TilingFactor);
+    AddQuad(transform, color, textureCoords, textureIndex, p_TilingFactor);
+}
+
+void Renderer2D::DrawQuad(
+    const glm::vec2& p_Position, const glm::vec2& p_Size, const Ref<SubTexture2D>& p_SubTexture,
+    const float p_TilingFactor)
+{
+    DrawQuad({p_Position.x, p_Position.y, 0.0f}, p_Size, p_SubTexture, p_TilingFactor);
+}
+
+void Renderer2D::DrawQuad(
+    const glm::vec3& p_Position, const glm::vec2& p_Size, const Ref<SubTexture2D>& p_SubTexture, float p_TilingFactor)
+{
+    SN_PROFILE_FUNCTION();
+    const Ref<Texture2D> texture = p_SubTexture->GetTexture();
+
+    if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
+    {
+        FlushAndReset();
+    }
+
+    int32_t textureIndex{};
+    for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
+    {
+        if (*s_Data.TextureSlots[i].get() == *texture.get())
+        {
+            textureIndex = static_cast<int32_t>(i);
+            break;
+        }
+    }
+
+    if (textureIndex == 0)
+    {
+        textureIndex = static_cast<int32_t>(s_Data.TextureSlotIndex);
+        s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
+        s_Data.TextureSlotIndex++;
+    }
+
+    constexpr glm::vec4 color{1.0f};
+
+    const glm::mat4 transform =
+        glm::translate(glm::mat4(1.0f), p_Position) * glm::scale(glm::mat4(1.0f), glm::vec3(p_Size.x, p_Size.y, 1.0f));
+
+    AddQuad(transform, color, p_SubTexture->GetTexCoords(), textureIndex, p_TilingFactor);
 }
 
 void Renderer2D::DrawRotatedQuad(
@@ -244,7 +293,7 @@ void Renderer2D::DrawRotatedQuad(
                                 glm::rotate(glm::mat4(1.0f), glm::radians(p_Rotation), {0.0f, 0.0f, 1.0f}) *
                                 glm::scale(glm::mat4(1.0f), glm::vec3(p_Size.x, p_Size.y, 1.0f));
 
-    AddQuad(transform, p_Color, texIndex, tilingFactor);
+    AddQuad(transform, p_Color, textureCoords, texIndex, tilingFactor);
 }
 
 void Renderer2D::DrawRotatedQuad(
@@ -255,8 +304,8 @@ void Renderer2D::DrawRotatedQuad(
 }
 
 void Renderer2D::DrawRotatedQuad(
-    const glm::vec3& p_Position, const glm::vec2& p_Size, [[maybe_unused]] const float p_Rotation,
-    const Ref<Texture2D>& p_Texture, const float p_TilingFactor)
+    const glm::vec3& p_Position, const glm::vec2& p_Size, const float p_Rotation, const Ref<Texture2D>& p_Texture,
+    const float p_TilingFactor)
 {
     SN_PROFILE_FUNCTION();
 
@@ -288,7 +337,7 @@ void Renderer2D::DrawRotatedQuad(
                                 glm::rotate(glm::mat4(1.0f), glm::radians(p_Rotation), {0.0f, 0.0f, 1.0f}) *
                                 glm::scale(glm::mat4(1.0f), glm::vec3(p_Size.x, p_Size.y, 1.0f));
 
-    AddQuad(transform, color, textureIndex, p_TilingFactor);
+    AddQuad(transform, color, textureCoords, textureIndex, p_TilingFactor);
 }
 
 void Renderer2D::ResetStats()
@@ -302,35 +351,18 @@ Renderer2D::Statistics Renderer2D::GetStats()
 }
 
 void Renderer2D::AddQuad(
-    const glm::mat4& p_Transform, const glm::vec4& p_Color, const int32_t p_TexIndex, const float p_TilingFactor)
+    const glm::mat4& p_Transform, const glm::vec4& p_Color, const glm::vec2* p_TextureCoords, const int32_t p_TexIndex,
+    const float p_TilingFactor)
 {
-    s_Data.QuadVertexBufferPtr->Position = p_Transform * s_Data.QuadVertexPositions[0];
-    s_Data.QuadVertexBufferPtr->Color = p_Color;
-    s_Data.QuadVertexBufferPtr->TexCoord = {0.0f, 0.0f};
-    s_Data.QuadVertexBufferPtr->TexIndex = p_TexIndex;
-    s_Data.QuadVertexBufferPtr->TilingFactor = p_TilingFactor;
-    s_Data.QuadVertexBufferPtr++;
-
-    s_Data.QuadVertexBufferPtr->Position = p_Transform * s_Data.QuadVertexPositions[1];
-    s_Data.QuadVertexBufferPtr->Color = p_Color;
-    s_Data.QuadVertexBufferPtr->TexCoord = {1.0f, 0.0f};
-    s_Data.QuadVertexBufferPtr->TexIndex = p_TexIndex;
-    s_Data.QuadVertexBufferPtr->TilingFactor = p_TilingFactor;
-    s_Data.QuadVertexBufferPtr++;
-
-    s_Data.QuadVertexBufferPtr->Position = p_Transform * s_Data.QuadVertexPositions[2];
-    s_Data.QuadVertexBufferPtr->Color = p_Color;
-    s_Data.QuadVertexBufferPtr->TexCoord = {1.0f, 1.0f};
-    s_Data.QuadVertexBufferPtr->TexIndex = p_TexIndex;
-    s_Data.QuadVertexBufferPtr->TilingFactor = p_TilingFactor;
-    s_Data.QuadVertexBufferPtr++;
-
-    s_Data.QuadVertexBufferPtr->Position = p_Transform * s_Data.QuadVertexPositions[3];
-    s_Data.QuadVertexBufferPtr->Color = p_Color;
-    s_Data.QuadVertexBufferPtr->TexCoord = {0.0f, 1.0f};
-    s_Data.QuadVertexBufferPtr->TexIndex = p_TexIndex;
-    s_Data.QuadVertexBufferPtr->TilingFactor = p_TilingFactor;
-    s_Data.QuadVertexBufferPtr++;
+    for (size_t i = 0; i < 4; i++)
+    {
+        s_Data.QuadVertexBufferPtr->Position = p_Transform * s_Data.QuadVertexPositions[i];
+        s_Data.QuadVertexBufferPtr->Color = p_Color;
+        s_Data.QuadVertexBufferPtr->TexCoord = p_TextureCoords[i];
+        s_Data.QuadVertexBufferPtr->TexIndex = p_TexIndex;
+        s_Data.QuadVertexBufferPtr->TilingFactor = p_TilingFactor;
+        s_Data.QuadVertexBufferPtr++;
+    }
 
     s_Data.QuadIndexCount += 6;
 
