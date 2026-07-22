@@ -17,6 +17,7 @@ public:
 
     [[nodiscard]] int GetWidth() const override { return m_Width; }
     [[nodiscard]] int GetHeight() const override { return m_Height; }
+    [[nodiscard]] uint32_t GetTextureID() const override { return m_TextureID; }
 
     void SetData(const void* p_Data, int p_Size) override;
 

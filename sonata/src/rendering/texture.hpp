@@ -9,6 +9,7 @@ public:
 
     [[nodiscard]] virtual int GetWidth() const = 0;
     [[nodiscard]] virtual int GetHeight() const = 0;
+    [[nodiscard]] virtual uint32_t GetTextureID() const = 0;
 
     virtual void SetData(const void* p_Data, int p_Size) = 0;
 

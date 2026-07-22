@@ -26,6 +26,8 @@ private:
 
     std::unordered_map<char, Sonata::Ref<Sonata::SubTexture2D>> m_TextureMap;
 
+    glm::vec4 m_SquareColor = { 0.8f, 0.2f, 0.3f, 1.0f };
+
     uint32_t m_MapWidth{};
     uint32_t m_MapHeight{};
 };

@@ -37,7 +37,7 @@ public:
     void PushLayer(Layer* p_Layer);
     void PushOverlay(Layer* p_Layer);
 
-    void Shutdown();
+    void Close();
 
     [[nodiscard]] Window* GetWindow() const { return m_Window.get(); }
 

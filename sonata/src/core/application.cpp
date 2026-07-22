@@ -34,7 +34,7 @@ SDL_AppResult Application::Loop()
     const float deltaTime{time - m_LastFrameTime};
     m_LastFrameTime = time;
 
-    m_Window->PollEvents();
+    //m_Window->PollEvents();
 
     if (!m_IsMinimized)
     {
@@ -66,7 +66,7 @@ bool Application::OnWindowClosed([[maybe_unused]] const EventWindowClose& p_Even
 {
     SN_PROFILE_FUNCTION;
 
-    Shutdown();
+    Close();
     return true;
 }
 
@@ -100,7 +100,7 @@ void Application::PushOverlay(Layer* p_Layer)
     m_LayerStack.PushOverlay(p_Layer);
 }
 
-void Application::Shutdown()
+void Application::Close()
 {
     SN_PROFILE_FUNCTION;
 

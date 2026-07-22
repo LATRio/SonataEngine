@@ -58,7 +58,6 @@ Window::Window(const WindowProps& p_Props)
     m_RenderContext = RenderContext::Create(m_Window);
     m_RenderContext->Init();
 
-    // glfwSetWindowUserPointer(m_Window, &m_WindowData);
     SetVSync(m_WindowData.m_VSync);
 
     SDL_ShowWindow(m_Window);
@@ -166,9 +165,7 @@ Window::~Window()
 
 void Window::PollEvents() const
 {
-    SN_PROFILE_FUNCTION;
-
-    SDL_PumpEvents();
+    //SN_PROFILE_FUNCTION;
 }
 
 void Window::SwapBuffers() const

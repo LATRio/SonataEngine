@@ -4,7 +4,7 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wuseless-cast"
 #endif
-#include "SDL3/SDL_main.h"
+#include <SDL3/SDL_main.h>
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif
@@ -13,7 +13,7 @@
 extern Sonata::Application* CreateApplication();
 inline Sonata::Application* app{};
 
-inline SDL_AppResult SDL_AppInit(void**, int, char*[])
+inline SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 {
     SN_PROFILE_SCOPE("Initialization");
     Sonata::Log::Init();
@@ -40,9 +40,11 @@ inline SDL_AppResult SDL_AppInit(void**, int, char*[])
     return SDL_APP_CONTINUE;
 }
 
-inline SDL_AppResult SDL_AppEvent(void*, SDL_Event*)
+inline SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 {
     SN_PROFILE_SCOPE("Application Event");
+
+    ImGui_ImplSDL3_ProcessEvent(event);
     return SDL_APP_CONTINUE;
 }
 
@@ -52,7 +54,7 @@ inline SDL_AppResult SDL_AppIterate(void*)
     return app->Loop();
 }
 
-inline void SDL_AppQuit(void*, SDL_AppResult)
+inline void SDL_AppQuit(void* appstate, SDL_AppResult result)
 {
     SN_PROFILE_SCOPE("Shutdown");
     // SN_PROFILE_END_SESSION();

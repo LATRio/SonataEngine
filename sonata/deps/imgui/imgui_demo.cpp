@@ -10359,7 +10359,7 @@ void ShowExampleAppDockSpace(bool* p_open)
     // Show demo options and help
     if (ImGui::BeginMenuBar())
     {
-        if (ImGui::BeginMenu("Options"))
+        if (ImGui::BeginMenu("File"))
         {
             // Disabling fullscreen would allow the window to be moved to the front of other windows,
             // which we can't undo at the moment without finer window depth/z control.
@@ -10377,23 +10377,6 @@ void ShowExampleAppDockSpace(bool* p_open)
 
             if (ImGui::MenuItem("Close", NULL, false, p_open != NULL))
                 *p_open = false;
-            ImGui::EndMenu();
-        }
-        if (ImGui::BeginMenu("Help"))
-        {
-            ImGui::TextUnformatted(
-                "This demo has nothing to do with enabling docking!" "\n"
-                "This demo only demonstrate the use of ImGui::DockSpace() which allows you to manually\ncreate a docking node _within_ another window." "\n"
-                "Most application can simply call ImGui::DockSpaceOverViewport() and be done with it.");
-            ImGui::Separator();
-            ImGui::TextUnformatted("When docking is enabled, you can ALWAYS dock MOST window into another! Try it now!" "\n"
-                "- Drag from window title bar or their tab to dock/undock." "\n"
-                "- Drag from window menu button (upper-left button) to undock an entire node (all windows)." "\n"
-                "- Hold SHIFT to disable docking (if io.ConfigDockingWithShift == false, default)" "\n"
-                "- Hold SHIFT to enable docking (if io.ConfigDockingWithShift == true)");
-            ImGui::Separator();
-            ImGui::TextUnformatted("More details:"); ImGui::Bullet(); ImGui::SameLine(); ImGui::TextLinkOpenURL("Docking Wiki page", "https://github.com/ocornut/imgui/wiki/Docking");
-            ImGui::BulletText("Read comments in ShowExampleAppDockSpace()");
             ImGui::EndMenu();
         }
         ImGui::EndMenuBar();
