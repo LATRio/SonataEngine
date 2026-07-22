@@ -23,4 +23,9 @@ private:
     Sonata::Ref<Sonata::SubTexture2D> m_TextureStairs;
     Sonata::Ref<Sonata::SubTexture2D> m_TextureBarrel;
     Sonata::Ref<Sonata::SubTexture2D> m_TextureTree;
+
+    std::unordered_map<char, Sonata::Ref<Sonata::SubTexture2D>> m_TextureMap;
+
+    uint32_t m_MapWidth{};
+    uint32_t m_MapHeight{};
 };

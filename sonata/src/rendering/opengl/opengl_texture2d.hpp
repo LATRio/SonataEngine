@@ -5,6 +5,7 @@ namespace Sonata {
 
 class OpenGLTexture2D final : public Texture2D {
 public:
+    OpenGLTexture2D() = delete;
     explicit OpenGLTexture2D(std::string_view p_Path);
     OpenGLTexture2D(const int p_Width, const int p_Height)
         : m_Width(p_Width)
