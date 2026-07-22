@@ -21,11 +21,14 @@ public:
     OrthographicCamera& GetCamera() { return m_Camera; }
     const OrthographicCamera& GetCamera() const { return m_Camera; }
 
+    float GetZoomLevel() const { return m_ZoomLevel; }
+    void SetZoomLevel(const float p_ZoomLevel) { m_ZoomLevel = p_ZoomLevel; CalculateView(); }
+
 private:
+    void CalculateView();
+
     bool OnMouseScrolled(const EventMouseScrolled& p_Event);
     bool OnWindowResized(const EventWindowResize& p_Event);
-
-    void CalculateCameraProjection();
 
     float m_AspectRatio{};
     bool m_CanRotate{};

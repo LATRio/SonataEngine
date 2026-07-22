@@ -14,9 +14,11 @@ void Sandbox2D::OnAttach()
     m_Texture = Sonata::Texture2D::Create("assets/container.jpg");
     m_Spritesheet = Sonata::Texture2D::Create("assets/RPGpack_sheet_2X.png");
 
-    m_TextureStairs = Sonata::SubTexture2D::CreateFromCoords(m_Spritesheet, {7, 6}, {128, 128}, {1, 1});
-    m_TextureBarrel = Sonata::SubTexture2D::CreateFromCoords(m_Spritesheet, {8, 2}, {128, 128}, {1, 1});
-    m_TextureTree = Sonata::SubTexture2D::CreateFromCoords(m_Spritesheet, {2, 1}, {128, 128}, {1, 2});
+    m_TextureStairs = Sonata::SubTexture2D::CreateFromCoords(m_Spritesheet, {7, 6}, {128, 128});
+    m_TextureBarrel = Sonata::SubTexture2D::CreateFromCoords(m_Spritesheet, {8, 2}, {128, 128});
+    m_TextureTree = Sonata::SubTexture2D::CreateFromCoords(m_Spritesheet, {2, 1}, {128, 128}, {1.0f, 2.0f});
+
+    m_CameraController.SetZoomLevel(5.0f);
 }
 
 void Sandbox2D::OnDetach()

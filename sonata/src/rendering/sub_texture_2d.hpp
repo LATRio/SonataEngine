@@ -13,12 +13,12 @@ public:
 
     static Ref<SubTexture2D> CreateFromCoords(
         const Ref<Texture2D>& p_Texture, const glm::vec2& p_Coords, const glm::vec2& p_CellSize,
-        const glm::vec2& p_SpriteSize);
+        const glm::vec2& p_SpriteSize = {1.0f, 1.0f});
 
 private:
     Ref<Texture2D> m_Texture{};
 
-    glm::vec2 m_TexCoords[4];
+    glm::vec2 m_TexCoords[4]{};
 };
 
 } // namespace Sonata
